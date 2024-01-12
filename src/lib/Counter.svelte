@@ -1,10 +1,12 @@
 <script>
-  let count = 0
-  const increment = () => {
-    count += 3
+  let test = null;
+  const getTest = () => {
+    fetch("http://localhost:8080/api/v1/test/1")
+    .then(res => res.json)
+    .then(data => test = data)
   }
 </script>
 
-<button on:click={increment}>
-  count is {count}
+<button on:click={getTest}>
+  {test}
 </button>
