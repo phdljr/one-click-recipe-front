@@ -1,7 +1,7 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import svelteLogo from './assets/svelte.svg';
+  import Counter from './lib/Counter.svelte';
+  import viteLogo from '/vite.svg';
 </script>
 
 <main>
@@ -13,7 +13,7 @@
       <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
     </a>
   </div>
-  <h1>Vite + Svelte</h1>
+  <h1>딸깍! 레시피</h1>
 
   <div class="card">
     <Counter />
