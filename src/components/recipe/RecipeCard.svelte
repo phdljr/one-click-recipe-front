@@ -7,16 +7,19 @@
     PrimaryAction,
   } from '@smui/card';
   import IconButton, { Icon } from '@smui/icon-button';
+  import { navigate } from 'svelte-routing';
 
   export let recipe;
-
-  let clicked = 0;
 </script>
 
 <div class="container">
   <Card>
-    <PrimaryAction on:click={() => clicked++}>
-      <Media class="card-media-16x9" aspectRatio="16x9" />
+    <PrimaryAction on:click={() => navigate(`/recipes/${recipe.id}`)}>
+      <Media
+        class="card-media-16x9"
+        aspectRatio="16x9"
+        style="background-image: url({recipe.imagePath})"
+      />
       <Content class="mdc-typography--body2">
         <h2 class="mdc-typography--headline6" style="margin: 0;">
           {recipe.title}
@@ -31,12 +34,11 @@
       </Content>
     </PrimaryAction>
     <Actions>
-      <span>
-        {recipe.serving}인분
+      <span class="writer">
+        {recipe.writer}
       </span>
       <ActionIcons>
         <IconButton
-          on:click={() => clicked++}
           toggle
           aria-label="Add to favorites"
           title="Add to favorites"
@@ -50,4 +52,8 @@
 </div>
 
 <style>
+  .writer {
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+  }
 </style>

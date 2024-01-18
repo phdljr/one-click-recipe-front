@@ -1,42 +1,21 @@
 <script>
-  import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
-  import RecipeCard from '../../components/recips/RecipeCard.svelte';
   import HOST from '../../lib/host';
 
-  let recipes = [
-    {
-      id: 1,
-      title: 'test',
-      intro: 'test intro',
-      serving: 1,
-    },
-    {
-      id: 2,
-      title: 'test',
-      intro: 'test intro',
-      serving: 2,
-    },
-    {
-      id: 3,
-      title: 'test',
-      intro: 'test intro',
-      serving: 3,
-    },
-    {
-      id: 4,
-      title: 'test',
-      intro: 'test intro',
-      serving: 4,
-    },
-  ];
+  export let recipeId;
+
+  let recipe = {};
+  let reviews = [];
+  let recipeFoods = [];
+  let recipeProcesses = [];
 
   onMount(() => {
-    // getAllRecipe();
+    // getRecipe();
+    getReviews();
   });
 
-  const getAllRecipe = () => {
-    fetch(HOST + '/api/v1/recipes', {
+  const getRecipe = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -44,15 +23,24 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        recipes = data.body;
+        console.log(data);
+        recipe = data;
+      });
+  };
+
+  const getReviews = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        reviews = data;
       });
   };
 </script>
 
-<LayoutGrid fixedColumnWidth>
-  {#each recipes as recipe (recipe.id)}
-    <Cell>
-      <RecipeCard {recipe} />
-    </Cell>
-  {/each}
-</LayoutGrid>
+<h1>{recipeId}</h1>
