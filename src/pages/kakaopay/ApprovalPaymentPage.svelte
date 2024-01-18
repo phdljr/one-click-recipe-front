@@ -5,6 +5,7 @@
   import getParam from '../../lib/query-string';
 
   export let orderId;
+
   let isSuccess = null;
   let totalPrice = null;
 

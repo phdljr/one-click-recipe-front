@@ -12,6 +12,10 @@
   "devDependencies": {
     "@smui-extra/accordion": "^7.0.0-beta.16",
     "@smui/button": "^7.0.0-beta.16",
+    "@smui/card": "^7.0.0-beta.16",
+    "@smui/dialog": "^7.0.0-beta.16",
+    "@smui/layout-grid": "^7.0.0-beta.16",
+    "@smui/textfield": "^7.0.0-beta.16",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "prettier": "^3.2.2",
     "prettier-plugin-svelte": "^3.1.2",
@@ -21,14 +25,5 @@
   },
   "dependencies": {
     "svelte-cookie": "^1.0.1"
-  },
-  "files": [
-    "dist"
-  ],
-  "svelte": "dist/index.js",
-  "exports": {
-    ".": {
-      "svelte": "./dist/index.js"
-    }
   }
 }
