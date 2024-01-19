@@ -11,7 +11,9 @@
 
   onMount(() => {
     // getRecipe();
-    getReviews();
+    // getRecipeFoods();
+    // getRecipeProcesses();
+    // getReviews();
   });
 
   const getRecipe = () => {
@@ -25,6 +27,34 @@
       .then((data) => {
         console.log(data);
         recipe = data;
+      });
+  };
+
+  const getRecipeFoods = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}/recipe-foods`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        recipeFoods = data;
+      });
+  };
+
+  const getRecipeProcesses = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}/recipe-processes`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        recipeProcesses = data;
       });
   };
 
