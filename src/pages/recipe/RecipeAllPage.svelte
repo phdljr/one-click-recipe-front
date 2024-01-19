@@ -5,46 +5,46 @@
   import HOST from '../../lib/host';
 
   let recipes = [
-    {
-      id: 1,
-      title: 'test',
-      intro: 'test intro',
-      serving: 1,
-      writer: 'test1',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-    {
-      id: 2,
-      title: 'test',
-      intro: 'test intro',
-      serving: 2,
-      writer: 'test2',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-    {
-      id: 3,
-      title: 'test',
-      intro: 'test intro',
-      serving: 3,
-      writer: 'test3',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-    {
-      id: 4,
-      title: 'test',
-      intro: 'test intro',
-      serving: 4,
-      writer: 'test4',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
+    // {
+    //   id: 1,
+    //   title: 'test',
+    //   intro: 'test intro',
+    //   serving: 1,
+    //   writer: 'test1',
+    //   imagePath:
+    //     'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
+    // },
+    // {
+    //   id: 2,
+    //   title: 'test',
+    //   intro: 'test intro',
+    //   serving: 2,
+    //   writer: 'test2',
+    //   imagePath:
+    //     'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
+    // },
+    // {
+    //   id: 3,
+    //   title: 'test',
+    //   intro: 'test intro',
+    //   serving: 3,
+    //   writer: 'test3',
+    //   imagePath:
+    //     'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
+    // },
+    // {
+    //   id: 4,
+    //   title: 'test',
+    //   intro: 'test intro',
+    //   serving: 4,
+    //   writer: 'test4',
+    //   imagePath:
+    //     'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
+    // },
   ];
 
   onMount(() => {
-    // getAllRecipe();
+    getAllRecipe();
   });
 
   const getAllRecipe = () => {
