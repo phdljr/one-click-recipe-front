@@ -43,17 +43,23 @@
 <div class="content-wrapper">
   <div class="order-list">
     <h2>주문 목록</h2>
-    {#each orders as order}
-      <div class="order-item">
-        <div class="order-id">주문 번호: {order.id}</div>
-        <div class="receiver-name">받는 분: {order.receiverName}</div>
-        <div class="receiver-phone">연락처: {order.receiverPhoneNumber}</div>
-        <div class="address">주소: {order.address}, {order.addressDetail}</div>
-        <div class="total-price">총 금액: {order.totalPrice}원</div>
-        <div class="order-status">주문 상태: {order.orderStatus}</div>
-        <Link to="/order-detail/{order.id}"><button>주문 상세</button></Link>
-      </div>
-    {/each}
+    {#if orders.length !== 0}
+      {#each orders as order}
+        <div class="order-item">
+          <div class="order-id">주문 번호: {order.id}</div>
+          <div class="receiver-name">받는 분: {order.receiverName}</div>
+          <div class="receiver-phone">연락처: {order.receiverPhoneNumber}</div>
+          <div class="address">
+            주소: {order.address}, {order.addressDetail}
+          </div>
+          <div class="total-price">총 금액: {order.totalPrice}원</div>
+          <div class="order-status">주문 상태: {order.orderStatus}</div>
+          <Link to="/order-detail/{order.id}"><button>주문 상세</button></Link>
+        </div>
+      {/each}
+    {:else}
+      <h1>주문 내역이 없습니다.</h1>
+    {/if}
   </div>
 </div>
 

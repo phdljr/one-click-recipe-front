@@ -25,10 +25,14 @@
   };
 </script>
 
-<LayoutGrid fixedColumnWidth>
-  {#each recipes as recipe (recipe.id)}
-    <Cell>
-      <RecipeCard {recipe} />
-    </Cell>
-  {/each}
-</LayoutGrid>
+{#if recipes.length !== 0}
+  <LayoutGrid fixedColumnWidth>
+    {#each recipes as recipe (recipe.id)}
+      <Cell>
+        <RecipeCard {recipe} />
+      </Cell>
+    {/each}
+  </LayoutGrid>
+{:else}
+  <h1>등록된 레시피가 없습니다.</h1>
+{/if}
