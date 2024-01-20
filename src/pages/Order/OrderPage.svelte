@@ -42,7 +42,23 @@
         });
       });
   };
+
+  const openAddressPopUp = () => {
+    // @ts-ignore
+    new daum.Postcode({
+      oncomplete: (data) => {
+        requestDto.address = data.address;
+      },
+    }).open();
+  };
 </script>
+
+<!-- Daum 주소 API -->
+<svelte:head>
+  <script
+    src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+  ></script>
+</svelte:head>
 
 <link
   href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap"
@@ -105,10 +121,12 @@
       </div>
       <div class="input-group">
         <label for="address">배송주소</label>
+        <button on:click={openAddressPopUp}>주소 검색</button>
         <input
+          disabled
           type="text"
           id="address"
-          placeholder="배송주소를 입력하세요"
+          placeholder="배송주소를 입력하기 위해 왼쪽의 버튼을 클릭해주세요."
           bind:value={requestDto.address}
         />
       </div>
