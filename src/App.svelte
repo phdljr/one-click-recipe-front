@@ -1,13 +1,13 @@
 <script>
   import { Route, Router } from 'svelte-routing';
   import MainPage from './pages/MainPage.svelte';
+  import OrderPage from './pages/Order/OrderPage.svelte';
+  import NotFoundPage from './pages/error/NotFoundPage.svelte';
   import ApprovalPaymentPage from './pages/kakaopay/ApprovalPaymentPage.svelte';
-  import NotFoundPage from './pages/notfound/NotFoundPage.svelte';
   import RecipeAllPage from './pages/recipe/RecipeAllPage.svelte';
   import RecipePage from './pages/recipe/RecipePage.svelte';
   import LoginPage from './pages/user/LoginPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
-  import OrderPage from './pages/Order/OrderPage.svelte';
 </script>
 
 <Router>
