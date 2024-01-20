@@ -7,7 +7,7 @@
   import RecipePage from './pages/recipe/RecipePage.svelte';
   import LoginPage from './pages/user/LoginPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
-  import OrderPage from './pages/Order/OrderPage.svelte';
+  import OrderPage from './pages/order/OrderPage.svelte';
 </script>
 
 <Router>

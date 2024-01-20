@@ -1,4 +1,5 @@
 <script>
+	import { Button } from '@smui/button';
   let products = [
     { id: 1, name: '식재료1', price: 1000, unit: 'COUNT' },
     { id: 2, name: '식재료2', price: 2000, unit: 'G' },
@@ -99,7 +100,6 @@
     </div>
   </div>
 </div>
-
 <style>
   .content-wrapper {
     width: 1000px;
