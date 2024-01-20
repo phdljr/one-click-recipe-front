@@ -1,7 +1,8 @@
 <script>
   import Button from '@smui/button';
-  import Checkbox from '@smui/checkbox';
   import { onMount } from 'svelte';
+  import RecipeFoodComponent from '../../components/recipe/RecipeFoodComponent.svelte';
+  import RecipeProcessComponent from '../../components/recipe/RecipeProcessComponent.svelte';
   import HOST from '../../lib/host';
 
   export let recipeId;
@@ -13,13 +14,6 @@
 
   let totalPrice = 0;
   let selectedRecipeFoods = [];
-
-  $: {
-    totalPrice = 0;
-    selectedRecipeFoods.forEach(
-      (recipeFood) => (totalPrice += recipeFood.price),
-    );
-  }
 
   onMount(() => {
     getRecipe();
@@ -100,69 +94,38 @@
 </script>
 
 <div class="container-recipe">
-  <h1>{recipe.title}</h1>
-  <h3>{recipe.intro}</h3>
-  <hr style="width: 100%" />
+  <h1 class="recipe-title">{recipe.title}</h1>
+  <h3 class="recipe-intro">{recipe.intro}</h3>
+  <hr class="hr-100" />
   <div class="container-flex">
-    <div class="wrapper-recipe-food">
-      <span style="text-align: center; font-weight: bold;">레시피 재료</span>
-      <hr style="width: 100%" />
-      {#each recipeFoods as recipeFood (recipeFood.id)}
-        <div class="recipe-food">
-          <span class="recipe-food-name">
-            {recipeFood.name}
-            {recipeFood.amount}{recipeFood.unit}
-          </span>
-          <span class="recipe-food-price"
-            >{recipeFood.price.toLocaleString('ko-KR')}원</span
-          >
-          <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
-        </div>
-      {/each}
-      <hr style="width: 100%" />
-      <span style="text-align: center; font-weight: bold;"
-        >총 {totalPrice.toLocaleString('ko-KR')}원</span
-      >
-    </div>
+    <RecipeFoodComponent
+      {recipeFoods}
+      bind:totalPrice
+      bind:selectedRecipeFoods
+    />
     <br />
     <Button class="buy-button" variant="raised">재료 구매</Button>
     <br />
-    <hr style="width: 100%" />
+    <hr class="hr-100" />
     <br />
     <h1>조리 과정</h1>
-    <div class="wrapper-recipe-process">
-      {#each recipeProcesses as recipeProcess (recipeProcess.id)}
-        <div class="recipe-process-div">
-          {recipeProcess.description}
-        </div>
-        <br />
-      {/each}
-    </div>
+    <RecipeProcessComponent {recipeProcesses} />
   </div>
 </div>
 
 <style>
-  .wrapper-recipe-process {
-    display: flex;
-    flex-direction: column;
+  * :global(.span-bold-center) {
+    text-align: center;
+    font-weight: bold;
   }
-  .recipe-process-div {
-    width: 600px;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 2px 3px 5px;
+  .recipe-title {
+    text-align: center;
   }
-  .recipe-food-name {
-    width: 100px;
+  .recipe-intro {
+    text-align: center;
   }
-  .recipe-food-price {
-    width: 100px;
-    text-align: right;
-  }
-  .recipe-food {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .hr-100 {
+    width: 100%;
   }
   .container-recipe {
     display: flex;
@@ -171,19 +134,12 @@
     border-radius: 30px;
     padding: 30px;
     box-shadow: 2px 5px 10px;
+    margin: 30px 30px;
   }
   .container-flex {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .wrapper-recipe-food {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    border-radius: 30px;
-    padding: 30px;
-    box-shadow: 2px 5px 10px;
   }
   * :global(.buy-button) {
     width: 50%;
