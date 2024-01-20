@@ -1,7 +1,11 @@
 <script>
   import Button from '@smui/button';
-  import Checkbox from '@smui/checkbox';
   import { onMount } from 'svelte';
+  import { getCookie } from 'svelte-cookie';
+  import { navigate } from 'svelte-routing';
+  import RecipeFoods from '../../components/recipe/RecipeFoods.svelte';
+  import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
+  import RecipeReviews from '../../components/recipe/RecipeReviews.svelte';
   import HOST from '../../lib/host';
 
   export let recipeId;
@@ -13,13 +17,6 @@
 
   let totalPrice = 0;
   let selectedRecipeFoods = [];
-
-  $: {
-    totalPrice = 0;
-    selectedRecipeFoods.forEach(
-      (recipeFood) => (totalPrice += recipeFood.price),
-    );
-  }
 
   onMount(() => {
     getRecipe();
@@ -97,73 +94,89 @@
         reviews = data;
       });
   };
+
+  const handleBuyingRecipeFoods = async () => {
+    const deleteResponse = await fetch(HOST + `/api/v1/carts`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (deleteResponse.status >= 400 && deleteResponse.status < 600) {
+      alert('장바구니 비우기 실패');
+      return;
+    }
+
+    const postResponse = await fetch(HOST + `/api/v1/carts`, {
+      method: 'POST',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        recipeFoodIds: selectedRecipeFoods.map((recipeFood) => recipeFood.id),
+      }),
+    });
+
+    if (postResponse.status >= 400 && deleteResponse.status < 600) {
+      alert('장바구니 담기 실패');
+      return;
+    }
+
+    navigate('/order');
+  };
 </script>
 
 <div class="container-recipe">
-  <h1>{recipe.title}</h1>
-  <h3>{recipe.intro}</h3>
-  <hr style="width: 100%" />
+  <h1 class="recipe-title">{recipe.title}</h1>
+  <h3 class="recipe-intro">{recipe.intro}</h3>
+  <hr class="hr-100" />
   <div class="container-flex">
-    <div class="wrapper-recipe-food">
-      <span style="text-align: center; font-weight: bold;">레시피 재료</span>
-      <hr style="width: 100%" />
-      {#each recipeFoods as recipeFood (recipeFood.id)}
-        <div class="recipe-food">
-          <span class="recipe-food-name">
-            {recipeFood.name}
-            {recipeFood.amount}{recipeFood.unit}
-          </span>
-          <span class="recipe-food-price"
-            >{recipeFood.price.toLocaleString('ko-KR')}원</span
-          >
-          <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
-        </div>
-      {/each}
-      <hr style="width: 100%" />
-      <span style="text-align: center; font-weight: bold;"
-        >총 {totalPrice.toLocaleString('ko-KR')}원</span
-      >
-    </div>
+    <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
     <br />
-    <Button class="buy-button" variant="raised">재료 구매</Button>
+    <Button
+      class="buy-button"
+      variant="raised"
+      on:click={handleBuyingRecipeFoods}>재료 구매</Button
+    >
     <br />
-    <hr style="width: 100%" />
+    <hr class="hr-100" />
     <br />
     <h1>조리 과정</h1>
-    <div class="wrapper-recipe-process">
-      {#each recipeProcesses as recipeProcess (recipeProcess.id)}
-        <div class="recipe-process-div">
-          {recipeProcess.description}
-        </div>
-        <br />
-      {/each}
-    </div>
+    <RecipeProcesses {recipeProcesses} />
+    <br />
+    <hr class="hr-100" />
+    <br />
+    <RecipeReviews {reviews} />
   </div>
 </div>
 
 <style>
-  .wrapper-recipe-process {
-    display: flex;
-    flex-direction: column;
+  * :global(.span-bold-center) {
+    text-align: center;
+    font-weight: bold;
   }
-  .recipe-process-div {
-    width: 600px;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 2px 3px 5px;
+
+  * :global(.buy-button) {
+    width: 50%;
+    height: 50px;
+    font-size: large;
   }
-  .recipe-food-name {
-    width: 100px;
+
+  .recipe-title {
+    text-align: center;
   }
-  .recipe-food-price {
-    width: 100px;
-    text-align: right;
+
+  .recipe-intro {
+    text-align: center;
   }
-  .recipe-food {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+  .hr-100 {
+    width: 100%;
   }
+
   .container-recipe {
     display: flex;
     flex-direction: column;
@@ -171,23 +184,12 @@
     border-radius: 30px;
     padding: 30px;
     box-shadow: 2px 5px 10px;
+    margin: 30px 30px;
   }
+
   .container-flex {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .wrapper-recipe-food {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    border-radius: 30px;
-    padding: 30px;
-    box-shadow: 2px 5px 10px;
-  }
-  * :global(.buy-button) {
-    width: 50%;
-    height: 50px;
-    font-size: large;
   }
 </style>
