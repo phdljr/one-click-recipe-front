@@ -22,9 +22,9 @@
       body: JSON.stringify({ ...requestDto }),
     })
       .then((response) => {
-        // if (response.status >= 400 && response.status < 600) {
-        //   throw response;
-        // }
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
         alert('회원가입이 정상적으로 이뤄졌습니다.');
         navigate('/login');
       })

@@ -4,47 +4,10 @@
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
 
-  let recipes = [
-    {
-      id: 1,
-      title: 'test',
-      intro: 'test intro',
-      serving: 1,
-      writer: 'test1',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-    {
-      id: 2,
-      title: 'test',
-      intro: 'test intro',
-      serving: 2,
-      writer: 'test2',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-    {
-      id: 3,
-      title: 'test',
-      intro: 'test intro',
-      serving: 3,
-      writer: 'test3',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-    {
-      id: 4,
-      title: 'test',
-      intro: 'test intro',
-      serving: 4,
-      writer: 'test4',
-      imagePath:
-        'https://sitem.ssgcdn.com/56/19/99/item/1000069991956_i1_750.jpg',
-    },
-  ];
+  let recipes = [];
 
   onMount(() => {
-    // getAllRecipe();
+    getAllRecipe();
   });
 
   const getAllRecipe = () => {
@@ -62,10 +25,14 @@
   };
 </script>
 
-<LayoutGrid fixedColumnWidth>
-  {#each recipes as recipe (recipe.id)}
-    <Cell>
-      <RecipeCard {recipe} />
-    </Cell>
-  {/each}
-</LayoutGrid>
+{#if recipes.length !== 0}
+  <LayoutGrid fixedColumnWidth>
+    {#each recipes as recipe (recipe.id)}
+      <Cell>
+        <RecipeCard {recipe} />
+      </Cell>
+    {/each}
+  </LayoutGrid>
+{:else}
+  <h1>등록된 레시피가 없습니다.</h1>
+{/if}
