@@ -12,18 +12,18 @@
     <h2 class="order-title">주문/결제</h2>
   </div>
 
-  <div class="buyer-info">
+  <div class="sender-info">
     <h3>구매자 정보</h3>
     <div class="info-box">
       <div class="input-group">
-        <label for="buyer-name">이름</label>
-        <input type="text" id="buyer-name" placeholder="이름을 입력하세요" />
+        <label for="senderName">이름</label>
+        <input type="text" id="senderName" placeholder="이름을 입력하세요" />
       </div>
       <div class="input-group">
-        <label for="buyer-phone">휴대폰 번호</label>
+        <label for="senderPhoneNumber">휴대폰 번호</label>
         <input
           type="tel"
-          id="buyer-phone"
+          id="senderPhoneNumber"
           placeholder="휴대폰 번호를 입력하세요"
         />
       </div>
@@ -34,38 +34,34 @@
     <h3>받는 사람 정보</h3>
     <div class="info-box">
       <div class="input-group">
-        <label for="receiver-name">이름</label>
-        <input type="text" id="receiver-name" placeholder="이름을 입력하세요" />
+        <label for="receiverName">이름</label>
+        <input type="text" id="receiverName" placeholder="이름을 입력하세요" />
       </div>
       <div class="input-group">
-        <label for="receiver-address">배송주소</label>
-        <input
-          type="text"
-          id="receiver-address"
-          placeholder="배송주소를 입력하세요"
-        />
+        <label for="address">배송주소</label>
+        <input type="text" id="address" placeholder="배송주소를 입력하세요" />
       </div>
       <div class="input-group">
-        <label for="receiver-address-detail">상세주소</label>
+        <label for="addressDetail">상세주소</label>
         <input
           type="text"
-          id="receiver-address-detail"
+          id="addressDetail"
           placeholder="상세주소를 입력하세요"
         />
       </div>
       <div class="input-group">
-        <label for="receiver-phone">연락처</label>
+        <label for="receiverPhoneNumber">연락처</label>
         <input
           type="tel"
-          id="receiver-phone"
+          id="receiverPhoneNumber"
           placeholder="연락처를 입력하세요"
         />
       </div>
       <div class="input-group">
-        <label for="receiver-requirements">요청 사항</label>
+        <label for="requirement">요청 사항</label>
         <input
           type="text"
-          id="receiver-requirements"
+          id="requirement"
           placeholder="요청 사항을 입력하세요"
         />
       </div>
@@ -113,7 +109,7 @@
     color: #333; /* 텍스트 색상을 설정합니다 */
   }
 
-  .buyer-info {
+  .sender-info {
     background-color: #f8f8f8; /* 배경색 설정 */
     padding: 20px; /* 패딩 설정 */
     margin-top: 20px; /* 상단 여백 설정 */
@@ -138,6 +134,7 @@
   }
 
   .input-group label {
+    flex: 0 0 100px;
     margin-right: 10px;
     white-space: nowrap;
     display: block; /* 라벨을 블록 요소로 설정 */
@@ -145,7 +142,7 @@
   }
 
   .input-group input {
-    flex-grow: 1;
+    flex: 1;
     width: 100%; /* 입력 필드 너비 설정 */
     padding: 10px; /* 입력 필드 내부 여백 설정 */
     border: 1px solid #dcdcdc; /* 입력 필드 경계선 설정 */
