@@ -6,6 +6,7 @@
   import RecipeFoods from '../../components/recipe/RecipeFoods.svelte';
   import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
   import RecipeReviews from '../../components/recipe/RecipeReviews.svelte';
+  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
 
   export let recipeId;
@@ -51,17 +52,7 @@
         recipeFoods = data;
         recipeFoods.map((recipeFood) => {
           selectedRecipeFoods.push(recipeFood);
-          switch (recipeFood.unit) {
-            case 'COUNT':
-              recipeFood.unit = '개';
-              break;
-            case 'G':
-              recipeFood.unit = 'g';
-              break;
-            case 'ML':
-              recipeFood.unit = 'ml';
-              break;
-          }
+          recipeFood.unit = convert(recipeFood.unit);
         });
         console.log(data);
       });

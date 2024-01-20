@@ -1,16 +1,47 @@
 <script>
-  import Button from '@smui/button';
+  import { onMount } from 'svelte';
+  import { getCookie } from 'svelte-cookie';
+  import PayButton from '../../components/pay/PayButton.svelte';
+  import convert from '../../lib/conv-unit';
+  import HOST from '../../lib/host';
 
-  let products = [
-    { id: 1, name: '식재료1', price: 1000, unit: 'COUNT' },
-    { id: 2, name: '식재료2', price: 2000, unit: 'G' },
-  ];
+  let products = [];
+  let totalProductPrice = 0;
+  let requestDto = {
+    senderName: '',
+    senderPhoneNumber: '',
+    senderEmail: '',
+    receiverName: '',
+    receiverPhoneNumber: '',
+    address: '',
+    addressDetail: '',
+    requirement: '',
+  };
 
-  // 총 가격 계산
-  let totalProductPrice = products.reduce(
-    (sum, product) => sum + product.price,
-    0,
-  );
+  $: console.log(requestDto);
+
+  onMount(() => {
+    getCarts();
+  });
+
+  const getCarts = () => {
+    fetch(HOST + '/api/v1/carts', {
+      method: 'GET',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        totalProductPrice = data.totalPrice;
+        products = data.foods;
+        products.map((product) => {
+          product.unit = convert(product.unit);
+        });
+      });
+  };
 </script>
 
 <link
@@ -32,7 +63,12 @@
     <div class="info-box">
       <div class="input-group">
         <label for="senderName">이름</label>
-        <input type="text" id="senderName" placeholder="이름을 입력하세요" />
+        <input
+          type="text"
+          id="senderName"
+          placeholder="이름을 입력하세요"
+          bind:value={requestDto.senderName}
+        />
       </div>
       <div class="input-group">
         <label for="senderPhoneNumber">휴대폰 번호</label>
@@ -40,11 +76,17 @@
           type="tel"
           id="senderPhoneNumber"
           placeholder="휴대폰 번호를 입력하세요"
+          bind:value={requestDto.senderPhoneNumber}
         />
       </div>
       <div class="input-group">
         <label for="email">이메일</label>
-        <input type="email" id="email" placeholder="이메일을 입력해주세요" />
+        <input
+          type="email"
+          id="email"
+          placeholder="이메일을 입력해주세요"
+          bind:value={requestDto.senderEmail}
+        />
       </div>
     </div>
   </div>
@@ -54,11 +96,21 @@
     <div class="info-box">
       <div class="input-group">
         <label for="receiverName">이름</label>
-        <input type="text" id="receiverName" placeholder="이름을 입력하세요" />
+        <input
+          type="text"
+          id="receiverName"
+          placeholder="이름을 입력하세요"
+          bind:value={requestDto.receiverName}
+        />
       </div>
       <div class="input-group">
         <label for="address">배송주소</label>
-        <input type="text" id="address" placeholder="배송주소를 입력하세요" />
+        <input
+          type="text"
+          id="address"
+          placeholder="배송주소를 입력하세요"
+          bind:value={requestDto.address}
+        />
       </div>
       <div class="input-group">
         <label for="addressDetail">상세주소</label>
@@ -66,6 +118,7 @@
           type="text"
           id="addressDetail"
           placeholder="상세주소를 입력하세요"
+          bind:value={requestDto.addressDetail}
         />
       </div>
       <div class="input-group">
@@ -74,6 +127,7 @@
           type="tel"
           id="receiverPhoneNumber"
           placeholder="연락처를 입력하세요"
+          bind:value={requestDto.receiverPhoneNumber}
         />
       </div>
       <div class="input-group">
@@ -82,6 +136,7 @@
           type="text"
           id="requirement"
           placeholder="요청 사항을 입력하세요"
+          bind:value={requestDto.requirement}
         />
       </div>
     </div>
@@ -94,20 +149,20 @@
     <ul>
       {#each products as product}
         <li>
-          <span>{product.name}</span> -
-          <span>{product.unit === 'COUNT' ? '개' : product.unit}</span> -
-          <span>{product.price}원</span>
+          <span>{product.name}</span>
+          <span>{product.quantity}{product.unit}</span>
+          <span>{product.price.toLocaleString('ko-KR')}원</span>
         </li>
       {/each}
     </ul>
     <div class="total-price">
-      총 가격: <span>{totalProductPrice}원</span>
+      총 가격: <span>{totalProductPrice.toLocaleString('ko-KR')}원</span>
     </div>
   </div>
 </div>
 
 <div class="payment-button">
-  <Button variant="raised">결제하기</Button>
+  <PayButton {requestDto} />
 </div>
 
 <style>
