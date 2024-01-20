@@ -1,3 +1,16 @@
+<script>
+  let products = [
+    { id: 1, name: '식재료1', price: 1000, unit: 'COUNT' },
+    { id: 2, name: '식재료2', price: 2000, unit: 'G' },
+  ];
+
+  // 총 가격 계산
+  let totalProductPrice = products.reduce(
+    (sum, product) => sum + product.price,
+    0,
+  );
+</script>
+
 <link
   href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap"
   rel="stylesheet"
@@ -65,6 +78,24 @@
           placeholder="요청 사항을 입력하세요"
         />
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="shipping-info">
+  <h3>배송 정보</h3>
+  <div class="info-box">
+    <ul>
+      {#each products as product}
+        <li>
+          <span>{product.name}</span> -
+          <span>{product.unit === 'COUNT' ? '개' : product.unit}</span> -
+          <span>{product.price}원</span>
+        </li>
+      {/each}
+    </ul>
+    <div class="total-price">
+      총 가격: <span>{totalProductPrice}원</span>
     </div>
   </div>
 </div>
@@ -147,6 +178,26 @@
     padding: 10px; /* 입력 필드 내부 여백 설정 */
     border: 1px solid #dcdcdc; /* 입력 필드 경계선 설정 */
     box-sizing: border-box; /* 박스 크기 결정 방법 설정 */
+  }
+
+  .shipping-info {
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .info-box ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .info-box li {
+    padding: 10px 0;
+  }
+
+  .total-price {
+    margin-top: 10px;
+    font-weight: bold;
   }
 
   @keyframes logo-entry {
