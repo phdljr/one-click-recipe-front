@@ -9,6 +9,7 @@
   import RecipeAllPage from './pages/recipe/RecipeAllPage.svelte';
   import RecipePage from './pages/recipe/RecipePage.svelte';
   import LoginPage from './pages/user/LoginPage.svelte';
+  import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
 </script>
 
@@ -21,6 +22,7 @@
   <Route path="/order" component={OrderPage} />
   <Route path="/order-list" component={OrderListPage} />
   <Route path="/order-detail/:orderId" component={OrderDetailPage} />
+  <Route path="/mypage" component={MyPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}
