@@ -158,15 +158,25 @@
     text-align: center;
     font-weight: bold;
   }
+
+  * :global(.buy-button) {
+    width: 50%;
+    height: 50px;
+    font-size: large;
+  }
+
   .recipe-title {
     text-align: center;
   }
+
   .recipe-intro {
     text-align: center;
   }
+
   .hr-100 {
     width: 100%;
   }
+
   .container-recipe {
     display: flex;
     flex-direction: column;
@@ -176,14 +186,10 @@
     box-shadow: 2px 5px 10px;
     margin: 30px 30px;
   }
+
   .container-flex {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  * :global(.buy-button) {
-    width: 50%;
-    height: 50px;
-    font-size: large;
   }
 </style>

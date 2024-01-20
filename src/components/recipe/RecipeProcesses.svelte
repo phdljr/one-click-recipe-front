@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: column;
   }
+
   .recipe-process-div {
     width: 600px;
     height: 150px;
