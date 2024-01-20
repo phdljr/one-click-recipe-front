@@ -1,8 +1,11 @@
 <script>
   import Button from '@smui/button';
   import { onMount } from 'svelte';
-  import RecipeFoodComponent from '../../components/recipe/RecipeFoodComponent.svelte';
-  import RecipeProcessComponent from '../../components/recipe/RecipeProcessComponent.svelte';
+  import { getCookie } from 'svelte-cookie';
+  import { navigate } from 'svelte-routing';
+  import RecipeFoods from '../../components/recipe/RecipeFoods.svelte';
+  import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
+  import RecipeReviews from '../../components/recipe/RecipeReviews.svelte';
   import HOST from '../../lib/host';
 
   export let recipeId;
@@ -91,6 +94,39 @@
         reviews = data;
       });
   };
+
+  const handleBuyingRecipeFoods = async () => {
+    const deleteResponse = await fetch(HOST + `/api/v1/carts`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (deleteResponse.status >= 400 && deleteResponse.status < 600) {
+      alert('장바구니 비우기 실패');
+      return;
+    }
+
+    const postResponse = await fetch(HOST + `/api/v1/carts`, {
+      method: 'POST',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        recipeFoodIds: selectedRecipeFoods.map((recipeFood) => recipeFood.id),
+      }),
+    });
+
+    if (postResponse.status >= 400 && deleteResponse.status < 600) {
+      alert('장바구니 담기 실패');
+      return;
+    }
+
+    navigate('/order');
+  };
 </script>
 
 <div class="container-recipe">
@@ -98,18 +134,22 @@
   <h3 class="recipe-intro">{recipe.intro}</h3>
   <hr class="hr-100" />
   <div class="container-flex">
-    <RecipeFoodComponent
-      {recipeFoods}
-      bind:totalPrice
-      bind:selectedRecipeFoods
-    />
+    <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
     <br />
-    <Button class="buy-button" variant="raised">재료 구매</Button>
+    <Button
+      class="buy-button"
+      variant="raised"
+      on:click={handleBuyingRecipeFoods}>재료 구매</Button
+    >
     <br />
     <hr class="hr-100" />
     <br />
     <h1>조리 과정</h1>
-    <RecipeProcessComponent {recipeProcesses} />
+    <RecipeProcesses {recipeProcesses} />
+    <br />
+    <hr class="hr-100" />
+    <br />
+    <RecipeReviews {reviews} />
   </div>
 </div>
 
