@@ -19,8 +19,8 @@
   <Route path="/recipes" component={RecipeAllPage} />
   <Route path="/recipes/:recipeId" component={RecipePage} />
   <Route path="/order" component={OrderPage} />
-  <Route path="/orderlist" component={OrderListPage} />
-  <Route path="/orderdetail" component={OrderDetailPage} />
+  <Route path="/order-list" component={OrderListPage} />
+  <Route path="/order-detail" component={OrderDetailPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}
