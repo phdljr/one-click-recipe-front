@@ -1,30 +1,42 @@
 <script>
   import { onMount } from 'svelte';
+  import { getCookie } from 'svelte-cookie';
   import { Link } from 'svelte-routing';
+  import HOST from '../../lib/host';
 
-  let orders = [];
+  let orders = [
+    // {
+    //   id: 1,
+    //   receiverName: '홍길동',
+    //   receiverPhoneNumber: '010-1234-5678',
+    //   address: '서울특별시 강남구',
+    //   addressDetail: '역삼동 123-45',
+    //   totalPrice: 15000,
+    //   orderStatus: 'WAITING',
+    // },
+    // {
+    //   id: 2,
+    //   receiverName: '김서방',
+    //   receiverPhoneNumber: '010-9876-5432',
+    //   address: '부산광역시 해운대구',
+    //   addressDetail: '우동 987-65',
+    //   totalPrice: 22000,
+    //   orderStatus: 'WAITING',
+    // },
+  ];
 
-  onMount(async () => {
-    orders = [
-      {
-        id: 1,
-        receiverName: '홍길동',
-        receiverPhoneNumber: '010-1234-5678',
-        address: '서울특별시 강남구',
-        addressDetail: '역삼동 123-45',
-        totalPrice: 15000,
-        orderStatus: 'WAITING',
+  onMount(() => {
+    fetch(HOST + '/api/v1/orders', {
+      method: 'GET',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
       },
-      {
-        id: 2,
-        receiverName: '김서방',
-        receiverPhoneNumber: '010-9876-5432',
-        address: '부산광역시 해운대구',
-        addressDetail: '우동 987-65',
-        totalPrice: 22000,
-        orderStatus: 'WAITING',
-      },
-    ];
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        orders = data;
+      });
   });
 </script>
 
@@ -39,7 +51,7 @@
         <div class="address">주소: {order.address}, {order.addressDetail}</div>
         <div class="total-price">총 금액: {order.totalPrice}원</div>
         <div class="order-status">주문 상태: {order.orderStatus}</div>
-        <Link to="/order-detail"><button>주문 상세</button></Link>
+        <Link to="/order-detail/{order.id}"><button>주문 상세</button></Link>
       </div>
     {/each}
   </div>

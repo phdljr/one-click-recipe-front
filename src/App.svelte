@@ -3,13 +3,13 @@
   import MainPage from './pages/MainPage.svelte';
   import NotFoundPage from './pages/error/NotFoundPage.svelte';
   import ApprovalPaymentPage from './pages/kakaopay/ApprovalPaymentPage.svelte';
+  import OrderDetailPage from './pages/order/OrderDetailPage.svelte';
+  import OrderListPage from './pages/order/OrderListPage.svelte';
+  import OrderPage from './pages/order/OrderPage.svelte';
   import RecipeAllPage from './pages/recipe/RecipeAllPage.svelte';
   import RecipePage from './pages/recipe/RecipePage.svelte';
   import LoginPage from './pages/user/LoginPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
-  import OrderPage from './pages/order/OrderPage.svelte';
-  import OrderListPage from './pages/order/OrderListPage.svelte';
-  import OrderDetailPage from './pages/order/OrderDetailPage.svelte';
 </script>
 
 <Router>
@@ -20,7 +20,7 @@
   <Route path="/recipes/:recipeId" component={RecipePage} />
   <Route path="/order" component={OrderPage} />
   <Route path="/order-list" component={OrderListPage} />
-  <Route path="/order-detail" component={OrderDetailPage} />
+  <Route path="/order-detail/:orderId" component={OrderDetailPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}

@@ -1,33 +1,28 @@
 <script>
+  import { onMount } from 'svelte';
+  import { getCookie } from 'svelte-cookie';
+  import HOST from '../../lib/host';
+
+  export let orderId;
+
   let order = {
-    id: 1,
-    receiverName: '배규태',
-    receiverPhoneNumber: '010-5555-5555',
-    address: '서울특별시 강북구',
-    addressDetail: '번동 789-12',
-    totalPrice: 12000,
-    orderStatus: 'WAITING',
-    orderDetails: [
-      {
-        id: 1,
-        name: '김치',
-        amount: 2,
-        price: 1500,
-      },
-      {
-        id: 2,
-        name: '두부',
-        amount: 3,
-        price: 2000,
-      },
-      {
-        id: 3,
-        name: '참치',
-        amount: 1,
-        price: 3000,
-      },
-    ],
+    orderDetails: [],
   };
+
+  onMount(() => {
+    fetch(HOST + `/api/v1/orders/${orderId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        order = data;
+      });
+  });
 </script>
 
 <div class="order-detail">
@@ -43,9 +38,9 @@
   <div class="order-items">
     <h3>주문된 상품</h3>
     <ul>
-      {#each order.orderDetails as detail}
+      {#each order.orderDetails as orderDetail (orderDetail.id)}
         <li>
-          {detail.name} - 수량: {detail.amount} - 가격: {detail.price}원
+          {orderDetail.name} - 수량: {orderDetail.amount} - 가격: {orderDetail.price}원
         </li>
       {/each}
     </ul>
