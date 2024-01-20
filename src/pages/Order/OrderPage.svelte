@@ -1,4 +1,7 @@
 <script>
+  import Button from '@smui/button';
+  import Textfield from '@smui/textfield';
+
   let senderName = '';
   let senderPhoneNumber = '';
   let receiverName = '';
@@ -75,7 +78,7 @@
   </div>
 </div>
 
-<button>결제하기</button>
+<Button variant="raised">결제하기</Button>
 
 <style>
   .order-section {
