@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { Link } from 'svelte-routing';
 
   let orders = [];
 
@@ -38,7 +39,7 @@
         <div class="address">주소: {order.address}, {order.addressDetail}</div>
         <div class="total-price">총 금액: {order.totalPrice}원</div>
         <div class="order-status">주문 상태: {order.orderStatus}</div>
-        <!-- 주문 상세보기 버튼 또는 링크를 추가할 수 있습니다 -->
+        <Link to="/order-detail"><button>주문 상세</button></Link>
       </div>
     {/each}
   </div>
