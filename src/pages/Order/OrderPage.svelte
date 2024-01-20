@@ -1,5 +1,6 @@
 <script>
-	import { Button } from '@smui/button';
+  import Button from '@smui/button';
+
   let products = [
     { id: 1, name: '식재료1', price: 1000, unit: 'COUNT' },
     { id: 2, name: '식재료2', price: 2000, unit: 'G' },
@@ -40,6 +41,10 @@
           id="senderPhoneNumber"
           placeholder="휴대폰 번호를 입력하세요"
         />
+      </div>
+      <div class="input-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" placeholder="이메일을 입력해주세요" />
       </div>
     </div>
   </div>
@@ -100,6 +105,11 @@
     </div>
   </div>
 </div>
+
+<div class="payment-button">
+  <Button variant="raised">결제하기</Button>
+</div>
+
 <style>
   .content-wrapper {
     width: 1000px;
