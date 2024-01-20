@@ -3,9 +3,9 @@
 </script>
 
 <div class="wrapper-recipe-process">
-  {#each recipeProcesses as recipeProcess (recipeProcess.id)}
+  {#each recipeProcesses as recipeProcess, index (recipeProcess.id)}
     <div class="recipe-process-div">
-      <span>{recipeProcess.sequence}. {recipeProcess.description}</span>
+      <span>{index + 1}. {recipeProcess.description}</span>
       <img src={recipeProcess.imageUrl} alt="" />
     </div>
     <br />
@@ -17,8 +17,10 @@
     display: flex;
     flex-direction: column;
   }
+
   .recipe-process-div {
     width: 600px;
+    height: 150px;
     border-radius: 10px;
     padding: 30px;
     box-shadow: 2px 3px 5px;

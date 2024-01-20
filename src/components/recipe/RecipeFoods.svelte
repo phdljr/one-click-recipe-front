@@ -37,15 +37,18 @@
   .recipe-food-name {
     width: 100px;
   }
+
   .recipe-food-price {
     width: 100px;
     text-align: right;
   }
+
   .recipe-food {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   .wrapper-recipe-food {
     display: flex;
     flex-direction: column;
