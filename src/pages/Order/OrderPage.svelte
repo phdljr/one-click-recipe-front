@@ -210,6 +210,12 @@
     font-weight: bold;
   }
 
+  .payment-button {
+    display: flex; /* Flexbox 컨테이너로 설정 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    padding: 20px; /* 버튼 주변에 패딩 추가 */
+  }
+
   @keyframes logo-entry {
     from {
       opacity: 0;
