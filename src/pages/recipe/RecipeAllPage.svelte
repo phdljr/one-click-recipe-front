@@ -26,17 +26,7 @@
   };
 </script>
 
-<Link to="/order-detail"><button>레시피 등록</button></Link>
-
-
-
-
-
-
-
-
-
-
+<Link to="/recipe-create"><button>레시피 등록</button></Link>
 
 {#if recipes.length !== 0}
   <LayoutGrid fixedColumnWidth>
