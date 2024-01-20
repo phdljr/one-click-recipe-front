@@ -1,4 +1,7 @@
 <script>
+  import Button from '@smui/button';
+  import { Link } from 'svelte-routing';
+
   let title = '';
   let intro = '';
   let serving = '';
@@ -129,6 +132,10 @@
     </div>
   {/each}
   <button on:click={addStep} class="add-step-button">조리 단계 추가</button>
+</div>
+
+<div class="button-container">
+  <Link to="/recipes"><Button variant="raised">등록 완료</Button></Link>
 </div>
 
 <style>
@@ -285,5 +292,11 @@
   .add-step-button {
     padding: 10px 15px;
     border-radius: 4px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
   }
 </style>
