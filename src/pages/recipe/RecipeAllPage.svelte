@@ -1,0 +1,34 @@
+<script>
+  import LayoutGrid, { Cell } from '@smui/layout-grid';
+  import { onMount } from 'svelte';
+  import RecipeCard from '../../components/recipe/RecipeCard.svelte';
+  import HOST from '../../lib/host';
+
+  let recipes = [];
+
+  onMount(() => {
+    getAllRecipe();
+  });
+
+  const getAllRecipe = () => {
+    fetch(HOST + '/api/v1/recipes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        recipes = data;
+      });
+  };
+</script>
+
+<LayoutGrid fixedColumnWidth>
+  {#each recipes as recipe (recipe.id)}
+    <Cell>
+      <RecipeCard {recipe} />
+    </Cell>
+  {/each}
+</LayoutGrid>
