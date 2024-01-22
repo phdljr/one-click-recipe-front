@@ -1,3 +1,49 @@
+<script>
+  import { onMount } from 'svelte';
+  import { getCookie } from 'svelte-cookie';
+  import PayButton from '../../components/pay/PayButton.svelte';
+  import convert from '../../lib/conv-unit';
+  import HOST from '../../lib/host';
+
+  let products = [];
+  let totalProductPrice = 0;
+  let requestDto = {
+    senderName: '',
+    senderPhoneNumber: '',
+    senderEmail: '',
+    receiverName: '',
+    receiverPhoneNumber: '',
+    address: '',
+    addressDetail: '',
+    requirement: '',
+  };
+
+  $: console.log(requestDto);
+
+  onMount(() => {
+    getCarts();
+  });
+
+  const getCarts = () => {
+    fetch(HOST + '/api/v1/carts', {
+      method: 'GET',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        totalProductPrice = data.totalPrice;
+        products = data.foods;
+        products.map((product) => {
+          product.unit = convert(product.unit);
+        });
+      });
+  };
+</script>
+
 <link
   href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap"
   rel="stylesheet"
@@ -17,7 +63,12 @@
     <div class="info-box">
       <div class="input-group">
         <label for="senderName">이름</label>
-        <input type="text" id="senderName" placeholder="이름을 입력하세요" />
+        <input
+          type="text"
+          id="senderName"
+          placeholder="이름을 입력하세요"
+          bind:value={requestDto.senderName}
+        />
       </div>
       <div class="input-group">
         <label for="senderPhoneNumber">휴대폰 번호</label>
@@ -25,6 +76,16 @@
           type="tel"
           id="senderPhoneNumber"
           placeholder="휴대폰 번호를 입력하세요"
+          bind:value={requestDto.senderPhoneNumber}
+        />
+      </div>
+      <div class="input-group">
+        <label for="email">이메일</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="이메일을 입력해주세요"
+          bind:value={requestDto.senderEmail}
         />
       </div>
     </div>
@@ -35,11 +96,21 @@
     <div class="info-box">
       <div class="input-group">
         <label for="receiverName">이름</label>
-        <input type="text" id="receiverName" placeholder="이름을 입력하세요" />
+        <input
+          type="text"
+          id="receiverName"
+          placeholder="이름을 입력하세요"
+          bind:value={requestDto.receiverName}
+        />
       </div>
       <div class="input-group">
         <label for="address">배송주소</label>
-        <input type="text" id="address" placeholder="배송주소를 입력하세요" />
+        <input
+          type="text"
+          id="address"
+          placeholder="배송주소를 입력하세요"
+          bind:value={requestDto.address}
+        />
       </div>
       <div class="input-group">
         <label for="addressDetail">상세주소</label>
@@ -47,6 +118,7 @@
           type="text"
           id="addressDetail"
           placeholder="상세주소를 입력하세요"
+          bind:value={requestDto.addressDetail}
         />
       </div>
       <div class="input-group">
@@ -55,6 +127,7 @@
           type="tel"
           id="receiverPhoneNumber"
           placeholder="연락처를 입력하세요"
+          bind:value={requestDto.receiverPhoneNumber}
         />
       </div>
       <div class="input-group">
@@ -63,10 +136,33 @@
           type="text"
           id="requirement"
           placeholder="요청 사항을 입력하세요"
+          bind:value={requestDto.requirement}
         />
       </div>
     </div>
   </div>
+</div>
+
+<div class="shipping-info">
+  <h3>배송 정보</h3>
+  <div class="info-box">
+    <ul>
+      {#each products as product}
+        <li>
+          <span>{product.name}</span>
+          <span>{product.quantity}{product.unit}</span>
+          <span>{product.price.toLocaleString('ko-KR')}원</span>
+        </li>
+      {/each}
+    </ul>
+    <div class="total-price">
+      총 가격: <span>{totalProductPrice.toLocaleString('ko-KR')}원</span>
+    </div>
+  </div>
+</div>
+
+<div class="payment-button">
+  <PayButton {requestDto} />
 </div>
 
 <style>
@@ -147,6 +243,32 @@
     padding: 10px; /* 입력 필드 내부 여백 설정 */
     border: 1px solid #dcdcdc; /* 입력 필드 경계선 설정 */
     box-sizing: border-box; /* 박스 크기 결정 방법 설정 */
+  }
+
+  .shipping-info {
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .info-box ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .info-box li {
+    padding: 10px 0;
+  }
+
+  .total-price {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .payment-button {
+    display: flex; /* Flexbox 컨테이너로 설정 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    padding: 20px; /* 버튼 주변에 패딩 추가 */
   }
 
   @keyframes logo-entry {
