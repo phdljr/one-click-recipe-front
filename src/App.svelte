@@ -9,11 +9,11 @@
   import OrderListPage from './pages/order/OrderListPage.svelte';
   import OrderPage from './pages/order/OrderPage.svelte';
   import RecipeAllPage from './pages/recipe/RecipeAllPage.svelte';
+  import RecipeCreatePage from './pages/recipe/RecipeCreatePage.svelte';
   import RecipePage from './pages/recipe/RecipePage.svelte';
   import LoginPage from './pages/user/LoginPage.svelte';
   import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
-  import RecipeCreatePage from './pages/recipe/RecipeCreatePage.svelte';
 </script>
 
 <Router>
