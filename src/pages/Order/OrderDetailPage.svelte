@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { getCookie } from 'svelte-cookie';
+  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
 
   export let orderId;
@@ -21,6 +22,10 @@
       .then((data) => {
         console.log(data);
         order = data;
+        order.orderDetails.map(
+          (orderDetail) => (orderDetail.unit = convert(orderDetail.unit)),
+        );
+        console.log(order);
       });
   });
 </script>
@@ -40,7 +45,8 @@
     <ul>
       {#each order.orderDetails as orderDetail (orderDetail.id)}
         <li>
-          {orderDetail.name} - 수량: {orderDetail.amount} - 가격: {orderDetail.price}원
+          {orderDetail.name} - 수량: {orderDetail.amount}{orderDetail.unit} - 가격:
+          {orderDetail.price}원
         </li>
       {/each}
     </ul>
