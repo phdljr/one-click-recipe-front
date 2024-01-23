@@ -1,10 +1,10 @@
 <script>
-  import { getCookie } from 'svelte-cookie';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
-  import HOST from '../../lib/host';
+  import { getCookie } from 'svelte-cookie';
   import FoodCard from '../../components/food/FoodCard.svelte';
   import convert from '../../lib/conv-unit';
+  import HOST from '../../lib/host';
 
   let open = false;
   let ingredients = [{ name: '', unit: 'COUNT' }];

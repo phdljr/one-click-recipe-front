@@ -1,13 +1,88 @@
 <script>
+  import Button, { Label } from '@smui/button';
   import Card, { Content, PrimaryAction } from '@smui/card';
-  import { navigate } from 'svelte-routing';
+  import Dialog, { Actions } from '@smui/dialog';
+  import List, { Graphic, Item } from '@smui/list';
+  import Radio from '@smui/radio';
+  import Textfield from '@smui/textfield';
+  import { getCookie } from 'svelte-cookie';
+  import HOST from '../../lib/host';
 
   export let food;
+
+  let foodUpdateDto = { ...food };
+  let units = ['COUNT', 'G', 'ML'];
+  let open = false;
+
+  $: console.log(foodUpdateDto);
+
+  const updateFood = () => {
+    fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: getCookie('Authorization'),
+      },
+      body: JSON.stringify(foodUpdateDto),
+    }).then((res) => (food = foodUpdateDto));
+  };
+
+  const handleCloseDialog = (e) => {
+    switch (e.detail.action) {
+      case 'save':
+        updateFood();
+        break;
+      default:
+        foodUpdateDto = { ...food };
+        break;
+    }
+  };
 </script>
+
+<Dialog
+  bind:open
+  aria-labelledby="simple-title"
+  aria-describedby="simple-content"
+  on:SMUIDialog:closed={handleCloseDialog}
+>
+  <Content id="simple-content">
+    <Textfield type="text" bind:value={foodUpdateDto.name} label="이름"
+    ></Textfield>
+  </Content>
+  <Content id="simple-content">
+    <Textfield
+      type="number"
+      suffix="원"
+      bind:value={foodUpdateDto.price}
+      label="가격"
+    ></Textfield>
+  </Content>
+  <Content id="simple-content">
+    단위
+    <List radioList>
+      {#each units as unit}
+        <Item>
+          <Graphic>
+            <Radio bind:group={foodUpdateDto.unit} value={unit} />
+          </Graphic>
+          <Label>{unit}</Label>
+        </Item>
+      {/each}
+    </List>
+  </Content>
+  <Actions>
+    <Button action="save">
+      <Label>저장</Label>
+    </Button>
+    <Button action="cancel">
+      <Label>취소</Label>
+    </Button>
+  </Actions>
+</Dialog>
 
 <div class="container">
   <Card>
-    <PrimaryAction on:click={() => navigate(`/foods/${food.id}`)}>
+    <PrimaryAction on:click={() => (open = !open)}>
       <Content class="mdc-typography--body2">
         <h2 class="mdc-typography--headline6" style="margin: 0;">
           {food.name}
@@ -23,6 +98,3 @@
     </PrimaryAction>
   </Card>
 </div>
-
-<style>
-</style>
