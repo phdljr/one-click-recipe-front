@@ -14,8 +14,6 @@
   let units = ['COUNT', 'G', 'ML'];
   let open = false;
 
-  $: console.log(foodUpdateDto);
-
   const updateFood = () => {
     fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
       method: 'PUT',
@@ -27,10 +25,23 @@
     }).then((res) => (food = foodUpdateDto));
   };
 
+  const deleteFood = () => {
+    fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: getCookie('Authorization'),
+      },
+    }).then((res) => location.reload());
+  };
+
   const handleCloseDialog = (e) => {
     switch (e.detail.action) {
       case 'save':
         updateFood();
+        break;
+      case 'delete':
+        deleteFood();
         break;
       default:
         foodUpdateDto = { ...food };
@@ -71,12 +82,19 @@
     </List>
   </Content>
   <Actions>
-    <Button action="save">
-      <Label>저장</Label>
-    </Button>
-    <Button action="cancel">
-      <Label>취소</Label>
-    </Button>
+    <div class="btn-container">
+      <Button action="delete">
+        <Label><span class="text-red">삭제</span></Label>
+      </Button>
+      <span>
+        <Button action="save">
+          <Label>저장</Label>
+        </Button>
+        <Button action="cancel">
+          <Label>취소</Label>
+        </Button>
+      </span>
+    </div>
   </Actions>
 </Dialog>
 
@@ -98,3 +116,15 @@
     </PrimaryAction>
   </Card>
 </div>
+
+<style>
+  .btn-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .text-red {
+    color: red;
+  }
+</style>

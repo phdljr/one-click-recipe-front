@@ -13,7 +13,7 @@
   let FoodrequestDto = {
     foodname: '',
     price: '',
-    unit: '',
+    unit: 'COUNT',
   };
   onMount(() => {
     getAllFood();
