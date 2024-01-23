@@ -5,6 +5,7 @@
   import FoodCard from '../../components/food/FoodCard.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
+  import Button from '@smui/button/src/Button.svelte';
 
   let open = false;
   let ingredients = [{ name: '', unit: 'COUNT' }];
@@ -93,5 +94,72 @@
       </select>
     </div>
   {/each}
-  <button on:click={createFood}>재료 추가</button>
+  <Button on:click={createFood}>재료 추가</Button>
 </div>
+
+<style>
+  .recipe-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .recipe-form {
+    width: 1000px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input[type='text'],
+  .form-group textarea {
+    width: 98%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .form-group textarea {
+    height: 100px; /* 조절 가능 */
+  }
+  .ingredients-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .ingredients-form {
+    width: 1000px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .ingredient-form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .ingredient-form-group input[type='text'],
+  .ingredient-form-group input[type='number'],
+  .ingredient-form-group select {
+    margin-right: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+  }
+</style>
