@@ -17,6 +17,7 @@
   import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
   import UsersPage from './pages/admin/UsersPage.svelte';
+  import OrdersPage from './pages/admin/OrdersPage.svelte';
 </script>
 
 <Router>
@@ -33,6 +34,7 @@
   <Route path="/admin" component={AdminPage} />
   <Route path="/foods" component={FoodAllPage} />
   <Route path="/admin/users" component={UsersPage} />
+  <Route path="/admin/orders" compoent={OrdersPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}
