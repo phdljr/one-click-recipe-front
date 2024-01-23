@@ -1,7 +1,9 @@
 <script>
   import { Route, Router } from 'svelte-routing';
   import MainPage from './pages/MainPage.svelte';
+  import AdminPage from './pages/admin/AdminPage.svelte';
   import NotFoundPage from './pages/error/NotFoundPage.svelte';
+  import FoodAllPage from './pages/food/FoodAllPage.svelte';
   import ApprovalPaymentPage from './pages/kakaopay/ApprovalPaymentPage.svelte';
   import CancelPaymentPage from './pages/kakaopay/CancelPaymentPage.svelte';
   import FailPaymentPage from './pages/kakaopay/FailPaymentPage.svelte';
@@ -27,6 +29,8 @@
   <Route path="/order-detail/:orderId" component={OrderDetailPage} />
   <Route path="/mypage" component={MyPage} />
   <Route path="/recipe-create" component={RecipeCreatePage} />
+  <Route path="/admin" component={AdminPage} />
+  <Route path="/foods" component={FoodAllPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}
