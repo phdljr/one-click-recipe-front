@@ -8,7 +8,6 @@
   import { getCookie } from 'svelte-cookie';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
-  import convert from '../../lib/conv-unit';
 
   export let food;
 

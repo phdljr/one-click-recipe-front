@@ -1,13 +1,12 @@
 <script>
+  import Button from '@smui/button';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
   import { getCookie } from 'svelte-cookie';
   import FoodCard from '../../components/food/FoodCard.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
-  import Button from '@smui/button/src/Button.svelte';
 
-  let open = false;
   let ingredients = [{ name: '', unit: 'COUNT' }];
   let unitOptions = ['COUNT', 'G', 'ML'];
   let foods = [];
@@ -55,7 +54,8 @@
         location.reload();
       })
       .catch((error) => {
-        open = true;
+        alert('재료 등록 실패');
+        console.log(error);
       });
   };
 </script>
@@ -94,50 +94,18 @@
       </select>
     </div>
   {/each}
-  <Button on:click={createFood}>재료 추가</Button>
+  <Button variant="raised" on:click={createFood}>재료 추가</Button>
 </div>
 
 <style>
-  .recipe-title {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .recipe-form {
-    width: 1000px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .form-group input[type='text'],
-  .form-group textarea {
-    width: 98%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-
-  .form-group textarea {
-    height: 100px; /* 조절 가능 */
-  }
   .ingredients-title {
     text-align: center;
     margin-bottom: 20px;
   }
 
   .ingredients-form {
+    display: flex;
+    flex-direction: column;
     width: 1000px;
     margin: auto;
     padding: 20px;
