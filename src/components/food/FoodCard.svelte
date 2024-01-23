@@ -6,6 +6,7 @@
   import Radio from '@smui/radio';
   import Textfield from '@smui/textfield';
   import { getCookie } from 'svelte-cookie';
+  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
 
   export let food;
@@ -22,7 +23,16 @@
         Authorization: getCookie('Authorization'),
       },
       body: JSON.stringify(foodUpdateDto),
-    }).then((res) => (food = foodUpdateDto));
+    })
+      .then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
+        food = foodUpdateDto;
+      })
+      .catch((error) => {
+        alert('업데이트 실패');
+      });
   };
 
   const deleteFood = () => {
@@ -76,7 +86,7 @@
           <Graphic>
             <Radio bind:group={foodUpdateDto.unit} value={unit} />
           </Graphic>
-          <Label>{unit}</Label>
+          <Label>{convert(unit)}</Label>
         </Item>
       {/each}
     </List>
