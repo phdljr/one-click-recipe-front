@@ -9,6 +9,7 @@
 <Link to="/login"><Button variant="raised">로그인</Button></Link>
 <Link to="/signup"><Button variant="raised">회원가입</Button></Link>
 <Link to="/mypage"><Button variant="raised">마이페이지</Button></Link>
+<Link to="/admin"><Button variant="raised">관리자페이지</Button></Link>
 <LogoutButton />
 
 <style>
