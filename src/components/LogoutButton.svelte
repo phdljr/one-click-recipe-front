@@ -10,6 +10,7 @@
     isLoggedIn.set(false);
     userRole.set('guest');
     deleteCookie('Authorization');
+    alert('로그아웃 되었습니다.');
   };
 </script>
 
