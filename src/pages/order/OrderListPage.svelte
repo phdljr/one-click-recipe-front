@@ -54,11 +54,13 @@
           </div>
           <div class="total-price">총 금액: {order.totalPrice}원</div>
           <div class="order-status">주문 상태: {order.orderStatus}</div>
-          <Link to="/order-detail/{order.id}"><button>주문 상세</button></Link>
+          <Link to="/order-detail/{order.id}"
+            ><button class="detail-button">주문 상세</button></Link
+          >
         </div>
       {/each}
     {:else}
-      <h1>주문 내역이 없습니다.</h1>
+      <div class="no-orders">주문 내역이 없습니다.</div>
     {/if}
   </div>
 </div>
@@ -66,19 +68,45 @@
 <style>
   .content-wrapper {
     width: 1000px;
-    margin: auto; /* 좌우 중앙 정렬 */
-    padding: 20px; /* 안쪽 여백 설정 */
-    box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #000;
+    color: #fff;
+    border-radius: 5px;
   }
 
-  .order-list {
-    max-width: 800px;
-    margin: auto;
+  .order-list h2 {
+    text-align: center;
+    color: #fff;
   }
 
   .order-item {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #777;
     padding: 15px;
     margin-bottom: 10px;
+    background-color: #333;
+    border-radius: 5px;
+  }
+
+  .detail-button {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .detail-button:hover {
+    background-color: #555;
+    color: #fff;
+  }
+
+  .no-orders {
+    text-align: center;
+    font-size: 1.5em;
+    padding: 50px 0;
   }
 </style>
