@@ -8,15 +8,10 @@
   userRole.set('user');
 </script>
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gasoek+One&display=swap"
-  rel="stylesheet"
-/>
-
 <body>
   <div class="main-container">
     <div class="top-side">
-      <h1>딸깍! 레시피</h1>
+      <h1>🖱️딸깍! 레시피🍽️</h1>
     </div>
     <div class="bottom-side">
       {#if $isLoggedIn}
@@ -69,9 +64,33 @@
     color: white;
   }
 
+  .main-container h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 4em; 
+    color: white;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   h1 {
     color: white;
     font-size: 3em;
+  }
+
+  @media (max-width: 768px) {
+    .main-container {
+      padding: 0 5%;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes typing {
