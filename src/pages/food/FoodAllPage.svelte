@@ -1,4 +1,5 @@
 <script>
+  import Button from '@smui/button';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
   import { getCookie } from 'svelte-cookie';
@@ -6,14 +7,13 @@
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
 
-  let open = false;
   let ingredients = [{ name: '', unit: 'COUNT' }];
   let unitOptions = ['COUNT', 'G', 'ML'];
   let foods = [];
   let FoodrequestDto = {
     foodname: '',
     price: '',
-    unit: '',
+    unit: 'COUNT',
   };
   onMount(() => {
     getAllFood();
@@ -54,7 +54,8 @@
         location.reload();
       })
       .catch((error) => {
-        open = true;
+        alert('재료 등록 실패');
+        console.log(error);
       });
   };
 </script>
@@ -93,5 +94,40 @@
       </select>
     </div>
   {/each}
-  <button on:click={createFood}>재료 추가</button>
+  <Button variant="raised" on:click={createFood}>재료 추가</Button>
 </div>
+
+<style>
+  .ingredients-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .ingredients-form {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .ingredient-form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .ingredient-form-group input[type='text'],
+  .ingredient-form-group input[type='number'],
+  .ingredient-form-group select {
+    margin-right: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+  }
+</style>
