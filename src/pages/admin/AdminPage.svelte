@@ -6,7 +6,6 @@
 <h1>딸깍! 레시피</h1>
 <Link to="/foods"><Button variant="raised">식재료</Button></Link>
 <Link to="/admin/users"><Button variant="raised">회원목록</Button></Link>
-<Link to="/foods"><Button variant="raised">주문목록</Button></Link>
 
 <style>
   h1 {
