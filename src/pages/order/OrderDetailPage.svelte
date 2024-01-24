@@ -48,19 +48,37 @@
 </div>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
   .order-detail {
     max-width: 800px;
     margin: auto;
     padding: 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
-  .order-info,
-  .order-items {
+  .order-info p,
+  .order-items h3,
+  .order-items ul {
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .order-items ul {
     list-style-type: none;
     padding: 0;
   }
 
   .order-items li {
+    background-color: #555;
+    padding: 10px;
+    border-radius: 5px;
     margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 </style>
