@@ -45,6 +45,7 @@
 
 <style>
   :global(body) {
+    background: linear-gradient(to bottom, rgb(172, 167, 167) 0%, rgba(0, 0, 0, 0) 100%);
     background-color: #000;
     min-height: 100vh;
     margin: 0;

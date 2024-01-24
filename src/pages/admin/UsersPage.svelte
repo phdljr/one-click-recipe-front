@@ -42,25 +42,12 @@
 </body>
 
 <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    width: 100%;
-    margin: 0;
-    padding: 20px;
-  }
-
   .container {
     width: 600px;
     margin: auto;
-    background-color: #fff;
+    background-color: #333;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     border-radius: 10px;
   }
 
@@ -85,9 +72,9 @@
   }
 
   button {
-    background-color: #6200ee;
+    background-color: #fff;
     border: none;
-    color: white;
+    color: #000;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
@@ -100,16 +87,18 @@
   }
 
   button:hover {
-    background-color: #4938cf;
+    background-color: #eee;
   }
 
-  select, button {
+  select,
+  button {
     padding: 8px 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
   }
 
   .user-info {
+    color: #000;
     display: flex;
     align-items: center;
     flex-grow: 1;
