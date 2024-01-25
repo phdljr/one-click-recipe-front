@@ -1,7 +1,7 @@
 <script>
   import LayoutGrid, { Cell } from '@smui/layout-grid';
-  import { Link } from 'svelte-routing';
   import { onMount } from 'svelte';
+  import { Link } from 'svelte-routing';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
 
