@@ -242,15 +242,15 @@
   }
 
   .rating {
-    display: flex;
-    justify-content: space-between;
+    margin-right: -4px;
+    text-align: center;
   }
 
   .star {
     font-size: 24px;
     cursor: pointer;
+    margin-right: -4px;
   }
-
   .comments {
     width: 100%;
   }
@@ -260,8 +260,7 @@
   }
   .comment-input {
     display: flex;
-    flex-direction: column; /* 세로로 나열하도록 설정 */
-    align-items: center;
+    flex-direction: row;
   }
 
   .comment-input textarea {
