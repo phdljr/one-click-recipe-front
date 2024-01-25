@@ -229,4 +229,31 @@
   .star.filled {
     color: gold;
   }
+  .comment-box {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .rating {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .comments {
+    width: 100%;
+  }
+
+  .comment {
+    margin-bottom: 10px;
+  }
 </style>
