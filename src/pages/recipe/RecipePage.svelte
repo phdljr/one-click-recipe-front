@@ -160,8 +160,6 @@
 
 <h1>{recipeId}</h1>
 <div class="comment-box">
-  <textarea bind:value={newComment} placeholder="댓글을 입력하세요..."
-  ></textarea>
   <div class="rating">
     {#each [1, 2, 3, 4, 5] as n}
       <button
@@ -170,7 +168,11 @@
       >
     {/each}
   </div>
-  <Button on:click={submitComment} variant="raised">댓글 작성</Button>
+  <div class="comment-input">
+    <textarea bind:value={newComment} placeholder="댓글을 입력하세요..."
+    ></textarea>
+    <Button on:click={submitComment} variant="raised">댓글 작성</Button>
+  </div>
   {#if comments.length > 0}
     <div class="comments">
       <h3>댓글:</h3>
@@ -255,5 +257,15 @@
 
   .comment {
     margin-bottom: 10px;
+  }
+  .comment-input {
+    display: flex;
+    flex-direction: column; /* 세로로 나열하도록 설정 */
+    align-items: center;
+  }
+
+  .comment-input textarea {
+    width: 100%; /* 전체 너비를 차지하도록 설정 */
+    margin-bottom: 10px; /* 원하는 간격으로 조절하세요 */
   }
 </style>
