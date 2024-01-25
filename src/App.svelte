@@ -13,6 +13,7 @@
   import RecipeAllPage from './pages/recipe/RecipeAllPage.svelte';
   import RecipeCreatePage from './pages/recipe/RecipeCreatePage.svelte';
   import RecipePage from './pages/recipe/RecipePage.svelte';
+  import KakaoLoginPage from './pages/user/KakaoLoginPage.svelte';
   import LoginPage from './pages/user/LoginPage.svelte';
   import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
@@ -21,6 +22,7 @@
 <Router>
   <Route path="/" component={MainPage} />
   <Route path="/login" component={LoginPage} />
+  <Route path="/login/kakao" component={KakaoLoginPage} />
   <Route path="/signup" component={SignUpPage} />
   <Route path="/recipes" component={RecipeAllPage} />
   <Route path="/recipes/:recipeId" component={RecipePage} />
