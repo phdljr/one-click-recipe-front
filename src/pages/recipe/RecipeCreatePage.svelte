@@ -1,39 +1,203 @@
 <script>
   import Button from '@smui/button';
-  import { Link } from 'svelte-routing';
+  import { onMount } from 'svelte';
+  import { getCookie } from 'svelte-cookie';
+  import { navigate } from 'svelte-routing';
+  import HOST from '../../lib/host';
+  import {
+    extractErrors,
+    recipeFoodValidate,
+    recipeProcessValidate,
+    recipeValidate,
+  } from '../../lib/validates/recipe-validate';
 
-  let title = '';
-  let intro = '';
-  let serving = '';
-  let videoUrl = '';
+  let recipeCreateRequestDto = {
+    title: '',
+    intro: '',
+    serving: 0,
+    videoUrl: '',
+  };
+  let recipeCreateImage = null;
 
-  let ingredients = [{ name: '', unit: 'COUNT' }];
-  let unitOptions = ['COUNT', 'G', 'ML'];
+  let recipeFoodNextId = 2;
+  let recipeFoodCreateRequestDto = [
+    {
+      id: 1,
+      foodName: '',
+      amount: 0,
+    },
+  ];
 
-  let steps = [{ description: '', image: null }];
+  let recipeProcessNextSequence = 2;
+  let recipeProcessCreateRequestDto = [{ sequence: 1, description: '' }];
+  let recipeProcessCreateImage = [null];
 
-  function addIngredient() {
-    ingredients = [...ingredients, { name: '', unit: 'COUNT' }];
-  }
+  let foods = [
+    { id: 1, name: '양파', unit: '개' },
+    { id: 2, name: '김치', unit: 'g' },
+    { id: 3, name: '간장', unit: 'ml' },
+  ];
 
-  function removeIngredient(index) {
-    ingredients = ingredients.filter((_, i) => i !== index);
-  }
+  onMount(() => {
+    // fetch(HOST + `/api/v1/foods`, {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: getCookie('Authorization'),
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: formData,
+    // })
+    //   .then((res) => res)
+    //   .then((data) => {
+    //     foods = data;
+    //     foods.map((food) => (food.unit = convert(food.unit)));
+    //   });
+  });
 
-  function addStep() {
-    steps = [...steps, { description: '', image: null }];
-  }
+  const addRecipeFood = () => {
+    recipeFoodCreateRequestDto = [
+      ...recipeFoodCreateRequestDto,
+      {
+        id: recipeFoodNextId,
+        foodName: '',
+        amount: 0,
+      },
+    ];
+    recipeFoodNextId++;
+  };
 
-  function removeStep(index) {
-    steps = steps.filter((_, i) => i !== index);
-  }
-
-  function handleImageChange(event, index) {
-    const file = event.target.files[0];
-    if (file) {
-      steps[index].image = URL.createObjectURL(file);
+  const removeRecipeFood = (index) => {
+    if (index == 0) {
+      alert('최소한 1개 이상의 재료를 입력해 주세요.');
+      return;
     }
-  }
+    recipeFoodCreateRequestDto = recipeFoodCreateRequestDto.filter(
+      (_, i) => i !== index,
+    );
+    recipeFoodNextId--;
+  };
+
+  const addRecipeProcess = () => {
+    recipeProcessCreateRequestDto = [
+      ...recipeProcessCreateRequestDto,
+      { sequence: recipeProcessNextSequence++, description: '' },
+    ];
+    recipeProcessCreateImage = [...recipeProcessCreateImage, null];
+  };
+
+  const removeRecipeProcess = (index) => {
+    if (index == 0) {
+      alert('최소한 1개 이상의 조리 과정을 입력해 주세요.');
+      return;
+    }
+    recipeProcessCreateRequestDto = recipeProcessCreateRequestDto.filter(
+      (_, i) => i !== index,
+    );
+  };
+
+  const handleSelectRecipeProcessImage = (event, index) => {
+    recipeProcessCreateImage[index] = event.target.files[0];
+  };
+
+  const handleSelectRecipeImage = (e) => {
+    recipeCreateImage = e.target.files[0];
+  };
+
+  const getUnit = (recipeFood) => {
+    return foods.find((food) => food.name == recipeFood.foodName) != null
+      ? foods.find((food) => food.name == recipeFood.foodName).unit
+      : '단위';
+  };
+
+  const createRecipeAll = async () => {
+    try {
+      await recipeValidate.validate(recipeCreateRequestDto, {
+        abortEarly: false,
+      });
+      await recipeFoodValidate.validate(recipeFoodCreateRequestDto, {
+        abortEarly: false,
+      });
+      await recipeProcessValidate.validate(recipeProcessCreateRequestDto, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      let errors = extractErrors(error);
+      let message = Object.values(errors).join('\n');
+      alert(message);
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append(
+      'recipeCreateRequestDto',
+      new Blob([JSON.stringify(recipeCreateRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+    if (recipeCreateImage == null) {
+      formData.append('recipeCreateImage', new Blob());
+    } else {
+      let recipeCreateImageType;
+      if (recipeCreateImage.type == 'image/png') {
+        recipeCreateImageType = 'image/png';
+      } else {
+        recipeCreateImageType = 'image/jpeg';
+      }
+      formData.append(
+        'recipeCreateImage',
+        new Blob([recipeCreateImage], { type: recipeCreateImageType }),
+      );
+    }
+
+    formData.append(
+      'recipeFoodCreateRequestDto',
+      new Blob([JSON.stringify(recipeFoodCreateRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    formData.append(
+      'recipeProcessCreateRequestDto',
+      new Blob([JSON.stringify(recipeProcessCreateRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
+    recipeProcessCreateImage.forEach((image) => {
+      if (image == null) {
+        formData.append('recipeProcessCreateImage', new Blob());
+      } else {
+        let imageType;
+        if (image.type == 'image/png') {
+          imageType = 'image/png';
+        } else {
+          imageType = 'image/jpeg';
+        }
+        formData.append(
+          'recipeProcessCreateImage',
+          new Blob([image], { type: imageType }),
+        );
+      }
+    });
+
+    fetch(HOST + `/api/v1/recipes`, {
+      method: 'POST',
+      headers: {
+        Authorization: getCookie('Authorization'),
+      },
+      body: formData,
+    })
+      .then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
+        alert('레시피 등록이 완료됐습니다.');
+        navigate('/recipes');
+      })
+      .catch((error) => {
+        alert('레시피 등록에 실패했습니다.');
+      });
+  };
 </script>
 
 <h2 class="recipe-title">레시피 등록</h2>
@@ -42,28 +206,41 @@
   <div class="form-group">
     <label for="recipe-title">레시피 제목</label>
     <input
+      required
       type="text"
       id="recipe-title"
-      bind:value={title}
+      bind:value={recipeCreateRequestDto.title}
       placeholder="레시피 제목을 입력하세요"
     />
   </div>
 
   <div class="form-group">
+    <label for="recipe-title">레시피 대표 사진</label>
+    <input
+      type="file"
+      accept=".jpg, .jpeg, .png"
+      on:change={(e) => handleSelectRecipeImage(e)}
+    />
+  </div>
+
+  <div class="form-group">
     <label for="intro">레시피 소개</label>
-    <textarea id="intro" bind:value={intro} placeholder="레시피에 대한 소개"
+    <textarea
+      id="intro"
+      bind:value={recipeCreateRequestDto.intro}
+      placeholder="레시피에 대한 소개"
     ></textarea>
   </div>
 
   <div class="form-group">
     <label for="serving">인원</label>
-    <select id="serving" bind:value={serving}>
-      <option value="1인분">1인분</option>
-      <option value="2인분">2인분</option>
-      <option value="3인분">3인분</option>
-      <option value="4인분">4인분</option>
-      <option value="5인분">5인분</option>
-      <option value="6인분 이상">6인분 이상</option>
+    <select id="serving" bind:value={recipeCreateRequestDto.serving}>
+      <option value="1">1인분</option>
+      <option value="2">2인분</option>
+      <option value="3">3인분</option>
+      <option value="4">4인분</option>
+      <option value="5">5인분</option>
+      <option value="6">6인분 이상</option>
     </select>
   </div>
 
@@ -72,7 +249,7 @@
     <input
       type="text"
       id="videoUrl"
-      bind:value={videoUrl}
+      bind:value={recipeCreateRequestDto.videoUrl}
       placeholder="비디오 URL"
     />
   </div>
@@ -81,61 +258,79 @@
 <h3 class="ingredients-title">재료 등록</h3>
 
 <div class="ingredients-form">
-  {#each ingredients as ingredient, index (ingredient)}
+  {#each recipeFoodCreateRequestDto as recipeFood, index (recipeFood)}
     <div class="ingredient-form-group">
-      <input type="text" placeholder="재료 이름" bind:value={ingredient.name} />
-      <input
-        type="number"
-        placeholder="수량"
-        bind:value={ingredient.amount}
-        min="0"
-      />
-      <select bind:value={ingredient.unit}>
-        {#each unitOptions as unit}
-          <option value={unit}>{unit === 'COUNT' ? '개' : unit}</option>
+      <select id="food" bind:value={recipeFood.foodName} required>
+        {#each foods as food (food.id)}
+          <option value={food.name}>{food.name}</option>
         {/each}
       </select>
-      <button on:click={() => removeIngredient(index)}>제거</button>
+      <input
+        required
+        type="number"
+        placeholder="수량"
+        bind:value={recipeFood.amount}
+        min="0"
+        max="32768"
+      />
+      <input
+        disabled
+        type="text"
+        placeholder="단위"
+        value={getUnit(recipeFood)}
+      />
+      {#if recipeFoodCreateRequestDto.length == index + 1}
+        <button on:click={() => removeRecipeFood(index)}>제거</button>
+      {:else}
+        <button disabled>제거</button>
+      {/if}
     </div>
   {/each}
-  <button on:click={addIngredient}>재료 추가</button>
+  <button on:click={addRecipeFood}>재료 추가</button>
 </div>
 
 <h3 class="cooking-steps-title">조리 순서</h3>
 
 <div class="cooking-steps-form">
-  {#each steps as step, index (step)}
+  {#each recipeProcessCreateRequestDto as recipeProcess, index (recipeProcess)}
     <div class="cooking-step-form-group">
       <div class="step-number">{index + 1}</div>
       <textarea
         class="step-description"
         placeholder="조리 과정 설명"
-        bind:value={step.description}
+        bind:value={recipeProcess.description}
       ></textarea>
       <div class="step-image-upload">
         <input
           type="file"
-          on:change={(event) => handleImageChange(event, index)}
+          on:change={(event) => handleSelectRecipeProcessImage(event, index)}
         />
-        {#if step.image}
+        {#if recipeProcess.image}
           <img
-            src={step.image}
+            src={recipeProcess.image}
             alt={`조리 과정 ${index + 1}`}
             class="preview-image"
           />
         {/if}
       </div>
 
-      <button on:click={() => removeStep(index)} class="remove-step-button"
-        >제거</button
-      >
+      {#if recipeProcessCreateRequestDto.length == index + 1}
+        <button
+          on:click={() => removeRecipeProcess(index)}
+          class="remove-step-button">제거</button
+        >
+      {:else}
+        <button disabled class="remove-step-button">제거</button>
+      {/if}
     </div>
   {/each}
-  <button on:click={addStep} class="add-step-button">조리 단계 추가</button>
+  <button on:click={addRecipeProcess} class="add-step-button"
+    >조리 단계 추가</button
+  >
 </div>
 
 <div class="button-container">
-  <Link to="/recipes"><Button variant="raised">등록 완료</Button></Link>
+  <Button variant="raised" on:click={createRecipeAll}>등록 완료</Button>
 </div>
 
 <style>
@@ -297,6 +492,6 @@
   .button-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin: 20px;
   }
 </style>

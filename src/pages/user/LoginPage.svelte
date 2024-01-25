@@ -5,6 +5,7 @@
   import Textfield from '@smui/textfield';
   import { setCookie } from 'svelte-cookie';
   import { navigate } from 'svelte-routing';
+  import { client_id, redirect_uri } from './../../lib/kakao/kakao-login.js';
 
   let open = false;
 
@@ -41,6 +42,10 @@
         open = true;
       });
   };
+
+  const handleKakaoLogin = () => {
+    location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`;
+  };
 </script>
 
 <Dialog
@@ -58,23 +63,35 @@
 </Dialog>
 
 <div class="container">
-  <Textfield
-    variant="outlined"
-    type="email"
-    bind:value={requestDto.email}
-    label="이메일"
-  ></Textfield>
-  <Textfield
-    variant="outlined"
-    type="password"
-    bind:value={requestDto.password}
-    label="비밀번호"
-  ></Textfield>
-
-  <Button variant="raised" on:click={handleLogin}>로그인</Button>
+  <div class="wrapper">
+    <Textfield
+      variant="outlined"
+      type="email"
+      bind:value={requestDto.email}
+      label="이메일"
+    ></Textfield>
+    <Textfield
+      variant="outlined"
+      type="password"
+      bind:value={requestDto.password}
+      label="비밀번호"
+    ></Textfield>
+    <Button variant="raised" on:click={handleLogin}>로그인</Button>
+  </div>
+  <hr class="hr-100" />
+  <div class="reg-wrapper">
+    <Button class="kakao-btn" on:click={handleKakaoLogin}>카카오 로그인</Button>
+  </div>
 </div>
 
 <style>
+  .hr-100 {
+    width: 100%;
+  }
+  .reg-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -84,5 +101,13 @@
     border-radius: 30px;
     padding: 30px;
     box-shadow: 2px 5px 10px;
+  }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  * :global(.kakao-btn) {
+    color: black;
+    background-color: #fee500;
   }
 </style>
