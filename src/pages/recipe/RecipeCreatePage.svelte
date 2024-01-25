@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { getCookie } from 'svelte-cookie';
   import { navigate } from 'svelte-routing';
+  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
   import {
     extractErrors,
@@ -32,26 +33,22 @@
   let recipeProcessCreateRequestDto = [{ sequence: 1, description: '' }];
   let recipeProcessCreateImage = [null];
 
-  let foods = [
-    { id: 1, name: '양파', unit: '개' },
-    { id: 2, name: '김치', unit: 'g' },
-    { id: 3, name: '간장', unit: 'ml' },
-  ];
+  let foods = [{ id: '', name: '', price: 0, unit: '' }];
 
   onMount(() => {
-    // fetch(HOST + `/api/v1/foods`, {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: getCookie('Authorization'),
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: formData,
-    // })
-    //   .then((res) => res)
-    //   .then((data) => {
-    //     foods = data;
-    //     foods.map((food) => (food.unit = convert(food.unit)));
-    //   });
+    fetch(HOST + `/api/v1/foods`, {
+      method: 'GET',
+      headers: {
+        Authorization: getCookie('Authorization'),
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        foods = data;
+        foods.map((food) => (food.unit = convert(food.unit)));
+      });
   });
 
   const addRecipeFood = () => {
