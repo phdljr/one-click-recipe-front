@@ -134,29 +134,6 @@
   }
 </script>
 
-<h1>{recipeId}</h1>
-<div class="comment-box">
-  <textarea bind:value={newComment} placeholder="댓글을 입력하세요..."
-  ></textarea>
-  <div class="rating">
-    {#each [1, 2, 3, 4, 5] as n}
-      <button
-        on:click={() => rate(n)}
-        class="star {newRating >= n ? 'filled' : ''}">★</button
-      >
-    {/each}
-  </div>
-  <Button on:click={submitComment} variant="raised">댓글 작성</Button>
-  {#if comments.length > 0}
-    <div class="comments">
-      <h3>댓글:</h3>
-      {#each comments as { text, rating }, index (index)}
-        <div class="comment">{index + 1}: {text} ({rating} / 5)</div>
-      {/each}
-    </div>
-  {/if}
-</div>
-
 <div class="container-recipe">
   <h1 class="recipe-title">{recipe.title}</h1>
   <h3 class="recipe-intro">{recipe.intro}</h3>
@@ -179,6 +156,29 @@
     <br />
     <RecipeReviews {reviews} />
   </div>
+</div>
+
+<h1>{recipeId}</h1>
+<div class="comment-box">
+  <textarea bind:value={newComment} placeholder="댓글을 입력하세요..."
+  ></textarea>
+  <div class="rating">
+    {#each [1, 2, 3, 4, 5] as n}
+      <button
+        on:click={() => rate(n)}
+        class="star {newRating >= n ? 'filled' : ''}">★</button
+      >
+    {/each}
+  </div>
+  <Button on:click={submitComment} variant="raised">댓글 작성</Button>
+  {#if comments.length > 0}
+    <div class="comments">
+      <h3>댓글:</h3>
+      {#each comments as { text, rating }, index (index)}
+        <div class="comment">{index + 1}: {text} ({rating} / 5)</div>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style>
