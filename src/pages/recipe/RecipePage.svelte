@@ -171,7 +171,9 @@
   <div class="comment-input">
     <textarea bind:value={newComment} placeholder="댓글을 입력하세요..."
     ></textarea>
-    <Button on:click={submitComment} variant="raised">댓글 작성</Button>
+    <Button on:click={submitComment} class="mood" variant="raised"
+      >댓글 작성</Button
+    >
   </div>
   {#if comments.length > 0}
     <div class="comments">
@@ -266,5 +268,10 @@
   .comment-input textarea {
     width: 100%; /* 전체 너비를 차지하도록 설정 */
     margin-bottom: 10px; /* 원하는 간격으로 조절하세요 */
+  }
+  * :global(.mood) {
+    width: 20%;
+    height: 36px;
+    font-size: large;
   }
 </style>
