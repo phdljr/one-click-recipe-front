@@ -180,7 +180,7 @@
       }
     });
 
-    fetch(HOST + `/api/v1/recipes/all`, {
+    fetch(HOST + `/api/v1/recipes`, {
       method: 'POST',
       headers: {
         Authorization: getCookie('Authorization'),
