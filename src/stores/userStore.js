@@ -31,7 +31,7 @@ function createUserStore() {
     }
   }
 
-  async function updateUserRole(userId, newRole) {
+  async function changeUserRole(userId, newRole) {
     try {
       const response = await fetch(
         `${HOST}/api/v1/admin/users/${userId}/role`,
@@ -63,7 +63,7 @@ function createUserStore() {
     }
   }
 
-  async function getUserOrders(userId) {
+  async function fetchUserOrders(userId) {
     try {
       const response = await fetch(
         `${HOST}/api/v1/admin/users/${userId}/orders`,
@@ -94,7 +94,7 @@ function createUserStore() {
     }
   }
 
-  async function getUserOrder(userId, orderId) {
+  async function fetchUserOrderDetails(userId, orderId) {
     try {
       const response = await fetch(
         `${HOST}/api/v1/admin/users/${userId}/orders/${orderId}`,
@@ -129,9 +129,9 @@ function createUserStore() {
   return {
     subscribe,
     fetchUsers,
-    updateUserRole,
-    getUserOrders,
-    getUserOrder,
+    changeUserRole,
+    fetchUserOrders,
+    fetchUserOrderDetails,
   };
 }
 

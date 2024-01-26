@@ -4,18 +4,21 @@
 
   export let userId;
   let orders = [];
-  let selectedOrderDetails = null;
+  let displayedOrderDetails = null;
 
   onMount(async () => {
-    orders = await userStore.getUserOrders(userId);
+    orders = await userStore.fetchUserOrders(userId);
   });
 
   async function showOrderDetails(orderId) {
-    selectedOrderDetails = await userStore.getUserOrder(userId, orderId);
+    displayedOrderDetails = await userStore.fetchUserOrderDetails(
+      userId,
+      orderId,
+    );
   }
 
   function closeModal() {
-    selectedOrderDetails = null;
+    displayedOrderDetails = null;
   }
 </script>
 
@@ -24,7 +27,7 @@
   {#each orders as order}
     <div class="order-item">
       <p>주문 ID: {order.id}</p>
-      <p>상태: {order.status || '상태 정보 없음'}</p>
+      <p>상태: {order.orderStatus}</p>
       <p>수령인: {order.receiverName}</p>
       <p>배송 주소: {order.address}</p>
       <p>총 가격: {order.totalPrice}</p>
@@ -32,19 +35,19 @@
     </div>
   {/each}
 
-  {#if selectedOrderDetails}
+  {#if displayedOrderDetails}
     <div class="modal-overlay" on:click={closeModal}>
       <div class="order-details-modal" on:click|stopPropagation>
         <h2>주문 상세 정보</h2>
-        <p>주문 ID: {selectedOrderDetails.id}</p>
-        <p>상태: {selectedOrderDetails.orderStatus}</p>
-        <p>수령인: {selectedOrderDetails.receiverName}</p>
+        <p>주문 ID: {displayedOrderDetails.id}</p>
+        <p>상태: {displayedOrderDetails.orderStatus}</p>
+        <p>수령인: {displayedOrderDetails.receiverName}</p>
         <p>
-          배송 주소: {selectedOrderDetails.address}, {selectedOrderDetails.addressDetail}
+          배송 주소: {displayedOrderDetails.address}, {displayedOrderDetails.addressDetail}
         </p>
-        <p>총 가격: {selectedOrderDetails.totalPrice}</p>
+        <p>총 가격: {displayedOrderDetails.totalPrice}</p>
         <h3>주문 항목</h3>
-        {#each selectedOrderDetails.orderDetails as detail}
+        {#each displayedOrderDetails.orderDetails as detail}
           <div class="order-detail-item">
             <p>항목: {detail.name}</p>
             <p>수량: {detail.amount}</p>
