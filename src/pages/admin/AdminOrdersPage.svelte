@@ -1,4 +1,5 @@
 <script>
+  import Button from '@smui/button';
   import { onMount } from 'svelte';
   import { userStore } from '../../stores/userStore';
 
@@ -24,16 +25,40 @@
 
 <main>
   <h1>유저 {userId}의 주문 목록</h1>
-  {#each orders as order}
-    <div class="order-item">
-      <p>주문 ID: {order.id}</p>
-      <p>상태: {order.orderStatus}</p>
-      <p>수령인: {order.receiverName}</p>
-      <p>배송 주소: {order.address}</p>
-      <p>총 가격: {order.totalPrice}</p>
-      <button on:click={() => showOrderDetails(order.id)}>주문 상세</button>
-    </div>
-  {/each}
+  {#if orders.length === 0}
+    <p>주문 내역이 없습니다.</p>
+  {:else}
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>주문 ID</th>
+          <th>상태</th>
+          <th>수령인</th>
+          <th>수령인 전화번호</th>
+          <th>배송 주소</th>
+          <th>상세 주소</th>
+          <th>총 가격</th>
+          <th>상세 보기</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each orders as order}
+          <tr>
+            <td>{order.id}</td>
+            <td>{order.orderStatus}</td>
+            <td>{order.receiverName}</td>
+            <td>{order.receiverPhoneNumber}</td>
+            <td>{order.address}</td>
+            <td>{order.addressDetail}</td>
+            <td>{order.totalPrice}</td>
+            <td>
+              <Button variant="raised" on:click={() => showOrderDetails(order.id)}>상세</Button>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
 
   {#if displayedOrderDetails}
     <div class="modal-overlay" on:click={closeModal}>
@@ -55,23 +80,35 @@
             <p>가격: {detail.price}</p>
           </div>
         {/each}
-        <button on:click={closeModal}>닫기</button>
+        <Button variant="raised" on:click={closeModal}>닫기</Button>
       </div>
     </div>
   {/if}
 </main>
 
 <style>
-  .order-item {
-    background-color: #fff;
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .orders-table th,
+  .orders-table td {
     border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .orders-table th {
+    background-color: #f4f4f4;
+  }
+
+  .orders-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .orders-table tr:hover {
+    background-color: #ddd;
   }
 
   .modal-overlay {
@@ -96,5 +133,14 @@
     max-width: 500px;
     max-height: 80vh;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .order-detail-item {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 4px;
   }
 </style>
