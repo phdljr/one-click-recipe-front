@@ -1,5 +1,7 @@
 <script>
+  import { onMount } from 'svelte';
   import { Route, Router } from 'svelte-routing';
+  import { REFRESH_TIME } from './lib/const/jwt';
   import MainPage from './pages/MainPage.svelte';
   import AdminPage from './pages/admin/AdminPage.svelte';
   import NotFoundPage from './pages/error/NotFoundPage.svelte';
@@ -17,8 +19,21 @@
   import LoginPage from './pages/user/LoginPage.svelte';
   import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
+
   import AdminUsersPage from './pages/admin/AdminUsersPage.svelte';
   import AdminOrdersPage from './pages/admin/AdminOrdersPage.svelte'
+  import { auth, isRefresh } from './store/user';
+  // refresh 요청 반복적으로 보내는 작업
+  // 해당 컴포넌트가 mount되기 전에 실행되는 함수
+  onMount(() => {
+    const onRefresh = setInterval(() => {
+      if ($isRefresh) {
+        auth.refresh();
+      } else {
+        clearInterval(onRefresh);
+      }
+    }, REFRESH_TIME);
+  });
 </script>
 
 <Router>

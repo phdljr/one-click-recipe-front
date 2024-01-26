@@ -1,9 +1,12 @@
 <script>
   import Button from '@smui/button';
   import { deleteCookie } from 'svelte-cookie';
+  import { REFRESH_TOKEN } from '../lib/const/jwt';
+  import { auth } from '../store/user';
 
   const handleLogout = () => {
-    deleteCookie('Authorization');
+    deleteCookie(REFRESH_TOKEN);
+    auth.clearAccessToken();
   };
 </script>
 
