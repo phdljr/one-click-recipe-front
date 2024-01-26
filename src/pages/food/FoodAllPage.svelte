@@ -16,6 +16,8 @@
     unit: 'COUNT',
   };
   onMount(() => {
+    const page = 0;
+    const size = 10;
     getAllFood();
   });
 

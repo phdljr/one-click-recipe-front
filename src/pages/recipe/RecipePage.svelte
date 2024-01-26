@@ -8,6 +8,9 @@
   import RecipeReviews from '../../components/recipe/RecipeReviews.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
+  import ReviewContent from '../../components/review/ReviewCard.svelte';
+  import LayoutGrid, { Cell } from '@smui/layout-grid';
+  import ReviewCard from '../../components/review/ReviewCard.svelte';
 
   export let recipeId;
 
@@ -118,6 +121,52 @@
 
     navigate('/order');
   };
+
+  let comments = [];
+  let reviewDto = {
+    content: '',
+    star: 0,
+  };
+  let newComment = '';
+  let newRating = 0;
+
+  function rate(rating) {
+    reviewDto.star = rating;
+  }
+  const createReview = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: getCookie('Authorization'),
+      },
+      body: JSON.stringify(reviewDto),
+    })
+      .then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
+        alert('리뷰가 등록되었습니다.');
+        location.reload();
+      })
+      .catch((error) => {
+        alert('리뷰 등록 실패');
+        console.log(error);
+      });
+  };
+  // const getAllReview = () => {
+  //   fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       reviews = data;
+  //     });
+  // };
 </script>
 
 <div class="container-recipe">
@@ -140,8 +189,36 @@
     <br />
     <hr class="hr-100" />
     <br />
-    <RecipeReviews {reviews} />
   </div>
+</div>
+{#if reviews.length !== 0}
+  {#each reviews as review (review.id)}
+    <div><ReviewCard {review} /></div>
+  {/each}
+{:else}
+  <h1>등록된 댓글이 없습니다.</h1>
+{/if}
+<h1>{recipeId}</h1>
+<div class="comment-box">
+  <textarea bind:value={reviewDto.content} placeholder="댓글을 입력하세요..."
+  ></textarea>
+  <div class="rating">
+    {#each [1, 2, 3, 4, 5] as n}
+      <button
+        on:click={() => rate(n)}
+        class="star {reviewDto.star >= n ? 'filled' : ''}">★</button
+      >
+    {/each}
+  </div>
+  <Button on:click={createReview} variant="raised">댓글 작성</Button>
+  {#if comments.length > 0}
+    <div class="comments">
+      <h3>댓글:</h3>
+      {#each comments as { text, rating }, index (index)}
+        <div class="comment">{index + 1}: {text} ({rating} / 5)</div>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -182,5 +259,41 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .star {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  .star.filled {
+    color: gold;
+  }
+  .comment-box {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .rating {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .comments {
+    width: 100%;
+  }
+
+  .comment {
+    margin-bottom: 10px;
   }
 </style>
