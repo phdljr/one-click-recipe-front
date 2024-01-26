@@ -56,6 +56,9 @@
         break;
     }
   };
+  function rate(rating) {
+    reviewUpdateDto.star = rating;
+  }
 </script>
 
 <Dialog
@@ -68,6 +71,14 @@
     <Textfield type="text" bind:value={reviewUpdateDto.content} label="리뷰"
     ></Textfield>
   </Content>
+  <div class="rating">
+    {#each [1, 2, 3, 4, 5] as n}
+      <button
+        on:click={() => rate(n)}
+        class="star {reviewUpdateDto.star >= n ? 'filled' : ''}">★</button
+      >
+    {/each}
+  </div>
   <Actions>
     <div class="btn-container">
       <Button action="delete">
