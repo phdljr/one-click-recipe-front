@@ -5,7 +5,6 @@
   export let userId;
   let orders = [];
   let selectedOrderDetails = null;
-  let showModal = false;
 
   onMount(async () => {
     orders = await userStore.getUserOrders(userId);
@@ -13,11 +12,9 @@
 
   async function showOrderDetails(orderId) {
     selectedOrderDetails = await userStore.getUserOrder(userId, orderId);
-    showModal = true;
   }
 
   function closeModal() {
-    showModal = false;
     selectedOrderDetails = null;
   }
 </script>
@@ -27,7 +24,7 @@
   {#each orders as order}
     <div class="order-item">
       <p>주문 ID: {order.id}</p>
-      <p>상태: {order.status}</p>
+      <p>상태: {order.status || '상태 정보 없음'}</p>
       <p>수령인: {order.receiverName}</p>
       <p>배송 주소: {order.address}</p>
       <p>총 가격: {order.totalPrice}</p>
@@ -35,8 +32,8 @@
     </div>
   {/each}
 
-  {#if showModal && selectedOrderDetails}
-    <div class="modal-overlay" on:click={closeModal} role="button" tabindex="0">
+  {#if selectedOrderDetails}
+    <div class="modal-overlay" on:click={closeModal}>
       <div class="order-details-modal" on:click|stopPropagation>
         <h2>주문 상세 정보</h2>
         <p>주문 ID: {selectedOrderDetails.id}</p>

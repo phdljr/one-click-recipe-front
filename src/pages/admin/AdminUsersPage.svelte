@@ -2,7 +2,6 @@
   import { Link } from 'svelte-routing';
   import { onMount } from 'svelte';
   import { userStore } from '../../stores/userStore';
-  import { linear } from 'svelte/easing';
 
   let selectedRole = {};
 
