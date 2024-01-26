@@ -78,17 +78,51 @@ function createUserStore() {
 
       if (!response.ok) {
         console.error(
-          '주문 목록을 가져오는 데 실패했습니다: ',
+          '주문 목록을 가져오는 데 실패했습니다:',
           response.status,
           response.statusText,
         );
         return [];
       }
 
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('주문 목록을 가져오는 중 오류가 발생했습니다:', error);
+      return [];
+    }
+  }
+
+  async function getUserOrder(userId, orderId) {
+    try {
+      const response = await fetch(
+        `${HOST}/api/v1/admin/users/${userId}/orders/${orderId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: getCookie('Authorization'),
+          },
+        },
+      );
+
+      if (!response.ok) {
+        console.error(
+          '주문 상세 정보를 가져오는 데 실패했습니다: ',
+          response.status,
+          response.statusText,
+        );
+        return null;
+      }
+
       return await response.json();
     } catch (error) {
-      console.error('주문 목록을 가져오는 중 오류가 발생했습니다: ', error);
-      return [];
+      console.error(
+        '주문 상세 정보를 가져오는 중 오류가 발생했습니다: ',
+        error,
+      );
+      return null;
     }
   }
 
@@ -97,6 +131,7 @@ function createUserStore() {
     fetchUsers,
     updateUserRole,
     getUserOrders,
+    getUserOrder,
   };
 }
 
