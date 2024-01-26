@@ -20,7 +20,7 @@
   });
 
   const getAllFood = () => {
-    fetch(HOST + '/api/v1/admin/foods', {
+    fetch(HOST + '/api/v1/foods', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
