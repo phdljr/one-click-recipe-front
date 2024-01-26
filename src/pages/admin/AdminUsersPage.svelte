@@ -10,9 +10,10 @@
     userStore.fetchUsers();
   });
 
-  function changeUserRole(userId) {
+  async function changeUserRole(userId) {
     const newRole = selectedRole[userId];
-    userStore.updateUserRole(userId, newRole);
+    await userStore.changeUserRole(userId, newRole);
+    await userStore.fetchUsers();
   }
 
   const roleOptions = ['ADMIN', 'USER'];
