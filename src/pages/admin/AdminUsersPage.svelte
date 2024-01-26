@@ -1,11 +1,10 @@
 <script>
+  import { Link } from 'svelte-routing';
   import { onMount } from 'svelte';
   import { userStore } from '../../stores/userStore';
+  import { linear } from 'svelte/easing';
 
   let selectedRole = {};
-  let userOrders = [];
-  let isOrderModalOpen = false;
-  let selectedUserId;
 
   onMount(() => {
     userStore.fetchUsers();
@@ -14,16 +13,6 @@
   function changeUserRole(userId) {
     const newRole = selectedRole[userId];
     userStore.updateUserRole(userId, newRole);
-  }
-
-  async function showUserOrders(userId) {
-    userOrders = await userStore.getUserOrders(userId);
-    selectedUserId = userId;
-    isOrderModalOpen = true;
-  }
-
-  function showOrderDetails(orderId) {
-    console.log(`주문 ${orderId}의 상세 정보를 보여줍니다.`);
   }
 
   const roleOptions = ['ADMIN', 'USER'];
@@ -51,28 +40,11 @@
           </div>
           <div class="user-action">
             <button on:click={() => changeUserRole(user.id)}>역할 변경</button>
-            <button on:click={() => showUserOrders(user.id)}>주문 목록</button>
+            <Link to={`/admin/orders/${user.id}`}>주문 목록</Link>
           </div>
         </li>
       {/each}
     </ul>
-  {/if}
-
-  {#if isOrderModalOpen}
-    <div class="order-modal">
-      <h2>유저 {selectedUserId}의 주문 목록</h2>
-      {#each userOrders as order}
-        <div class="order-item">
-          <p>주문 ID: {order.id}</p>
-          <p>상태: {order.status}</p>
-          <p>수령인: {order.receiverName}</p>
-          <p>배송 주소: {order.address}</p>
-          <p>총 가격: {order.totalPrice}</p>
-          <button on:click={() => showOrderDetails(order.id)}>주문 상세</button>
-        </div>
-      {/each}
-      <button on:click={() => (isOrderModalOpen = false)}>닫기</button>
-    </div>
   {/if}
 </main>
 
@@ -99,20 +71,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .order-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-
-  .order-item button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
   }
 
   .user-id,
@@ -156,16 +114,5 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-
-  .order-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 </style>
