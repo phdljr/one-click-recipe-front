@@ -63,10 +63,40 @@ function createUserStore() {
     }
   }
 
+  async function getUserOrders(userId) {
+    try {
+      const response = await fetch(
+        `${HOST}/api/v1/admin/users/${userId}/orders`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: getCookie('Authorization'),
+          },
+        },
+      );
+
+      if (!response.ok) {
+        console.error(
+          '주문 목록을 가져오는 데 실패했습니다: ',
+          response.status,
+          response.statusText,
+        );
+        return [];
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('주문 목록을 가져오는 중 오류가 발생했습니다: ', error);
+      return [];
+    }
+  }
+
   return {
     subscribe,
     fetchUsers,
     updateUserRole,
+    getUserOrders,
   };
 }
 
