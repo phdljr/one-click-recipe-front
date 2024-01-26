@@ -19,8 +19,10 @@
   import LoginPage from './pages/user/LoginPage.svelte';
   import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
-  import { auth, isRefresh } from './store/user';
 
+  import AdminUsersPage from './pages/admin/AdminUsersPage.svelte';
+  import AdminOrdersPage from './pages/admin/AdminOrdersPage.svelte'
+  import { auth, isRefresh } from './store/user';
   // refresh 요청 반복적으로 보내는 작업
   // 해당 컴포넌트가 mount되기 전에 실행되는 함수
   onMount(() => {
@@ -48,6 +50,8 @@
   <Route path="/recipe-create" component={RecipeCreatePage} />
   <Route path="/admin" component={AdminPage} />
   <Route path="/foods" component={FoodAllPage} />
+  <Route path="/admin/users" component={AdminUsersPage} />
+  <Route path="/admin/orders/:userId" component={AdminOrdersPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}
