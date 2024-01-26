@@ -98,6 +98,13 @@
         >
           {review.writer}
         </h3>
+        <h4>
+          {#each [1, 2, 3, 4, 5] as _}
+            {#if _ <= review.star}
+              ★
+            {/if}
+          {/each}
+        </h4>
       </Content>
     </PrimaryAction>
   </Card>

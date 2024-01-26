@@ -131,7 +131,7 @@
   let newRating = 0;
 
   function rate(rating) {
-    newRating = rating;
+    reviewDto.star = rating;
   }
   const createReview = () => {
     fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
