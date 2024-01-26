@@ -5,6 +5,13 @@
   import Textfield from '@smui/textfield';
   import { setCookie } from 'svelte-cookie';
   import { navigate } from 'svelte-routing';
+  import {
+    ACCESS_TOKEN,
+    EXPIRATION_DAYS,
+    REFRESH_TOKEN,
+  } from '../../lib/const/jwt.js';
+  import HOST from '../../lib/host.js';
+  import { auth } from '../../store/user.js';
   import { client_id, redirect_uri } from './../../lib/kakao/kakao-login.js';
 
   let open = false;
@@ -15,11 +22,12 @@
   };
 
   const handleLogin = () => {
-    fetch('http://localhost:8080/api/v1/users/login', {
+    fetch(HOST + '/api/v1/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         email: requestDto.email,
         password: requestDto.password,
@@ -29,13 +37,11 @@
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        console.log(response.headers.get('Authorization'));
-        setCookie(
-          'Authorization',
-          response.headers.get('Authorization'),
-          1,
-          true,
-        );
+        let accessToken = response.headers.get(ACCESS_TOKEN);
+        let refreshToken = response.headers.get(REFRESH_TOKEN);
+
+        auth.setAccessToken(accessToken);
+        setCookie(REFRESH_TOKEN, refreshToken, EXPIRATION_DAYS, false);
         navigate('/');
       })
       .catch((error) => {
