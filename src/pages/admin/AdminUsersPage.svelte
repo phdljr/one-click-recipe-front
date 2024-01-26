@@ -6,8 +6,11 @@
 
   let selectedRole = {};
 
-  onMount(() => {
-    userStore.fetchUsers();
+  onMount(async () => {
+    await userStore.fetchUsers();
+    $userStore.forEach(user => {
+      selectedRole[user.id] = user.role;
+    });
   });
 
   async function changeUserRole(userId) {
@@ -35,7 +38,7 @@
           <div class="user-role">
             <select bind:value={selectedRole[user.id]}>
               {#each roleOptions as role}
-                <option value={role}>{role}</option>
+                <option value={role} selected={role === selectedRole[user.id]}>{role}</option>
               {/each}
             </select>
           </div>
