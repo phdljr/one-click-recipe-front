@@ -1,35 +1,16 @@
 <script>
   import { onMount } from 'svelte';
-  import { getCookie } from 'svelte-cookie';
+  import { isLogin, auth } from '../../store/user';
   import { Link } from 'svelte-routing';
   import HOST from '../../lib/host';
 
-  let orders = [
-    // {
-    //   id: 1,
-    //   receiverName: '홍길동',
-    //   receiverPhoneNumber: '010-1234-5678',
-    //   address: '서울특별시 강남구',
-    //   addressDetail: '역삼동 123-45',
-    //   totalPrice: 15000,
-    //   orderStatus: 'WAITING',
-    // },
-    // {
-    //   id: 2,
-    //   receiverName: '김서방',
-    //   receiverPhoneNumber: '010-9876-5432',
-    //   address: '부산광역시 해운대구',
-    //   addressDetail: '우동 987-65',
-    //   totalPrice: 22000,
-    //   orderStatus: 'WAITING',
-    // },
-  ];
+  let orders = [];
 
   onMount(() => {
     fetch(HOST + '/api/v1/orders', {
       method: 'GET',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
         'Content-Type': 'application/json',
       },
     })
@@ -66,9 +47,9 @@
 <style>
   .content-wrapper {
     width: 1000px;
-    margin: auto; /* 좌우 중앙 정렬 */
-    padding: 20px; /* 안쪽 여백 설정 */
-    box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
   }
 
   .order-list {
