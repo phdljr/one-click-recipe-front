@@ -7,13 +7,40 @@
     PrimaryAction,
   } from '@smui/card';
   import { navigate } from 'svelte-routing';
+  import HOST from '../../lib/host';
+  import { isLogin, auth } from '../../store/user';
 
   export let recipe;
+  export let liked;
 
-  let liked = false;
+  async function toggleLike() {
+    if (!$isLogin) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
 
-  function toggleLike() {
+    const method = liked ? 'DELETE' : 'POST';
     liked = !liked;
+
+    try {
+      const response = await fetch(
+        `${HOST}/api/v1/recipes/${recipe.id}/likes`,
+        {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${$auth}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to update like status');
+      }
+    } catch (error) {
+      console.error('Error updating like status:', error);
+      liked = !liked;
+    }
   }
 </script>
 
