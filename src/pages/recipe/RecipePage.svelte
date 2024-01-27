@@ -1,16 +1,13 @@
 <script>
   import Button from '@smui/button';
   import { onMount } from 'svelte';
-  import { getCookie } from 'svelte-cookie';
   import { navigate } from 'svelte-routing';
   import RecipeFoods from '../../components/recipe/RecipeFoods.svelte';
   import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
-  import RecipeReviews from '../../components/recipe/RecipeReviews.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
-  import ReviewContent from '../../components/review/ReviewCard.svelte';
-  import LayoutGrid, { Cell } from '@smui/layout-grid';
   import ReviewCard from '../../components/review/ReviewCard.svelte';
+  import { isLogin, auth } from '../../store/user';
 
   export let recipeId;
 
@@ -93,7 +90,7 @@
     const deleteResponse = await fetch(HOST + `/api/v1/carts`, {
       method: 'DELETE',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
         'Content-Type': 'application/json',
       },
     });
@@ -106,7 +103,7 @@
     const postResponse = await fetch(HOST + `/api/v1/carts`, {
       method: 'POST',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -138,7 +135,7 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
       body: JSON.stringify(reviewDto),
     })
