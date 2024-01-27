@@ -2,7 +2,7 @@
   import Button from '@smui/button';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
-  import { getCookie } from 'svelte-cookie';
+  import { isLogin, auth } from '../../store/user';
   import FoodCard from '../../components/food/FoodCard.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
@@ -26,7 +26,7 @@
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
     })
       .then((response) => response.json())
@@ -40,7 +40,7 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
       body: JSON.stringify({
         name: FoodrequestDto.foodname,
