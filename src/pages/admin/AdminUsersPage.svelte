@@ -1,14 +1,14 @@
 <script>
   import Button from '@smui/button';
-  import { Link } from 'svelte-routing';
   import { onMount } from 'svelte';
-  import { userStore } from '../../stores/userStore';
+  import { Link } from 'svelte-routing';
+  import { userStore } from '../../store/admin';
 
   let selectedRole = {};
 
   onMount(async () => {
     await userStore.fetchUsers();
-    $userStore.forEach(user => {
+    $userStore.forEach((user) => {
       selectedRole[user.id] = user.role;
     });
   });
@@ -38,7 +38,9 @@
           <div class="user-role">
             <select bind:value={selectedRole[user.id]}>
               {#each roleOptions as role}
-                <option value={role} selected={role === selectedRole[user.id]}>{role}</option>
+                <option value={role} selected={role === selectedRole[user.id]}
+                  >{role}</option
+                >
               {/each}
             </select>
           </div>
