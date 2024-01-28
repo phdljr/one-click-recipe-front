@@ -5,9 +5,9 @@
   import List, { Graphic, Item } from '@smui/list';
   import Radio from '@smui/radio';
   import Textfield from '@smui/textfield';
-  import { getCookie } from 'svelte-cookie';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
+  import { auth, isLogin } from '../../store/user';
 
   export let food;
 
@@ -20,7 +20,7 @@
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
       body: JSON.stringify(foodUpdateDto),
     })
@@ -40,7 +40,7 @@
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
     }).then((res) => location.reload());
   };

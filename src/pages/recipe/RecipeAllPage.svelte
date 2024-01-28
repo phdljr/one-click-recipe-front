@@ -4,6 +4,7 @@
   import { Link } from 'svelte-routing';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
+  import { auth, isLogin } from '../../store/user';
 
   let recipes = [];
 
@@ -11,18 +12,47 @@
     getAllRecipe();
   });
 
-  const getAllRecipe = () => {
-    fetch(HOST + '/api/v1/recipes', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        recipes = data;
+  const getAllRecipe = async () => {
+    try {
+      const response = await fetch(`${HOST}/api/v1/recipes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
+
+      if (response.ok) {
+        let data = await response.json();
+
+        if ($isLogin) {
+          data = await Promise.all(
+            data.map(async (recipe) => {
+              const likeResponse = await fetch(
+                `${HOST}/api/v1/recipes/${recipe.id}/likes/status`,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${$auth}`,
+                  },
+                },
+              );
+              if (likeResponse.ok) {
+                const likeStatus = await likeResponse.json();
+                return { ...recipe, liked: likeStatus };
+              } else {
+                return { ...recipe, liked: false };
+              }
+            }),
+          );
+        }
+
+        recipes = data;
+      } else {
+        console.error('Failed to fetch recipes:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
   };
 </script>
 
@@ -32,7 +62,7 @@
   <LayoutGrid fixedColumnWidth>
     {#each recipes as recipe (recipe.id)}
       <Cell>
-        <RecipeCard {recipe} />
+        <RecipeCard {recipe} liked={recipe.liked} />
       </Cell>
     {/each}
   </LayoutGrid>

@@ -2,6 +2,7 @@
   import Button from '@smui/button/src/Button.svelte';
   import { getCookie, setCookie } from 'svelte-cookie';
   import HOST from '../../lib/host';
+  import { isLogin, auth } from '../../store/user';
 
   export let requestDto;
 
@@ -12,7 +13,7 @@
     fetch(HOST + `/api/v1/orders`, {
       method: 'POST',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestDto),
@@ -29,7 +30,7 @@
     fetch(HOST + `/api/v1/orders/${orderId}/payments/kakaopay/ready`, {
       method: 'POST',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
         'Content-Type': 'application/json',
       },
     })

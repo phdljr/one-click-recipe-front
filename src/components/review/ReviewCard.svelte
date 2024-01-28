@@ -4,7 +4,7 @@
   import Button, { Label } from '@smui/button';
   import Card, { Content, PrimaryAction } from '@smui/card';
   import HOST from '../../lib/host';
-  import { getCookie } from 'svelte-cookie';
+  import { isLogin, auth } from '../../store/user';
 
   export let review;
   let open = false;
@@ -15,7 +15,7 @@
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
       body: JSON.stringify(reviewUpdateDto),
     })
@@ -35,7 +35,7 @@
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
       },
     })
       .then((res) => location.reload())
