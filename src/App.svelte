@@ -19,6 +19,7 @@
   import LoginPage from './pages/user/LoginPage.svelte';
   import MyPage from './pages/user/MyPage.svelte';
   import SignUpPage from './pages/user/SignUpPage.svelte';
+  import LikeListPage from './pages/like/LikeListPage.svelte';
 
   import AdminUsersPage from './pages/admin/AdminUsersPage.svelte';
   import AdminOrdersPage from './pages/admin/AdminOrdersPage.svelte'
@@ -52,6 +53,7 @@
   <Route path="/foods" component={FoodAllPage} />
   <Route path="/admin/users" component={AdminUsersPage} />
   <Route path="/admin/orders/:userId" component={AdminOrdersPage} />
+  <Route path="/mypage/like-list" component={LikeListPage} />
   <Route
     path="/orders/:orderId/payment/kakao/approve"
     component={ApprovalPaymentPage}
