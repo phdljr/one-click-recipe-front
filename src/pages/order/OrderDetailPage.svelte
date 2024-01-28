@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { getCookie } from 'svelte-cookie';
+  import { isLogin, auth } from '../../store/user';
   import HOST from '../../lib/host';
 
   export let orderId;
@@ -13,7 +13,7 @@
     fetch(HOST + `/api/v1/orders/${orderId}`, {
       method: 'GET',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: `${$auth}`,
         'Content-Type': 'application/json',
       },
     })

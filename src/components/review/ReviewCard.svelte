@@ -1,63 +1,64 @@
 <script>
+  import Textfield from '@smui/textfield';
+  import Dialog, { Actions } from '@smui/dialog';
   import Button, { Label } from '@smui/button';
   import Card, { Content, PrimaryAction } from '@smui/card';
-  import Dialog, { Actions } from '@smui/dialog';
-  import List, { Graphic, Item } from '@smui/list';
-  import Radio from '@smui/radio';
-  import Textfield from '@smui/textfield';
-  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
-  import { auth, isLogin } from '../../store/user';
+  import { isLogin, auth } from '../../store/user';
 
-  export let food;
-
-  let foodUpdateDto = { ...food };
-  let units = ['COUNT', 'G', 'ML'];
+  export let review;
   let open = false;
 
-  const updateFood = () => {
-    fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
+  let reviewUpdateDto = { ...review };
+  const updateReview = () => {
+    fetch(HOST + `/api/v1/reviews/${review.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `${$auth}`,
       },
-      body: JSON.stringify(foodUpdateDto),
+      body: JSON.stringify(reviewUpdateDto),
     })
       .then((response) => {
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        food = foodUpdateDto;
+        review = reviewUpdateDto;
+        alert('업데이트 완료');
       })
       .catch((error) => {
         alert('업데이트 실패');
       });
   };
-
-  const deleteFood = () => {
-    fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
+  const deleteReview = () => {
+    fetch(HOST + `/api/v1/reviews/${review.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `${$auth}`,
       },
-    }).then((res) => location.reload());
+    })
+      .then((res) => location.reload())
+      .catch((error) => {
+        alert('삭제 실패');
+      });
   };
-
   const handleCloseDialog = (e) => {
     switch (e.detail.action) {
       case 'save':
-        updateFood();
+        updateReview();
         break;
       case 'delete':
-        deleteFood();
+        deleteReview();
         break;
       default:
-        foodUpdateDto = { ...food };
+        reviewUpdateDto = { ...review };
         break;
     }
   };
+  function rate(rating) {
+    reviewUpdateDto.star = rating;
+  }
 </script>
 
 <Dialog
@@ -67,30 +68,17 @@
   on:SMUIDialog:closed={handleCloseDialog}
 >
   <Content id="simple-content">
-    <Textfield type="text" bind:value={foodUpdateDto.name} label="이름"
+    <Textfield type="text" bind:value={reviewUpdateDto.content} label="리뷰"
     ></Textfield>
   </Content>
-  <Content id="simple-content">
-    <Textfield
-      type="number"
-      suffix="원"
-      bind:value={foodUpdateDto.price}
-      label="가격"
-    ></Textfield>
-  </Content>
-  <Content id="simple-content">
-    단위
-    <List radioList>
-      {#each units as unit}
-        <Item>
-          <Graphic>
-            <Radio bind:group={foodUpdateDto.unit} value={unit} />
-          </Graphic>
-          <Label>{convert(unit)}</Label>
-        </Item>
-      {/each}
-    </List>
-  </Content>
+  <div class="rating">
+    {#each [1, 2, 3, 4, 5] as n}
+      <button
+        on:click={() => rate(n)}
+        class="star {reviewUpdateDto.star >= n ? 'filled' : ''}">★</button
+      >
+    {/each}
+  </div>
   <Actions>
     <div class="btn-container">
       <Button action="delete">
@@ -113,28 +101,25 @@
     <PrimaryAction on:click={() => (open = !open)}>
       <Content class="mdc-typography--body2">
         <h2 class="mdc-typography--headline6" style="margin: 0;">
-          {food.name}
+          {review.content}
         </h2>
         <h3
           class="mdc-typography--subtitle2"
           style="margin: 0 0 10px; color: #888;"
         >
-          {food.price}원
+          {review.writer}
         </h3>
-        {food.unit}
+        <h4>
+          {#each [1, 2, 3, 4, 5] as _}
+            {#if _ <= review.star}
+              ★
+            {/if}
+          {/each}
+        </h4>
       </Content>
     </PrimaryAction>
   </Card>
 </div>
 
 <style>
-  .btn-container {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .text-red {
-    color: red;
-  }
 </style>
