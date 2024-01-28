@@ -197,8 +197,6 @@
 {/if}
 <h1>{recipeId}</h1>
 <div class="comment-box">
-  <textarea bind:value={reviewDto.content} placeholder="댓글을 입력하세요..."
-  ></textarea>
   <div class="rating">
     {#each [1, 2, 3, 4, 5] as n}
       <button
@@ -207,7 +205,13 @@
       >
     {/each}
   </div>
-  <Button on:click={createReview} variant="raised">댓글 작성</Button>
+  <div class="mood">
+    <textarea bind:value={reviewDto.content} placeholder="댓글을 입력하세요..."
+    ></textarea>
+    <Button class="best" on:click={createReview} variant="raised"
+      >댓글 작성</Button
+    >
+  </div>
   {#if comments.length > 0}
     <div class="comments">
       <h3>댓글:</h3>
@@ -228,6 +232,13 @@
     width: 50%;
     height: 50px;
     font-size: large;
+  }
+  * :global(.mood) {
+    display: flex;
+  }
+  * :global(.best) {
+    width: 120px;
+    height: 50px;
   }
 
   .recipe-title {
@@ -277,13 +288,14 @@
   }
 
   .rating {
-    display: flex;
-    justify-content: space-between;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .star {
     font-size: 24px;
     cursor: pointer;
+    margin-right: -4px;
   }
 
   .comments {
