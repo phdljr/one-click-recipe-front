@@ -11,7 +11,7 @@
   import { isLogin, auth } from '../../store/user';
 
   export let recipe;
-  export let liked;
+  export let liked = false;
 
   async function toggleLike() {
     if (!$isLogin) {
