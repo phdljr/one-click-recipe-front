@@ -19,7 +19,7 @@
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `${$auth}`,
+          Authorization: $auth.Authorization,
         },
       });
 
@@ -33,7 +33,7 @@
               {
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `${$auth}`,
+                  Authorization: $auth.Authorization,
                 },
               },
             );
@@ -47,7 +47,7 @@
           }),
         );
 
-        likedRecipes = likedRecipes.filter(recipe => recipe !== null);
+        likedRecipes = likedRecipes.filter((recipe) => recipe !== null);
       } else {
         console.error('Failed to fetch recipes:', response.status);
       }

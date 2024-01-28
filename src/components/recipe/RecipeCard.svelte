@@ -8,7 +8,7 @@
   } from '@smui/card';
   import { navigate } from 'svelte-routing';
   import HOST from '../../lib/host';
-  import { isLogin, auth } from '../../store/user';
+  import { auth, isLogin } from '../../store/user';
 
   export let recipe;
   export let liked = false;
@@ -29,7 +29,7 @@
           method: method,
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `${$auth}`,
+            Authorization: $auth.Authorization,
           },
         },
       );

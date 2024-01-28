@@ -7,7 +7,7 @@
   import Textfield from '@smui/textfield';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
-  import { auth, isLogin } from '../../store/user';
+  import { auth } from '../../store/user';
 
   export let food;
 
@@ -20,7 +20,7 @@
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
       body: JSON.stringify(foodUpdateDto),
     })
@@ -40,7 +40,7 @@
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
     }).then((res) => location.reload());
   };

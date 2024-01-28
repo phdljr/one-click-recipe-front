@@ -39,7 +39,7 @@
     fetch(HOST + `/api/v1/foods`, {
       method: 'GET',
       headers: {
-        Authorization: `${$auth.Authorization}`,
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })
@@ -180,7 +180,7 @@
     fetch(HOST + `/api/v1/recipes`, {
       method: 'POST',
       headers: {
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
       body: formData,
     })
