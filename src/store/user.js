@@ -49,7 +49,8 @@ const setAuth = () => {
         throw response;
       }
       let accessToken = response.headers.get(ACCESS_TOKEN);
-      setAccessToken(accessToken);
+      let data = await response.json();
+      set({ ...data, Authorization: accessToken });
       isRefresh.set(true);
     } catch (error) {
       console.log("리프레시 토큰 비정상")
