@@ -1,7 +1,7 @@
 <script>
   import Button from '@smui/button';
   import { onMount } from 'svelte';
-  import { userStore } from '../../stores/userStore';
+  import { userStore } from '../../store/admin';
 
   export let userId;
   let orders = [];
@@ -52,7 +52,10 @@
             <td>{order.addressDetail}</td>
             <td>{order.totalPrice}</td>
             <td>
-              <Button variant="raised" on:click={() => showOrderDetails(order.id)}>상세</Button>
+              <Button
+                variant="raised"
+                on:click={() => showOrderDetails(order.id)}>상세</Button
+              >
             </td>
           </tr>
         {/each}

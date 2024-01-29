@@ -2,10 +2,10 @@
   import Button from '@smui/button';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
-  import { isLogin, auth } from '../../store/user';
   import FoodCard from '../../components/food/FoodCard.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
+  import { auth } from '../../store/user';
 
   let ingredients = [{ name: '', unit: 'COUNT' }];
   let unitOptions = ['COUNT', 'G', 'ML'];
@@ -26,7 +26,6 @@
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${$auth}`,
       },
     })
       .then((response) => response.json())
@@ -40,7 +39,7 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
       body: JSON.stringify({
         name: FoodrequestDto.foodname,

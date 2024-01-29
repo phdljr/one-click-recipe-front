@@ -16,7 +16,7 @@
     fetch(HOST + `/api/v1/orders/${orderId}/payments/kakaopay/approve`, {
       method: 'POST',
       headers: {
-        Authorization: getCookie('Authorization'),
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

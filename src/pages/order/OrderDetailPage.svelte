@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
-  import { isLogin, auth } from '../../store/user';
   import HOST from '../../lib/host';
+  import { auth } from '../../store/user';
 
   export let orderId;
 
@@ -13,7 +13,7 @@
     fetch(HOST + `/api/v1/orders/${orderId}`, {
       method: 'GET',
       headers: {
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })
