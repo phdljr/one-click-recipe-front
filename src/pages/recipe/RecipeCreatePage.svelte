@@ -382,6 +382,11 @@
     font-size: large;
   }
 
+  .form-group select option {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+  }
+
   .form-group textarea {
     height: 100px;
   }
@@ -409,10 +414,15 @@
   }
 
   .ingredient-form-group input[type='text'],
-  .ingredient-form-group input[type='number'],
-  .ingredient-form-group select {
+  .ingredient-form-group input[type='number'] {
     flex-grow: 1;
     margin-right: 10px;
+    color: #fff;
+  }
+
+  .ingredient-form-group select option {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
   }
 
   .cooking-steps-title {
