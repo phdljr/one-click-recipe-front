@@ -28,7 +28,7 @@
       <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
     </div>
   {/each}
-  <hr style="width: 100%" />
+  <hr class="hr-100" />
   <span class="span-bold-center">총 {totalPrice.toLocaleString('ko-KR')}원</span
   >
 </div>
@@ -77,7 +77,8 @@
 
   .hr-100 {
     border-top: 1px solid #f1c40f;
-    opacity: 0.7;
+    width: 100%;
     margin-bottom: 20px;
+    opacity: 0.75;
   }
 </style>

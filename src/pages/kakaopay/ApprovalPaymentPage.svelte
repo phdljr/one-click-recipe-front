@@ -40,22 +40,40 @@
   });
 </script>
 
-<div class="text-center">
+<div class="container">
   {#if isSuccess === null}
     <h1>결제 승인 요청중...</h1>
   {:else if isSuccess === true}
     <h1>결제 완료</h1>
-    <h5>결제 금액: {totalPrice}원</h5>
+    <h3>결제 금액: {totalPrice}원</h3>
     <Link to="/"><Button variant="raised">메인 화면으로 돌아가기</Button></Link>
   {:else}
     <h1>결제 실패</h1>
-    <h5>{responseDto.message}</h5>
+    <h3>{responseDto.message}</h3>
     <Link to="/"><Button variant="raised">메인 화면으로 돌아가기</Button></Link>
   {/if}
 </div>
 
 <style>
-  .text-center {
-    text-align: center;
+  @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    font-family: 'East Sea Dokdo', sans-serif !important;
+  }
+
+  h1 {
+    font-size: 150px;
+    color: #dce2f0;
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 80px;
+    color: #dce2f0;
+    margin: 0;
   }
 </style>
