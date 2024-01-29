@@ -1,8 +1,4 @@
 <script>
-  import Button, { Label } from '@smui/button';
-  import Card, { Content, PrimaryAction } from '@smui/card';
-  import Dialog, { Actions } from '@smui/dialog';
-  import Textfield from '@smui/textfield';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
 
@@ -10,6 +6,7 @@
   let open = false;
 
   let reviewUpdateDto = { ...review };
+
   const updateReview = () => {
     fetch(HOST + `/api/v1/reviews/${review.id}`, {
       method: 'PUT',
@@ -24,12 +21,14 @@
           throw response;
         }
         review = reviewUpdateDto;
-        alert('업데이트 완료');
+        alert('리뷰가 성공적으로 업데이트되었습니다.');
+        open = false;
       })
       .catch((error) => {
-        alert('업데이트 실패');
+        alert('리뷰 업데이트에 실패했습니다.');
       });
   };
+
   const deleteReview = () => {
     fetch(HOST + `/api/v1/reviews/${review.id}`, {
       method: 'DELETE',
@@ -38,9 +37,12 @@
         Authorization: $auth.Authorization,
       },
     })
-      .then((res) => location.reload())
+      .then((res) => {
+        alert('리뷰가 성공적으로 삭제되었습니다.');
+        location.reload();
+      })
       .catch((error) => {
-        alert('삭제 실패');
+        alert('리뷰 삭제에 실패했습니다.');
       });
   };
   const handleCloseDialog = (e) => {
@@ -56,25 +58,37 @@
         break;
     }
   };
+
+  function handleCloseOverlay(event) {
+    open = false;
+  }
+
   function rate(rating) {
     reviewUpdateDto.star = rating;
   }
+
+  const filledStarUrl =
+    'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
+  const emptyStarUrl =
+    'https://cdn.builder.io/api/v1/image/assets/TEMP/d7a5988b714f259a29e90b1d5c2adcfea494cab28373dc9e38f2ec8ba4d216a7?';
 </script>
 
-<div class={open ? 'modal open' : 'modal'}>
-  <div class="modal-content">
+<div class={open ? 'modal open' : 'modal'} on:click={handleCloseOverlay}>
+  <div class="modal-content" on:click|stopPropagation>
     <textarea bind:value={reviewUpdateDto.content} placeholder="리뷰"
     ></textarea>
     <div class="rating">
       {#each [1, 2, 3, 4, 5] as n}
-        <button
+        <img
           on:click={() => rate(n)}
-          class={`star ${reviewUpdateDto.star >= n ? 'filled' : ''}`}>★</button
-        >
+          src={n <= reviewUpdateDto.star ? filledStarUrl : emptyStarUrl}
+          class="img"
+          alt="star"
+        />
       {/each}
     </div>
     <div class="modal-actions">
-      <button on:click={updateReview}>저장</button>
+      <button on:click={updateReview}>수정</button>
       <button on:click={deleteReview}>삭제</button>
       <button on:click={() => (open = false)}>취소</button>
     </div>
@@ -86,10 +100,12 @@
     <h2>{review.content}</h2>
     <h3>{review.writer}</h3>
     <h4>
-      {#each [1, 2, 3, 4, 5] as _}
-        {#if _ <= review.star}
-          ★
-        {/if}
+      {#each [1, 2, 3, 4, 5] as n}
+        <img
+          src={n <= review.star ? filledStarUrl : emptyStarUrl}
+          class="review-star-img"
+          alt="star"
+        />
       {/each}
     </h4>
   </div>
@@ -103,7 +119,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
     z-index: 1000;
     align-items: center;
     justify-content: center;
@@ -118,7 +134,8 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-    background-color: rgba(0, 0, 0, 0.6);
+    width: 90%;
+    max-width: 500px;
   }
 
   .modal-actions button {
@@ -129,7 +146,10 @@
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    transition: background-color 0.3s;
+    transition:
+      background-color 0.3s,
+      transform 0.2s;
+    margin: 0 5px;
   }
 
   .modal-actions button:hover {
@@ -137,11 +157,9 @@
     color: #fff;
   }
 
-  .rating .star {
-    color: gold;
-  }
-
-  .rating .star.filled {
-    color: red;
+  .review-star-img {
+    width: 24px;
+    height: auto;
+    margin-right: 5px;
   }
 </style>
