@@ -49,43 +49,73 @@
 </Dialog>
 
 <div class="container">
-  <Textfield
-    variant="outlined"
+  <input
+    class="custom-input"
     type="email"
     bind:value={requestDto.email}
-    label="이메일"
-  ></Textfield>
-  <Textfield
-    variant="outlined"
+    placeholder="이메일"
+  />
+  <input
+    class="custom-input"
     type="text"
     bind:value={requestDto.nickname}
-    label="닉네임"
-  ></Textfield>
-  <Textfield
-    variant="outlined"
+    placeholder="닉네임"
+  />
+  <input
+    class="custom-input"
     type="password"
     bind:value={requestDto.password}
-    label="비밀번호"
-  ></Textfield>
-  <Textfield
-    variant="outlined"
+    placeholder="비밀번호"
+  />
+  <input
+    class="custom-input"
     type="password"
     bind:value={requestDto.confirmPassword}
-    label="비밀번호 확인"
-  ></Textfield>
-
-  <Button variant="raised" on:click={handleSignUp}>회원가입</Button>
+    placeholder="비밀번호 확인"
+  />
+  <button class="login-btn" on:click={handleSignUp}>회원가입</button>
 </div>
 
 <style>
   .container {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
     justify-content: space-around;
-    border-radius: 30px;
+    border-radius: 10px;
     padding: 30px;
-    box-shadow: 2px 5px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    margin: 30px auto;
+  }
+
+  .custom-input {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  .login-btn {
+    font-size: large;
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .login-btn:hover {
+    background-color: #3c3c3c;
+    color: #fff;
   }
 </style>

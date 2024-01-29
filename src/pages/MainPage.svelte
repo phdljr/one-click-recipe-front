@@ -2,17 +2,17 @@
   import { Link } from 'svelte-routing';
 </script>
 
-  <div class="header">
-    <h1>딸깍! 레시피</h1>
-  </div>
-  <div class="navigation">
-    <Link to="/recipes"><button>레시피 보러 가기</button></Link>
-    <Link to="/login"><button>로그인</button></Link>
-    <Link to="/signup"><button>회원가입</button></Link>
-    <Link to="/mypage"><button>마이페이지</button></Link>
-    <Link to="/admin"><button>관리자페이지</button></Link>
-    <!-- <LogoutButton /> -->
-  </div>
+<div class="header">
+  <h1>딸깍! 레시피</h1>
+</div>
+<div class="navigation">
+  <Link to="/recipes"><button>레시피 보러 가기</button></Link>
+  <Link to="/login"><button>로그인</button></Link>
+  <Link to="/signup"><button>회원가입</button></Link>
+  <Link to="/mypage"><button>마이페이지</button></Link>
+  <Link to="/admin"><button>관리자페이지</button></Link>
+  <!-- <LogoutButton /> -->
+</div>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
@@ -52,6 +52,7 @@
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s;
+    font-size: large;
   }
 
   button:hover {

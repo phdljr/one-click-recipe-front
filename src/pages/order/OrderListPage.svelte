@@ -10,7 +10,7 @@
     fetch(HOST + '/api/v1/orders', {
       method: 'GET',
       headers: {
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })

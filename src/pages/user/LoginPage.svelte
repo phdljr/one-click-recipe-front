@@ -2,7 +2,6 @@
   import { Label } from '@smui/button';
   import Button from '@smui/button/src/Button.svelte';
   import Dialog, { Actions, Content, Title } from '@smui/dialog/src';
-  import Textfield from '@smui/textfield';
   import { setCookie } from 'svelte-cookie';
   import { navigate } from 'svelte-routing';
   import {

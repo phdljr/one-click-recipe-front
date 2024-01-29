@@ -286,13 +286,15 @@
         value={getUnit(recipeFood)}
       />
       {#if recipeFoodCreateRequestDto.length == index + 1}
-        <button on:click={() => removeRecipeFood(index)}>제거</button>
+        <button class="custom-button" on:click={() => removeRecipeFood(index)}
+          >제거</button
+        >
       {:else}
         <button disabled>제거</button>
       {/if}
     </div>
   {/each}
-  <button on:click={addRecipeFood}>재료 추가</button>
+  <button class="custom-button" on:click={addRecipeFood}>재료 추가</button>
 </div>
 
 <h3 class="cooking-steps-title">조리 순서</h3>
@@ -331,13 +333,13 @@
       </div>
     </div>
   {/each}
-  <button on:click={addRecipeProcess} class="add-step-button"
+  <button on:click={addRecipeProcess} class="custom-button"
     >조리 단계 추가</button
   >
 </div>
 
 <div class="button-container">
-  <Button variant="raised" on:click={createRecipeAll}>등록 완료</Button>
+  <button class="custom-button1" on:click={createRecipeAll}>등록 완료</button>
 </div>
 
 <style>
@@ -375,8 +377,9 @@
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
-    background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: large;
   }
 
   .form-group textarea {
@@ -448,6 +451,13 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     flex: 1;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: large;
+  }
+
+  .ingredient-form-group input[disabled] {
+    color: #fff;
   }
 
   .ingredient-form-group button {
@@ -489,13 +499,16 @@
   }
 
   .cooking-step-form-group .step-description {
-    width: 50%;
+    width: 90%;
+    height: 40px;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
     margin-bottom: 10px;
+    font-size: large;
+    box-sizing: border-box;
   }
 
   .cooking-step-form-group .step-image-upload {
@@ -509,6 +522,9 @@
 
   .cooking-step-form-group .step-image-upload input[type='file'] {
     margin-bottom: 10px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: large;
   }
 
   .cooking-step-form-group .preview-image {
@@ -531,7 +547,61 @@
   }
 
   .cooking-step-form-group .remove-step-button {
-    padding: 10px 15px;
-    border-radius: 4px;
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .cooking-step-form-group .remove-step-button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+
+  .custom-button {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .custom-button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+
+  .custom-button1 {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 20px auto;
+    display: block;
+    width: 150px;
+    height: 50px;
+    font-size: large;
+  }
+
+  .custom-button1:hover {
+    background-color: #3c3c3c;
+    color: #fff;
   }
 </style>
