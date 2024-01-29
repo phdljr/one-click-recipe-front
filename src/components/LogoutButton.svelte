@@ -6,6 +6,8 @@
   const handleLogout = () => {
     deleteCookie(REFRESH_TOKEN);
     auth.clearAccessToken();
+
+    alert('로그아웃 되었습니다.')
   };
 </script>
 
