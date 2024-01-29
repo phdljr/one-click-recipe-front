@@ -1,10 +1,10 @@
 <script>
-  import Textfield from '@smui/textfield';
-  import Dialog, { Actions } from '@smui/dialog';
   import Button, { Label } from '@smui/button';
   import Card, { Content, PrimaryAction } from '@smui/card';
+  import Dialog, { Actions } from '@smui/dialog';
+  import Textfield from '@smui/textfield';
   import HOST from '../../lib/host';
-  import { isLogin, auth } from '../../store/user';
+  import { auth } from '../../store/user';
 
   export let review;
   let open = false;
@@ -15,7 +15,7 @@
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
       body: JSON.stringify(reviewUpdateDto),
     })
@@ -35,7 +35,7 @@
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
     })
       .then((res) => location.reload())

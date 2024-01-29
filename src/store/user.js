@@ -1,20 +1,33 @@
 import { deleteCookie, getCookie } from "svelte-cookie";
-import { derived, writable } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../lib/const/jwt";
 import HOST from "../lib/host";
 
 const setAuth = () => {
-  let Authorization = null;
+  let user = {
+    id: '',
+    nickname: '',
+    email: '',
+    role: '',
+    Authorization: '',
+  };
 
-  const { subscribe, set, update } = writable("");
+  const { subscribe, set, update } = writable({ ...user });
+
+  const login = (responseDto) => {
+    set({ ...responseDto, Authorization: get(auth).Authorization });
+    isRefresh.set(true);
+  }
+
+  const logout = () => set({ ...user });
 
   const setAccessToken = (accessToken) => {
-    set(accessToken);
+    set({ ...get(auth), Authorization: accessToken });
     isRefresh.set(true);
   }
 
   const clearAccessToken = () => {
-    set('');
+    set({ ...get(auth), Authorization: '' });
     isRefresh.set(false);
   }
 
@@ -35,30 +48,31 @@ const setAuth = () => {
       if (response.status >= 400 && response.status < 600) {
         throw response;
       }
-      set(response.headers.get(ACCESS_TOKEN));
+      let accessToken = response.headers.get(ACCESS_TOKEN);
+      let data = await response.json();
+      set({ ...data, Authorization: accessToken });
       isRefresh.set(true);
     } catch (error) {
       console.log("리프레시 토큰 비정상")
-      auth.resetUserInfo();
+      auth.logout();
       // 리프레시 토큰이 비정상 -> 더 이상 refresh 호출 x
       isRefresh.set(false);
       deleteCookie(REFRESH_TOKEN);
     }
   }
 
-  const resetUserInfo = () => set('');
-
   return {
     subscribe,
+    login,
     setAccessToken,
     clearAccessToken,
     refresh,
-    resetUserInfo
+    logout,
   }
 }
 
 const setIsLogin = () => {
-  const checkLogin = derived(auth, $auth => $auth != '' ? true : false);
+  const checkLogin = derived(auth, $auth => $auth.Authorization ? true : false);
   return checkLogin;
 }
 

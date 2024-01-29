@@ -1,7 +1,6 @@
 <script>
   import Button from '@smui/button';
   import { onMount } from 'svelte';
-  import { isLogin, auth } from '../../store/user';
   import { navigate } from 'svelte-routing';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
@@ -11,6 +10,7 @@
     recipeProcessValidate,
     recipeValidate,
   } from '../../lib/validates/recipe-validate';
+  import { auth } from '../../store/user';
 
   let recipeCreateRequestDto = {
     title: '',
@@ -39,7 +39,7 @@
     fetch(HOST + `/api/v1/foods`, {
       method: 'GET',
       headers: {
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })
@@ -189,7 +189,7 @@
     fetch(HOST + `/api/v1/recipes`, {
       method: 'POST',
       headers: {
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
       },
       body: formData,
     })

@@ -42,9 +42,15 @@
 
         auth.setAccessToken(accessToken);
         setCookie(REFRESH_TOKEN, refreshToken, EXPIRATION_DAYS, false);
+        return response.json();
+      })
+      .then((data) => {
+        auth.login(data);
+        console.log($auth);
         navigate('/');
       })
       .catch((error) => {
+        console.log(error);
         open = true;
       });
   };
