@@ -34,6 +34,8 @@
   };
 </script>
 
+<h1>회원 가입</h1>
+
 <Dialog
   bind:open
   aria-labelledby="simple-title"
@@ -77,6 +79,18 @@
 </div>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+
+  h1 {
+    display: flex;
+    color: #dce2f0;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 150px;
+    font-family: 'East Sea Dokdo', sans-serif !important;
+  }
+
   .container {
     display: flex;
     flex-direction: column;
