@@ -29,9 +29,10 @@
           throw response;
         }
         food = foodUpdateDto;
+        alert('식재료가 성공적으로 업데이트되었습니다.');
       })
       .catch((error) => {
-        alert('업데이트 실패');
+        alert('식재료 업데이트에 실패했습니다.');
       });
   };
 
@@ -42,7 +43,14 @@
         'Content-Type': 'application/json',
         Authorization: $auth.Authorization,
       },
-    }).then((res) => location.reload());
+    })
+      .then((res) => {
+        alert('식재료가 성공적으로 삭제되었습니다.');
+        location.reload();
+      })
+      .catch((error) => {
+        alert('식재료 삭제에 실패했습니다.');
+      });
   };
 
   const handleCloseDialog = (e) => {
