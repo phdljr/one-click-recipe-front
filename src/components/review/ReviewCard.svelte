@@ -61,65 +61,87 @@
   }
 </script>
 
-<Dialog
-  bind:open
-  aria-labelledby="simple-title"
-  aria-describedby="simple-content"
-  on:SMUIDialog:closed={handleCloseDialog}
->
-  <Content id="simple-content">
-    <Textfield type="text" bind:value={reviewUpdateDto.content} label="리뷰"
-    ></Textfield>
-  </Content>
-  <div class="rating">
-    {#each [1, 2, 3, 4, 5] as n}
-      <button
-        on:click={() => rate(n)}
-        class="star {reviewUpdateDto.star >= n ? 'filled' : ''}">★</button
-      >
-    {/each}
-  </div>
-  <Actions>
-    <div class="btn-container">
-      <Button action="delete">
-        <Label><span class="text-red">삭제</span></Label>
-      </Button>
-      <span>
-        <Button action="save">
-          <Label>저장</Label>
-        </Button>
-        <Button action="cancel">
-          <Label>취소</Label>
-        </Button>
-      </span>
-    </div>
-  </Actions>
-</Dialog>
-
-<div class="container">
-  <Card>
-    <PrimaryAction on:click={() => (open = !open)}>
-      <Content class="mdc-typography--body2">
-        <h2 class="mdc-typography--headline6" style="margin: 0;">
-          {review.content}
-        </h2>
-        <h3
-          class="mdc-typography--subtitle2"
-          style="margin: 0 0 10px; color: #888;"
+<div class={open ? 'modal open' : 'modal'}>
+  <div class="modal-content">
+    <textarea bind:value={reviewUpdateDto.content} placeholder="리뷰"
+    ></textarea>
+    <div class="rating">
+      {#each [1, 2, 3, 4, 5] as n}
+        <button
+          on:click={() => rate(n)}
+          class={`star ${reviewUpdateDto.star >= n ? 'filled' : ''}`}>★</button
         >
-          {review.writer}
-        </h3>
-        <h4>
-          {#each [1, 2, 3, 4, 5] as _}
-            {#if _ <= review.star}
-              ★
-            {/if}
-          {/each}
-        </h4>
-      </Content>
-    </PrimaryAction>
-  </Card>
+      {/each}
+    </div>
+    <div class="modal-actions">
+      <button on:click={updateReview}>저장</button>
+      <button on:click={deleteReview}>삭제</button>
+      <button on:click={() => (open = false)}>취소</button>
+    </div>
+  </div>
+</div>
+
+<div class="review-card">
+  <div on:click={() => (open = !open)}>
+    <h2>{review.content}</h2>
+    <h3>{review.writer}</h3>
+    <h4>
+      {#each [1, 2, 3, 4, 5] as _}
+        {#if _ <= review.star}
+          ★
+        {/if}
+      {/each}
+    </h4>
+  </div>
 </div>
 
 <style>
+  .modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal.open {
+    display: flex;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-actions button {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .modal-actions button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+
+  .rating .star {
+    color: gold;
+  }
+
+  .rating .star.filled {
+    color: red;
+  }
 </style>
