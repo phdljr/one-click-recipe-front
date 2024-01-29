@@ -56,6 +56,8 @@
   };
 </script>
 
+<h1>레시피 목록</h1>
+
 <Link to="/recipe-create"><button>레시피 등록</button></Link>
 
 {#if recipes.length !== 0}
@@ -71,6 +73,18 @@
 {/if}
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+
+  h1 {
+    display: flex;
+    color: #dce2f0;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 150px;
+    font-family: 'East Sea Dokdo', sans-serif !important;
+  }
+
   button {
     background-color: #dce2f0;
     color: #331b3f;
