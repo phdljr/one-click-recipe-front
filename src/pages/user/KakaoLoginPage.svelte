@@ -34,7 +34,6 @@
       })
       .then((data) => {
         auth.login(data);
-        console.log($auth);
         navigate('/');
       })
       .catch((error) => {

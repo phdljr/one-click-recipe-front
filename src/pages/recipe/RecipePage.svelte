@@ -188,14 +188,15 @@
     <br />
   </div>
 </div>
-{#if reviews.length !== 0}
-  {#each reviews as review (review.id)}
-    <div><ReviewCard {review} /></div>
-  {/each}
-{:else}
-  <h1>등록된 댓글이 없습니다.</h1>
-{/if}
-<h1>{recipeId}</h1>
+<div class="container-review">
+  {#if reviews.length !== 0}
+    {#each reviews as review (review.id)}
+      <ReviewCard {review} />
+    {/each}
+  {:else}
+    <h1>등록된 댓글이 없습니다.</h1>
+  {/if}
+</div>
 <div class="comment-box">
   <div class="rating">
     {#each [1, 2, 3, 4, 5] as n}
@@ -304,5 +305,9 @@
 
   .comment {
     margin-bottom: 10px;
+  }
+
+  .container-review {
+    width: 1200px;
   }
 </style>

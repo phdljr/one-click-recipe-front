@@ -1,7 +1,6 @@
 <script>
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
-  import { Link } from 'svelte-routing';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
   import { auth, isLogin } from '../../store/user';
@@ -55,8 +54,6 @@
     }
   };
 </script>
-
-<Link to="/recipe-create"><button>레시피 등록</button></Link>
 
 {#if recipes.length !== 0}
   <LayoutGrid fixedColumnWidth>
