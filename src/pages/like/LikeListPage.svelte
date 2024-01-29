@@ -70,3 +70,17 @@
 {:else}
   <p>좋아요 누른 레시피가 없습니다.</p>
 {/if}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+
+  h1 {
+    display: flex;
+    color: #dce2f0;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 150px;
+    font-family: 'East Sea Dokdo', sans-serif !important;
+  }
+</style>

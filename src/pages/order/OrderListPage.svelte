@@ -46,20 +46,55 @@
 
 <style>
   .content-wrapper {
-    width: 1000px;
-    margin: auto;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    border-radius: 10px;
     padding: 20px;
-    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0.9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+    margin: 30px auto;
   }
 
   .order-list {
-    max-width: 800px;
-    margin: auto;
+    width: 1000px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .order-item {
-    border-bottom: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #eaeaea;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .order-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+  }
+
+  .order-item button {
+    font-size: large;
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .order-item button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
   }
 </style>

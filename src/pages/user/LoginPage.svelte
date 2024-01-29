@@ -2,7 +2,6 @@
   import { Label } from '@smui/button';
   import Button from '@smui/button/src/Button.svelte';
   import Dialog, { Actions, Content, Title } from '@smui/dialog/src';
-  import Textfield from '@smui/textfield';
   import { setCookie } from 'svelte-cookie';
   import { navigate } from 'svelte-routing';
   import {
@@ -60,6 +59,8 @@
   };
 </script>
 
+<h1>로그인</h1>
+
 <Dialog
   bind:open
   aria-labelledby="simple-title"
@@ -76,27 +77,39 @@
 
 <div class="container">
   <div class="wrapper">
-    <Textfield
-      variant="outlined"
+    <input
+      class="custom-input"
       type="email"
       bind:value={requestDto.email}
-      label="이메일"
-    ></Textfield>
-    <Textfield
-      variant="outlined"
+      placeholder="이메일"
+    />
+    <input
+      class="custom-input"
       type="password"
       bind:value={requestDto.password}
-      label="비밀번호"
-    ></Textfield>
-    <Button variant="raised" on:click={handleLogin}>로그인</Button>
+      placeholder="비밀번호"
+    />
+    <button class="login-btn" on:click={handleLogin}>로그인</button>
   </div>
   <hr class="hr-100" />
   <div class="reg-wrapper">
-    <Button class="kakao-btn" on:click={handleKakaoLogin}>카카오 로그인</Button>
+    <button class="kakao-btn" on:click={handleKakaoLogin}>카카오 로그인</button>
   </div>
 </div>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+
+  h1 {
+    display: flex;
+    color: #dce2f0;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 150px;
+    font-family: 'East Sea Dokdo', sans-serif !important;
+  }
+
   .hr-100 {
     width: 100%;
   }
@@ -104,22 +117,75 @@
     display: flex;
     flex-direction: column;
   }
+
   .container {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    height: 200px;
+    width: 500px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
     justify-content: space-around;
-    border-radius: 30px;
+    border-radius: 10px;
     padding: 30px;
-    box-shadow: 2px 5px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    margin: 30px auto;
   }
-  .wrapper {
+
+  .login-btn {
+    font-size: large;
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .login-btn:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+
+  .wrapper,
+  .reg-wrapper {
     display: flex;
     flex-direction: column;
+    gap: 20px;
   }
+
+  .hr-100 {
+    border-top: 1px solid #f1c40f;
+    margin: 20px 0;
+    opacity: 0.75;
+  }
+
+  .custom-input {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1rem;
+  }
+
   * :global(.kakao-btn) {
+    font-size: large;
     color: black;
     background-color: #fee500;
+    font-weight: bold;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  * :global(.kakao-btn:hover) {
+    background-color: #f7e600;
   }
 </style>

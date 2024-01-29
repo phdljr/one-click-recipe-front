@@ -151,19 +151,11 @@
         console.log(error);
       });
   };
-  // const getAllReview = () => {
-  //   fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       reviews = data;
-  //     });
-  // };
+
+  const filledStarUrl =
+    'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
+  const emptyStarUrl =
+    'https://cdn.builder.io/api/v1/image/assets/TEMP/d7a5988b714f259a29e90b1d5c2adcfea494cab28373dc9e38f2ec8ba4d216a7?';
 </script>
 
 <div class="container-recipe">
@@ -187,32 +179,6 @@
     <hr class="hr-100" />
     <br />
   </div>
-</div>
-<div class="container-review">
-  {#if reviews.length !== 0}
-    {#each reviews as review (review.id)}
-      <ReviewCard {review} />
-    {/each}
-  {:else}
-    <h1>등록된 댓글이 없습니다.</h1>
-  {/if}
-</div>
-<div class="comment-box">
-  <div class="rating">
-    {#each [1, 2, 3, 4, 5] as n}
-      <button
-        on:click={() => rate(n)}
-        class="star {reviewDto.star >= n ? 'filled' : ''}">★</button
-      >
-    {/each}
-  </div>
-  <div class="mood">
-    <textarea bind:value={reviewDto.content} placeholder="댓글을 입력하세요..."
-    ></textarea>
-    <Button class="best" on:click={createReview} variant="raised"
-      >댓글 작성</Button
-    >
-  </div>
   {#if comments.length > 0}
     <div class="comments">
       <h3>댓글:</h3>
@@ -220,6 +186,38 @@
         <div class="comment">{index + 1}: {text} ({rating} / 5)</div>
       {/each}
     </div>
+  {/if}
+
+  <div class="comment-section">
+    <div class="comment-input-container">
+      <textarea
+        bind:value={reviewDto.content}
+        placeholder="댓글을 입력하세요..."
+      ></textarea>
+    </div>
+    <div class="comment-actions-container">
+      <div class="rating">
+        {#each [1, 2, 3, 4, 5] as n}
+          <img
+            src={n <= reviewDto.star ? filledStarUrl : emptyStarUrl}
+            class="img"
+            alt="star"
+            on:click={() => rate(n)}
+          />
+        {/each}
+      </div>
+      <Button on:click={createReview} class="buy-button2" variant="raised"
+        >댓글 작성</Button
+      >
+    </div>
+  </div>
+
+  {#if reviews.length !== 0}
+    {#each reviews as review (review.id)}
+      <div><ReviewCard {review} /></div>
+    {/each}
+  {:else}
+    <h1>등록된 댓글이 없습니다.</h1>
   {/if}
 </div>
 
@@ -233,13 +231,40 @@
     width: 50%;
     height: 50px;
     font-size: large;
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
   }
-  * :global(.mood) {
-    display: flex;
+
+  :global(.buy-button:hover) {
+    background-color: #3c3c3c;
+    color: #fff;
   }
-  * :global(.best) {
-    width: 120px;
-    height: 50px;
+
+  * :global(.buy-button2) {
+    font-size: large;
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  :global(.buy-button2:hover) {
+    background-color: #3c3c3c;
+    color: #fff;
   }
 
   .recipe-title {
@@ -248,66 +273,107 @@
 
   .recipe-intro {
     text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
   }
 
   .hr-100 {
+    border-top: 1px solid #f1c40f;
     width: 100%;
+    margin-bottom: 20px;
+    opacity: 0.75;
   }
 
   .container-recipe {
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     width: 1200px;
-    border-radius: 30px;
-    padding: 30px;
-    box-shadow: 2px 5px 10px;
-    margin: 30px 30px;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0.9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+    margin: 30px auto;
+  }
+
+  .recipe-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
   }
 
   .container-flex {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .star {
-    background-color: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  .star.filled {
-    color: gold;
-  }
-  .comment-box {
-    width: 80%;
-    margin: 0 auto;
+    margin-bottom: 20px;
   }
 
   textarea {
-    width: 100%;
-    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 95%;
+    height: 100px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 12px;
+    resize: none;
+    font-size: 1rem;
+    font-family: 'Open Sans', sans-serif;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
   .rating {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
     margin-bottom: 10px;
-    text-align: center;
   }
 
-  .star {
-    font-size: 24px;
+  .img {
+    aspect-ratio: 1.05;
+    object-fit: contain;
+    object-position: center;
+    width: 24px;
     cursor: pointer;
-    margin-right: -4px;
+    transition: transform 0.3s ease;
+  }
+
+  .img:hover {
+    transform: scale(1.5);
+  }
+
+  .comment-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .comment-input-container {
+    flex-grow: 2;
+    margin-right: 20px;
   }
 
   .comments {
-    width: 100%;
+    background-color: #333;
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
   }
 
   .comment {
-    margin-bottom: 10px;
+    border-bottom: 1px solid #474747;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
   }
 
-  .container-review {
-    width: 1200px;
+  .comment:last-child {
+    border-bottom: none;
   }
 </style>

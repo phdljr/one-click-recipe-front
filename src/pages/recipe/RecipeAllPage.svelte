@@ -55,6 +55,8 @@
   };
 </script>
 
+<h1>레시피 목록</h1>
+
 {#if recipes.length !== 0}
   <LayoutGrid fixedColumnWidth>
     {#each recipes as recipe (recipe.id)}
@@ -66,3 +68,35 @@
 {:else}
   <h1>등록된 레시피가 없습니다.</h1>
 {/if}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+
+  h1 {
+    display: flex;
+    color: #dce2f0;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 150px;
+    font-family: 'East Sea Dokdo', sans-serif !important;
+  }
+
+  button {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+</style>

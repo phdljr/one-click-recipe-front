@@ -37,9 +37,13 @@
       if (!response.ok) {
         throw new Error('Failed to update like status');
       }
+
+      alert(liked ? '좋아요를 눌렀습니다.' : '좋아요를 취소했습니다.');
     } catch (error) {
       console.error('Error updating like status:', error);
       liked = !liked;
+
+      alert('좋아요 상태를 변경하는 데 실패했습니다.');
     }
   }
 </script>
