@@ -24,30 +24,4 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-
-  .navigation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-
-  button {
-    background-color: #dce2f0;
-    color: #331b3f;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    font-size: large;
-  }
-
-  button:hover {
-    background-color: #3c3c3c;
-    color: #fff;
-  }
 </style>

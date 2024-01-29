@@ -83,11 +83,13 @@
             <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/3d9f7600f50823d72baaf50d03574a80c82377d898f89bc9faa5a053366b95c0?"
               class="like-img"
+              alt=""
             />
           {:else}
             <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ff117ff108af49770015cb69ac2d18bf764d4ea8da4cbfd81705a20ed6664f1?"
               class="like-img"
+              alt=""
             />
           {/if}
         </button>
