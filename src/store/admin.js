@@ -1,5 +1,5 @@
-import { writable } from 'svelte/store';
-import { getCookie } from 'svelte-cookie';
+import { get, writable } from 'svelte/store';
+import { auth } from './user';
 const HOST = 'http://localhost:8080';
 
 function createUserStore() {
@@ -11,7 +11,7 @@ function createUserStore() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: getCookie('Authorization'),
+          Authorization: get(auth).Authorization,
         },
       });
 
@@ -39,7 +39,7 @@ function createUserStore() {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: getCookie('Authorization'),
+            Authorization: get(auth).Authorization,
           },
           body: JSON.stringify({ role: newRole }),
         },
@@ -71,7 +71,7 @@ function createUserStore() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: getCookie('Authorization'),
+            Authorization: get(auth).Authorization,
           },
         },
       );
@@ -102,7 +102,7 @@ function createUserStore() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: getCookie('Authorization'),
+            Authorization: get(auth).Authorization,
           },
         },
       );

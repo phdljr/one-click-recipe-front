@@ -32,7 +32,7 @@
                 {
                   headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `${$auth}`,
+                    Authorization: $auth.Authorization,
                   },
                 },
               );

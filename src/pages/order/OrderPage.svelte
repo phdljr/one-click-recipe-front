@@ -1,9 +1,9 @@
 <script>
   import { onMount } from 'svelte';
-  import { isLogin, auth } from '../../store/user';
   import PayButton from '../../components/pay/PayButton.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
+  import { auth } from '../../store/user';
 
   let products = [];
   let totalProductPrice = 0;
@@ -18,8 +18,6 @@
     requirement: '',
   };
 
-  $: console.log(requestDto);
-
   onMount(() => {
     getCarts();
   });
@@ -28,13 +26,12 @@
     fetch(HOST + '/api/v1/carts', {
       method: 'GET',
       headers: {
-        Authorization: `${$auth}`,
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         totalProductPrice = data.totalPrice;
         products = data.foods;
         products.map((product) => {
