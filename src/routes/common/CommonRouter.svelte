@@ -7,9 +7,11 @@
   import NotFoundPage from '../../pages/error/NotFoundPage.svelte';
   import RecipeAllPage from '../../pages/recipe/RecipeAllPage.svelte';
   import RecipePage from '../../pages/recipe/RecipePage.svelte';
+  import KakaoLoginPage from '../../pages/user/KakaoLoginPage.svelte';
 </script>
 
 <Route path="/" component={MainPage} />
 <Route path="/recipes" component={RecipeAllPage} />
 <Route path="/recipes/:recipeId" component={RecipePage} />
+<Route path="/login/kakao" component={KakaoLoginPage} />
 <Route component={NotFoundPage} />

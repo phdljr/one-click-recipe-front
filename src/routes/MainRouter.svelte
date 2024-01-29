@@ -6,11 +6,23 @@
   import LoginRouter from './login/LoginRouter.svelte';
 </script>
 
-<Router>
-  <CommonRouter />
-  {#if $isLogin}
-    <LoginRouter />
-  {:else}
-    <GuestRouter />
-  {/if}
-</Router>
+<div class="container">
+  <Router>
+    <CommonRouter />
+    {#if $isLogin}
+      <LoginRouter />
+    {:else}
+      <GuestRouter />
+    {/if}
+  </Router>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

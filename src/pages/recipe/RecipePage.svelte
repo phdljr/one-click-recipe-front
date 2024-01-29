@@ -151,19 +151,7 @@
         console.log(error);
       });
   };
-  // const getAllReview = () => {
-  //   fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       reviews = data;
-  //     });
-  // };
+
   const filledStarUrl =
     'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
   const emptyStarUrl =
@@ -211,14 +199,16 @@
       <div class="rating">
         {#each [1, 2, 3, 4, 5] as n}
           <img
-            on:click={() => rate(n)}
             src={n <= reviewDto.star ? filledStarUrl : emptyStarUrl}
             class="img"
             alt="star"
+            on:click={() => rate(n)}
           />
         {/each}
       </div>
-      <Button on:click={createReview} class="buy-button2" variant="raised">댓글 작성</Button>
+      <Button on:click={createReview} class="buy-button2" variant="raised"
+        >댓글 작성</Button
+      >
     </div>
   </div>
 
@@ -301,7 +291,8 @@
     width: 1200px;
     border-radius: 10px;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.6); opacity : 0.9;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0.9;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
     margin: 30px auto;
   }

@@ -12,11 +12,11 @@
   import MyPage from '../../pages/user/MyPage.svelte';
 </script>
 
+<Route path="/recipe-create" component={RecipeCreatePage} />
 <Route path="/order" component={OrderPage} />
-<Route path="/order-list" component={OrderListPage} />
 <Route path="/order-detail/:orderId" component={OrderDetailPage} />
 <Route path="/mypage" component={MyPage} />
-<Route path="/recipe-create" component={RecipeCreatePage} />
+<Route path="/mypage/order-list" component={OrderListPage} />
 <Route path="/mypage/like-list" component={LikeListPage} />
 <Route
   path="/orders/:orderId/payment/kakao/approve"

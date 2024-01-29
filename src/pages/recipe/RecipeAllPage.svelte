@@ -1,7 +1,6 @@
 <script>
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
-  import { Link } from 'svelte-routing';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
   import { auth, isLogin } from '../../store/user';
@@ -58,8 +57,6 @@
 
 <h1>레시피 목록</h1>
 
-<Link to="/recipe-create"><button>레시피 등록</button></Link>
-
 {#if recipes.length !== 0}
   <LayoutGrid fixedColumnWidth>
     {#each recipes as recipe (recipe.id)}
@@ -83,23 +80,5 @@
     margin: 0;
     font-size: 150px;
     font-family: 'East Sea Dokdo', sans-serif !important;
-  }
-
-  button {
-    background-color: #dce2f0;
-    color: #331b3f;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-
-  button:hover {
-    background-color: #3c3c3c;
-    color: #fff;
   }
 </style>

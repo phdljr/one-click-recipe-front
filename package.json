@@ -15,6 +15,8 @@
     "@smui/card": "^7.0.0-beta.16",
     "@smui/checkbox": "^7.0.0-beta.16",
     "@smui/dialog": "^7.0.0-beta.16",
+    "@smui/drawer": "^7.0.0-beta.16",
+    "@smui/icon-button": "^7.0.0-beta.16",
     "@smui/layout-grid": "^7.0.0-beta.16",
     "@smui/list": "^7.0.0-beta.16",
     "@smui/radio": "^7.0.0-beta.16",

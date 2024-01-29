@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { REFRESH_TIME } from './lib/const/jwt';
 
+  import NavDrawer from './components/nav/NavDrawer.svelte';
   import MainRouter from './routes/MainRouter.svelte';
   import { auth, isRefresh } from './store/user';
   // refresh 요청 반복적으로 보내는 작업
@@ -23,6 +24,7 @@
   사용자의 역할과 로그인/비로그인 상태에 따라 화면을 달리 보여줄 필요가 있음
   해당 서비스는 로그인과 비로그인으로 나뉘며, 로그인에서는 일반 유저와 관리자로 나뉨
  -->
+<NavDrawer />
 <MainRouter />
 
 <!-- <Router>
