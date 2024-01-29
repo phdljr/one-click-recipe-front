@@ -5,6 +5,7 @@
   import { Link } from 'svelte-routing';
   import HOST from '../../lib/host';
   import getParam from '../../lib/query-string';
+  import { auth } from '../../store/user';
 
   export let orderId;
 

@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte';
-  import { isLogin, auth } from '../../store/user';
   import { Link } from 'svelte-routing';
   import HOST from '../../lib/host';
+  import { auth } from '../../store/user';
 
   let orders = [];
 

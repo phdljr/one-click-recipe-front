@@ -1,28 +1,8 @@
 <script>
   import { onMount } from 'svelte';
-  import { Route, Router } from 'svelte-routing';
   import { REFRESH_TIME } from './lib/const/jwt';
-  import MainPage from './pages/MainPage.svelte';
-  import AdminPage from './pages/admin/AdminPage.svelte';
-  import NotFoundPage from './pages/error/NotFoundPage.svelte';
-  import FoodAllPage from './pages/food/FoodAllPage.svelte';
-  import ApprovalPaymentPage from './pages/kakaopay/ApprovalPaymentPage.svelte';
-  import CancelPaymentPage from './pages/kakaopay/CancelPaymentPage.svelte';
-  import FailPaymentPage from './pages/kakaopay/FailPaymentPage.svelte';
-  import OrderDetailPage from './pages/order/OrderDetailPage.svelte';
-  import OrderListPage from './pages/order/OrderListPage.svelte';
-  import OrderPage from './pages/order/OrderPage.svelte';
-  import RecipeAllPage from './pages/recipe/RecipeAllPage.svelte';
-  import RecipeCreatePage from './pages/recipe/RecipeCreatePage.svelte';
-  import RecipePage from './pages/recipe/RecipePage.svelte';
-  import KakaoLoginPage from './pages/user/KakaoLoginPage.svelte';
-  import LoginPage from './pages/user/LoginPage.svelte';
-  import MyPage from './pages/user/MyPage.svelte';
-  import SignUpPage from './pages/user/SignUpPage.svelte';
-  import LikeListPage from './pages/like/LikeListPage.svelte';
 
-  import AdminUsersPage from './pages/admin/AdminUsersPage.svelte';
-  import AdminOrdersPage from './pages/admin/AdminOrdersPage.svelte'
+  import MainRouter from './routes/MainRouter.svelte';
   import { auth, isRefresh } from './store/user';
   // refresh 요청 반복적으로 보내는 작업
   // 해당 컴포넌트가 mount되기 전에 실행되는 함수
@@ -37,7 +17,15 @@
   });
 </script>
 
-<Router>
+<!-- 
+  라우터
+  주소창에 URL을 입력 시, 정해진 컴포넌트에 접근할 수 있게 해주는 역할(필터같은 역할).
+  사용자의 역할과 로그인/비로그인 상태에 따라 화면을 달리 보여줄 필요가 있음
+  해당 서비스는 로그인과 비로그인으로 나뉘며, 로그인에서는 일반 유저와 관리자로 나뉨
+ -->
+<MainRouter />
+
+<!-- <Router>
   <Route path="/" component={MainPage} />
   <Route path="/login" component={LoginPage} />
   <Route path="/login/kakao" component={KakaoLoginPage} />
@@ -61,4 +49,4 @@
   <Route path="/payment/kakao/cancel" component={CancelPaymentPage} />
   <Route path="/payment/kakao/fail" component={FailPaymentPage} />
   <Route component={NotFoundPage} />
-</Router>
+</Router> -->

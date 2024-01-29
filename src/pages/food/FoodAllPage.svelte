@@ -26,6 +26,7 @@
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: $auth.Authorization,
       },
     })
       .then((response) => response.json())
@@ -34,6 +35,7 @@
         foods = data;
       });
   };
+
   const createFood = () => {
     fetch(HOST + '/api/v1/admin/foods/create-food', {
       method: 'POST',

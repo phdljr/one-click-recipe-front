@@ -1,9 +1,5 @@
-const ACCESS_TOKEN = "Access-Token";
-const REFRESH_TOKEN = "Refresh-Token";
-const EXPIRATION_DAYS = 14;
-const REFRESH_TIME = 1000 * 60 * 14;
-
-export {
-  ACCESS_TOKEN, EXPIRATION_DAYS, REFRESH_TIME, REFRESH_TOKEN
-};
+export const ACCESS_TOKEN = "Access-Token";
+export const REFRESH_TOKEN = "Refresh-Token";
+export const EXPIRATION_DAYS = 14;
+export const REFRESH_TIME = 1000 * 60 * 14;
 
