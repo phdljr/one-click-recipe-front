@@ -1,5 +1,4 @@
 <script>
-  import Button from '@smui/button';
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
   import convert from '../../lib/conv-unit';
@@ -102,6 +101,8 @@
         previewImage.src = e.target.result;
       };
       reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      previewImage.src = '';
     }
   };
 
@@ -305,7 +306,7 @@
       <div class="step-number">{index + 1}</div>
       <div class="step-content">
         <textarea
-          class="step-description"
+          class="step-description auto-expand-textarea"
           placeholder="조리 과정 설명"
           bind:value={recipeProcess.description}
         ></textarea>
@@ -322,6 +323,15 @@
             class="preview-image"
           />
         {/if}
+
+        <img
+          id={`preview-image-${index}`}
+          class="preview-image"
+          src=""
+          alt={`미리 보기 ${index + 1}`}
+        />
+      </div>
+      <div class="step-remove-button">
         {#if recipeProcessCreateRequestDto.length == index + 1}
           <button
             on:click={() => removeRecipeProcess(index)}
@@ -333,9 +343,11 @@
       </div>
     </div>
   {/each}
-  <button on:click={addRecipeProcess} class="custom-button"
-    >조리 단계 추가</button
-  >
+  <div class="add-step-button">
+    <button on:click={addRecipeProcess} class="custom-button"
+      >조리 단계 추가</button
+    >
+  </div>
 </div>
 
 <div class="button-container">
@@ -382,6 +394,11 @@
     font-size: large;
   }
 
+  .form-group select option {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+  }
+
   .form-group textarea {
     height: 100px;
   }
@@ -409,10 +426,15 @@
   }
 
   .ingredient-form-group input[type='text'],
-  .ingredient-form-group input[type='number'],
-  .ingredient-form-group select {
+  .ingredient-form-group input[type='number'] {
     flex-grow: 1;
     margin-right: 10px;
+    color: #fff;
+  }
+
+  .ingredient-form-group select option {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
   }
 
   .cooking-steps-title {
@@ -489,6 +511,12 @@
     flex-direction: row;
   }
 
+  .auto-expand-textarea {
+    min-height: 40px;
+    overflow-y: hidden;
+    resize: none;
+  }
+
   .cooking-step-form-group .step-content {
     flex: 0.7;
   }
@@ -500,7 +528,7 @@
 
   .cooking-step-form-group .step-description {
     width: 90%;
-    height: 40px;
+    height: 150px;
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ddd;
@@ -528,8 +556,8 @@
   }
 
   .cooking-step-form-group .preview-image {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 4px;
     display: block;
