@@ -93,7 +93,16 @@
   };
 
   const handleSelectRecipeProcessImage = (event, index) => {
-    recipeProcessCreateImage[index] = event.target.files[0];
+    const fileInput = event.target;
+    const previewImage = document.querySelector(`#preview-image-${index}`);
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
   };
 
   const handleSelectRecipeImage = (e) => {
@@ -277,13 +286,15 @@
         value={getUnit(recipeFood)}
       />
       {#if recipeFoodCreateRequestDto.length == index + 1}
-        <button on:click={() => removeRecipeFood(index)}>제거</button>
+        <button class="custom-button" on:click={() => removeRecipeFood(index)}
+          >제거</button
+        >
       {:else}
         <button disabled>제거</button>
       {/if}
     </div>
   {/each}
-  <button on:click={addRecipeFood}>재료 추가</button>
+  <button class="custom-button" on:click={addRecipeFood}>재료 추가</button>
 </div>
 
 <h3 class="cooking-steps-title">조리 순서</h3>
@@ -292,11 +303,13 @@
   {#each recipeProcessCreateRequestDto as recipeProcess, index (recipeProcess)}
     <div class="cooking-step-form-group">
       <div class="step-number">{index + 1}</div>
-      <textarea
-        class="step-description"
-        placeholder="조리 과정 설명"
-        bind:value={recipeProcess.description}
-      ></textarea>
+      <div class="step-content">
+        <textarea
+          class="step-description"
+          placeholder="조리 과정 설명"
+          bind:value={recipeProcess.description}
+        ></textarea>
+      </div>
       <div class="step-image-upload">
         <input
           type="file"
@@ -309,40 +322,40 @@
             class="preview-image"
           />
         {/if}
+        {#if recipeProcessCreateRequestDto.length == index + 1}
+          <button
+            on:click={() => removeRecipeProcess(index)}
+            class="remove-step-button">제거</button
+          >
+        {:else}
+          <button disabled class="remove-step-button">제거</button>
+        {/if}
       </div>
-
-      {#if recipeProcessCreateRequestDto.length == index + 1}
-        <button
-          on:click={() => removeRecipeProcess(index)}
-          class="remove-step-button">제거</button
-        >
-      {:else}
-        <button disabled class="remove-step-button">제거</button>
-      {/if}
     </div>
   {/each}
-  <button on:click={addRecipeProcess} class="add-step-button"
+  <button on:click={addRecipeProcess} class="custom-button"
     >조리 단계 추가</button
   >
 </div>
 
 <div class="button-container">
-  <Button variant="raised" on:click={createRecipeAll}>등록 완료</Button>
+  <button class="custom-button1" on:click={createRecipeAll}>등록 완료</button>
 </div>
 
 <style>
   .recipe-title {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: #fff;
+    font-size: 2.5rem;
   }
 
   .recipe-form {
-    width: 1000px;
-    margin: auto;
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    width: 1000px;
+    border-radius: 10px;
   }
 
   .form-group {
@@ -351,42 +364,42 @@
 
   .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.2rem;
   }
 
   .form-group input[type='text'],
+  .form-group input[type='file'],
+  .form-group select,
   .form-group textarea {
-    width: 98%;
+    width: 95%;
     padding: 10px;
-    border: 1px solid #ddd;
     border-radius: 4px;
+    border: 1px solid #ddd;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: large;
   }
 
   .form-group textarea {
-    height: 100px; /* 조절 가능 */
-  }
-
-  .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
+    height: 100px;
   }
 
   .ingredients-title {
     text-align: center;
+    color: #fff;
+    font-size: 2rem;
+    margin-top: 40px;
     margin-bottom: 20px;
   }
 
   .ingredients-form {
-    width: 1000px;
-    margin: auto;
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin: 0 auto;
+    width: 1000px;
+    border-radius: 10px;
   }
 
   .ingredient-form-group {
@@ -398,11 +411,53 @@
   .ingredient-form-group input[type='text'],
   .ingredient-form-group input[type='number'],
   .ingredient-form-group select {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+
+  .cooking-steps-title {
+    text-align: center;
+    color: #fff;
+    font-size: 2rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  .cooking-steps-form {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    margin: 0 auto;
+    width: 1000px;
+    border-radius: 10px;
+  }
+
+  .cooking-step-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .cooking-step-form-group .step-number {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .ingredient-form-group input[type='text'],
+  .ingredient-form-group input[type='number'],
+  .ingredient-form-group select {
     margin-right: 10px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     flex: 1;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: large;
+  }
+
+  .ingredient-form-group input[disabled] {
+    color: #fff;
   }
 
   .ingredient-form-group button {
@@ -410,85 +465,143 @@
     border-radius: 4px;
   }
 
+  /* 조리 순서 */
+
   .cooking-steps-title {
     text-align: center;
+    color: #fff;
+    font-size: 2rem;
+    margin-top: 40px;
     margin-bottom: 20px;
   }
 
   .cooking-steps-form {
-    width: 1000px;
-    margin: auto;
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin: 0 auto;
+    width: 1000px;
+    border-radius: 10px;
   }
 
   .cooking-step-form-group {
     display: flex;
-    align-items: flex-start;
     margin-bottom: 20px;
+    flex-direction: row;
   }
 
-  .step-number {
-    font-size: 1.5em;
-    margin-right: 20px;
+  .cooking-step-form-group .step-content {
+    flex: 0.7;
   }
 
-  .step-description {
-    flex: 1;
-    margin-right: 20px;
+  .cooking-step-form-group .step-content {
+    flex: 0.9;
+    padding-left: 10px;
+  }
+
+  .cooking-step-form-group .step-description {
+    width: 90%;
+    height: 40px;
     padding: 10px;
-    border: 1px solid #ddd;
     border-radius: 4px;
-    height: 100px;
+    border: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: large;
+    box-sizing: border-box;
   }
 
-  .step-image-upload {
+  .cooking-step-form-group .step-image-upload {
+    flex: 0.2;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
   }
 
-  .step-image-upload input {
+  .cooking-step-form-group .step-image-upload input[type='file'] {
     margin-bottom: 10px;
-  }
-
-  .preview-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-  }
-
-  .remove-step-button,
-  .add-step-button {
-    padding: 10px 15px;
-    border-radius: 4px;
-    margin-left: 20px;
-  }
-
-  .cooking-step-form-group textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    height: 100px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: large;
   }
 
   .cooking-step-form-group .preview-image {
-    width: 200px;
-    margin-bottom: 10px;
-  }
-
-  .add-step-button {
-    padding: 10px 15px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
     border-radius: 4px;
+    display: block;
+    margin-top: 10px;
   }
 
-  .button-container {
+  .cooking-step-form-group .step-image-upload {
+    flex: 0.2;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    margin: 20px;
+    margin-left: 10px;
+    position: relative;
+  }
+
+  .cooking-step-form-group .remove-step-button {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .cooking-step-form-group .remove-step-button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+
+  .custom-button {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .custom-button:hover {
+    background-color: #3c3c3c;
+    color: #fff;
+  }
+
+  .custom-button1 {
+    background-color: #dce2f0;
+    color: #331b3f;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 20px auto;
+    display: block;
+    width: 150px;
+    height: 50px;
+    font-size: large;
+  }
+
+  .custom-button1:hover {
+    background-color: #3c3c3c;
+    color: #fff;
   }
 </style>
