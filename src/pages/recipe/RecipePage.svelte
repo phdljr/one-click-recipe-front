@@ -7,7 +7,7 @@
   import ReviewCard from '../../components/review/ReviewCard.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
-  import { auth } from '../../store/user';
+  import { auth, isLogin } from '../../store/user';
 
   export let recipeId;
 
@@ -165,11 +165,21 @@
   <div class="container-flex">
     <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
     <br />
-    <Button
-      class="buy-button"
-      variant="raised"
-      on:click={handleBuyingRecipeFoods}>재료 구매</Button
-    >
+    {#if $isLogin}
+      <Button
+        class="buy-button"
+        variant="raised"
+        on:click={handleBuyingRecipeFoods}>재료 구매</Button
+      >
+    {:else}
+      <Button
+        class="buy-button"
+        variant="raised"
+        on:click={() =>
+          alert('재료 구매는 로그인한 사용자만 이용할 수 있습니다.')}
+        >재료 구매</Button
+      >
+    {/if}
     <br />
     <hr class="hr-100" />
     <br />
