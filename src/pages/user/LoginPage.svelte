@@ -3,13 +3,17 @@
   import Button from '@smui/button/src/Button.svelte';
   import Dialog, { Actions, Content, Title } from '@smui/dialog/src';
   import { setCookie } from 'svelte-cookie';
-  import { navigate } from 'svelte-routing';
+  import { Link, navigate } from 'svelte-routing';
   import {
     ACCESS_TOKEN,
     EXPIRATION_DAYS,
     REFRESH_TOKEN,
   } from '../../lib/const/jwt.js';
   import HOST from '../../lib/host.js';
+  import {
+    extractErrors,
+    loginValidate,
+  } from '../../lib/validates/login-validate.js';
   import { auth } from '../../store/user.js';
   import { client_id, redirect_uri } from './../../lib/kakao/kakao-login.js';
 
@@ -20,7 +24,18 @@
     password: '',
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    try {
+      await loginValidate.validate(requestDto, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      let errors = extractErrors(error);
+      let message = Object.values(errors).join('\n');
+      alert(message);
+      return;
+    }
+
     fetch(HOST + '/api/v1/users/login', {
       method: 'POST',
       headers: {
@@ -92,6 +107,10 @@
     <button class="login-btn" on:click={handleLogin}>로그인</button>
   </div>
   <hr class="hr-100" />
+  <div class="container-signup">
+    계정이 없으신가요?
+    <Link to="/signup" class="link-signup">회원가입</Link>
+  </div>
   <div class="reg-wrapper">
     <button class="kakao-btn" on:click={handleKakaoLogin}>카카오 로그인</button>
   </div>
@@ -99,6 +118,14 @@
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
+
+  :global(.link-signup) {
+    color: white;
+  }
+
+  .container-signup {
+    text-align: center;
+  }
 
   h1 {
     display: flex;

@@ -2,6 +2,10 @@
   import Button from '@smui/button/src/Button.svelte';
   import { setCookie } from 'svelte-cookie';
   import HOST from '../../lib/host';
+  import {
+    extractErrors,
+    orderValidate,
+  } from '../../lib/validates/order-validate';
   import { auth } from '../../store/user';
 
   export let requestDto;
@@ -9,6 +13,17 @@
   let orderId = null;
 
   const handlePayReady = async () => {
+    try {
+      await orderValidate.validate(requestDto, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      let errors = extractErrors(error);
+      let message = Object.values(errors).join('\n');
+      alert(message);
+      return;
+    }
+
     // 주문 생성
     fetch(HOST + `/api/v1/orders`, {
       method: 'POST',

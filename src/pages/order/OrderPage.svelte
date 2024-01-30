@@ -10,7 +10,7 @@
   let requestDto = {
     senderName: '',
     senderPhoneNumber: '',
-    senderEmail: '',
+    senderEmail: $auth.email,
     receiverName: '',
     receiverPhoneNumber: '',
     address: '',
@@ -22,7 +22,7 @@
     getCarts();
   });
 
-  const getCarts = () => {
+  const getCarts = async () => {
     fetch(HOST + '/api/v1/carts', {
       method: 'GET',
       headers: {
@@ -129,8 +129,6 @@
       </div>
     </div>
   </div>
-</div>
-<div class="shipping-info-wrapper">
   <div class="shipping-info">
     <h3>배송 정보</h3>
     <div class="info-box">
@@ -238,23 +236,13 @@
     padding: 20px;
   }
 
-  .shipping-info-wrapper {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
-    margin: 20px auto;
-  }
-
   .shipping-info {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 8px;
     color: #fff;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    margin: 30px auto;
+    margin-top: 30px;
   }
 
   .shipping-info h3 {

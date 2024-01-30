@@ -1,12 +1,11 @@
 <script>
-  import Button from '@smui/button';
   import { Link } from 'svelte-routing';
 </script>
 
 <div class="container">
   <h1>마이페이지</h1>
   <div class="button-container">
-    <Link to="/order-list"
+    <Link to="/mypage/order-list"
       ><button class="custom-button1">주문 목록</button></Link
     >
     <Link to="/mypage/like-list"

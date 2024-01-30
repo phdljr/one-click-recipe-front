@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
 
@@ -40,7 +41,10 @@
     <ul>
       {#each order.orderDetails as orderDetail (orderDetail.id)}
         <li>
-          {orderDetail.name} - 수량: {orderDetail.amount} - 가격: {orderDetail.price}원
+          {orderDetail.name} - 수량: {orderDetail.amount}{convert(
+            orderDetail.unit,
+          )} - 가격:
+          {orderDetail.price}원
         </li>
       {/each}
     </ul>

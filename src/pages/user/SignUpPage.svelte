@@ -1,8 +1,11 @@
 <script>
   import Button, { Label } from '@smui/button';
   import Dialog, { Actions, Content, Title } from '@smui/dialog';
-  import Textfield from '@smui/textfield';
   import { navigate } from 'svelte-routing';
+  import {
+    extractErrors,
+    signUpValidate,
+  } from '../../lib/validates/signup-validate';
 
   let open = false;
 
@@ -13,7 +16,18 @@
     confirmPassword: '',
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
+    try {
+      await signUpValidate.validate(requestDto, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      let errors = extractErrors(error);
+      let message = Object.values(errors).join('\n');
+      alert(message);
+      return;
+    }
+
     fetch('http://localhost:8080/api/v1/users/signup', {
       method: 'POST',
       headers: {
