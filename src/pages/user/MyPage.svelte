@@ -1,5 +1,4 @@
 <script>
-  import Button from '@smui/button';
   import { Link } from 'svelte-routing';
 </script>
 
