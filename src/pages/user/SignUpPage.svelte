@@ -2,6 +2,7 @@
   import Button, { Label } from '@smui/button';
   import Dialog, { Actions, Content, Title } from '@smui/dialog';
   import { navigate } from 'svelte-routing';
+  import HOST from '../../lib/host';
   import {
     extractErrors,
     signUpValidate,
@@ -28,7 +29,7 @@
       return;
     }
 
-    fetch('http://localhost:8080/api/v1/users/signup', {
+    fetch(HOST + '/api/v1/users/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
