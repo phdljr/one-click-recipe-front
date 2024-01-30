@@ -92,22 +92,43 @@
   };
 
   const handleSelectRecipeProcessImage = (event, index) => {
-    const fileInput = event.target;
+    const file = event.target.files[0];
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      event.target.value = '';
+      recipeProcessCreateImage[index] = null;
+      return;
+    }
+
     const previewImage = document.querySelector(`#preview-image-${index}`);
 
-    if (fileInput.files && fileInput.files[0]) {
+    if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
         previewImage.src = e.target.result;
       };
-      reader.readAsDataURL(fileInput.files[0]);
+      reader.readAsDataURL(file);
     } else {
       previewImage.src = '';
     }
+
+    recipeProcessCreateImage[index] = file;
   };
 
+  const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
   const handleSelectRecipeImage = (e) => {
-    recipeCreateImage = e.target.files[0];
+    const fileInput = e.target;
+    const file = e.target.files[0];
+
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      fileInput.value = '';
+      recipeCreateImage = null;
+      return;
+    }
+
+    recipeCreateImage = file;
   };
 
   const getUnit = (recipeFood) => {
