@@ -2,7 +2,10 @@
   import Button, { Label } from '@smui/button';
   import Dialog, { Actions, Content, Title } from '@smui/dialog';
   import { navigate } from 'svelte-routing';
-  import HOST from '../../lib/host';
+  import {
+    extractErrors,
+    signUpValidate,
+  } from '../../lib/validates/signup-validate';
 
   let open = false;
 
@@ -13,8 +16,19 @@
     confirmPassword: '',
   };
 
-  const handleSignUp = () => {
-    fetch(HOST + '/api/v1/users/signup', {
+  const handleSignUp = async () => {
+    try {
+      await signUpValidate.validate(requestDto, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      let errors = extractErrors(error);
+      let message = Object.values(errors).join('\n');
+      alert(message);
+      return;
+    }
+
+    fetch('http://localhost:8080/api/v1/users/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
