@@ -74,6 +74,9 @@
         {recipe.writer}
       </span>
       <ActionIcons>
+        <span class="like_count">
+          {recipe.like_count}
+        </span>
         <button
           on:click={toggleLike}
           aria-label="Add to favorites"
