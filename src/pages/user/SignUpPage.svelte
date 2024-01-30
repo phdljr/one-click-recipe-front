@@ -9,6 +9,7 @@
   } from '../../lib/validates/signup-validate';
 
   let open = false;
+  let failMessage = '';
 
   let requestDto = {
     email: '',
@@ -43,7 +44,9 @@
         alert('회원가입이 정상적으로 이뤄졌습니다.');
         navigate('/login');
       })
-      .catch((error) => {
+      .catch(async (error) => {
+        let data = await error.json();
+        failMessage = data.message;
         open = true;
       });
   };
@@ -57,7 +60,7 @@
   aria-describedby="simple-content"
 >
   <Title id="simple-title">회원가입 실패</Title>
-  <Content id="simple-content">회원가입에 실패하였습니다.</Content>
+  <Content id="simple-content">{failMessage}</Content>
   <Actions>
     <Button>
       <Label>확인</Label>
