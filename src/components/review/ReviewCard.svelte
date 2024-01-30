@@ -37,7 +37,10 @@
         Authorization: $auth.Authorization,
       },
     })
-      .then((res) => {
+      .then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
         alert('리뷰가 성공적으로 삭제되었습니다.');
         location.reload();
       })
