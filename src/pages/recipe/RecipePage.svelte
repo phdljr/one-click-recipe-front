@@ -119,7 +119,6 @@
     navigate('/order');
   };
 
-  let comments = [];
   let reviewDto = {
     content: '',
     star: 0,
@@ -210,14 +209,6 @@
     <hr class="hr-100" />
     <br />
   </div>
-  {#if comments.length > 0}
-    <div class="comments">
-      <h3>댓글:</h3>
-      {#each comments as { text, rating }, index (index)}
-        <div class="comment">{index + 1}: {text} ({rating} / 5)</div>
-      {/each}
-    </div>
-  {/if}
 
   <div class="comment-section">
     <div class="comment-input-container">
@@ -393,24 +384,5 @@
   .comment-input-container {
     flex-grow: 2;
     margin-right: 20px;
-  }
-
-  .comments {
-    background-color: #333;
-    color: #fff;
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 20px;
-  }
-
-  .comment {
-    border-bottom: 1px solid #474747;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    font-size: 0.9rem;
-  }
-
-  .comment:last-child {
-    border-bottom: none;
   }
 </style>
