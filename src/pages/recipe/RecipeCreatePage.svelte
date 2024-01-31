@@ -384,7 +384,7 @@
   .recipe-title {
     text-align: center;
     margin-bottom: 30px;
-    color: #fff;
+    color: #333;
     font-size: 2.5rem;
   }
 
@@ -431,7 +431,7 @@
 
   .ingredients-title {
     text-align: center;
-    color: #fff;
+    color: #333;
     font-size: 2rem;
     margin-top: 40px;
     margin-bottom: 20px;
@@ -465,7 +465,7 @@
 
   .cooking-steps-title {
     text-align: center;
-    color: #fff;
+    color: #333;
     font-size: 2rem;
     margin-top: 40px;
     margin-bottom: 20px;
@@ -526,7 +526,7 @@
 
   .cooking-steps-title {
     text-align: center;
-    color: #fff;
+    color: #333;
     font-size: 2rem;
     margin-top: 40px;
     margin-bottom: 20px;
@@ -646,8 +646,8 @@
   }
 
   .custom-button1 {
-    background-color: #dce2f0;
-    color: #331b3f;
+    background-color: #331b3f;
+    color: #dce2f0;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;

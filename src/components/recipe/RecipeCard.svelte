@@ -37,6 +37,8 @@
       if (!response.ok) {
         throw new Error('Failed to update like status');
       }
+
+      recipe.likeCount += liked ? 1 : -1;
     } catch (error) {
       console.error('Error updating like status:', error);
       liked = !liked;

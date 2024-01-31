@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
-  import { auth, isLogin } from '../../store/user';
+  import { auth } from '../../store/user';
 
   let recipes = [];
 
@@ -17,35 +17,12 @@
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: $auth.Authorization,
         },
       });
 
       if (response.ok) {
-        let data = await response.json();
-
-        if ($isLogin) {
-          data = await Promise.all(
-            data.map(async (recipe) => {
-              const likeResponse = await fetch(
-                `${HOST}/api/v1/recipes/${recipe.id}/likes/status`,
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: $auth.Authorization,
-                  },
-                },
-              );
-              if (likeResponse.ok) {
-                const likeStatus = await likeResponse.json();
-                return { ...recipe, liked: likeStatus };
-              } else {
-                return { ...recipe, liked: false };
-              }
-            }),
-          );
-        }
-
-        recipes = data;
+        recipes = await response.json();
       } else {
         console.error('Failed to fetch recipes:', response.status);
       }
@@ -61,7 +38,7 @@
   <LayoutGrid fixedColumnWidth>
     {#each recipes as recipe (recipe.id)}
       <Cell>
-        <RecipeCard {recipe} liked={recipe.liked} />
+        <RecipeCard {recipe} liked={recipe.isLiked} />
       </Cell>
     {/each}
   </LayoutGrid>
@@ -74,7 +51,7 @@
 
   h1 {
     display: flex;
-    color: #dce2f0;
+    color: #333;
     justify-content: center;
     align-items: center;
     margin: 0;

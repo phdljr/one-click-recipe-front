@@ -119,7 +119,6 @@
     navigate('/order');
   };
 
-  let comments = [];
   let reviewDto = {
     content: '',
     star: 0,
@@ -157,8 +156,10 @@
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        alert('리뷰가 등록되었습니다.');
-        location.reload();
+        return response.json();
+      })
+      .then((data) => {
+        reviews = [...reviews, data];
       })
       .catch(async (error) => {
         let failData = await error.json();
@@ -174,7 +175,12 @@
 
 <div class="container-recipe">
   <h1 class="recipe-title">{recipe.title}</h1>
-  <h3 class="recipe-intro">{recipe.intro}</h3>
+  <h3 class="recipe-intro">
+    {recipe.intro}
+  </h3>
+  <span class="recipe-serving">
+    {recipe.serving}인분
+  </span>
   <hr class="hr-100" />
   <div class="container-flex">
     <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
@@ -203,14 +209,6 @@
     <hr class="hr-100" />
     <br />
   </div>
-  {#if comments.length > 0}
-    <div class="comments">
-      <h3>댓글:</h3>
-      {#each comments as { text, rating }, index (index)}
-        <div class="comment">{index + 1}: {text} ({rating} / 5)</div>
-      {/each}
-    </div>
-  {/if}
 
   <div class="comment-section">
     <div class="comment-input-container">
@@ -301,6 +299,12 @@
     margin-bottom: 2rem;
   }
 
+  .recipe-serving {
+    margin: 0 auto;
+    color: #f1c40f;
+    font-size: x-large;
+  }
+
   .hr-100 {
     border-top: 1px solid #f1c40f;
     width: 100%;
@@ -380,24 +384,5 @@
   .comment-input-container {
     flex-grow: 2;
     margin-right: 20px;
-  }
-
-  .comments {
-    background-color: #333;
-    color: #fff;
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 20px;
-  }
-
-  .comment {
-    border-bottom: 1px solid #474747;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-    font-size: 0.9rem;
-  }
-
-  .comment:last-child {
-    border-bottom: none;
   }
 </style>
