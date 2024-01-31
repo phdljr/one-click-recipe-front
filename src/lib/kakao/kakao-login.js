@@ -1,2 +1,2 @@
 export const client_id = "8465635090a97520c25f41df9d82354c";
-export const redirect_uri = `https://one-click-recipe.netlify.app/login/kakao`;
+export const redirect_uri = `https://localhost:5173/login/kakao`;
