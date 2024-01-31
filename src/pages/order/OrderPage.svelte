@@ -39,7 +39,22 @@
         });
       });
   };
+
+  const openAddressApi = () => {
+    // @ts-ignore
+    new daum.Postcode({
+      oncomplete: (data) => {
+        requestDto.address = data.address;
+      },
+    }).open();
+  };
 </script>
+
+<svelte:head>
+  <script
+    src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+  ></script>
+</svelte:head>
 
 <div class="content-wrapper">
   <div class="order-header">
@@ -50,7 +65,9 @@
     <h3>구매자 정보</h3>
     <div class="info-box">
       <div class="input-group">
-        <label for="senderName">이름</label>
+        <label for="senderName"
+          ><span class="essential-star">* </span>이름</label
+        >
         <input
           type="text"
           id="senderName"
@@ -59,7 +76,9 @@
         />
       </div>
       <div class="input-group">
-        <label for="senderPhoneNumber">휴대폰 번호</label>
+        <label for="senderPhoneNumber"
+          ><span class="essential-star">* </span>휴대폰 번호</label
+        >
         <input
           type="tel"
           id="senderPhoneNumber"
@@ -68,7 +87,7 @@
         />
       </div>
       <div class="input-group">
-        <label for="email">이메일</label>
+        <label for="email"><span class="essential-star">* </span>이메일</label>
         <input
           type="email"
           id="email"
@@ -83,7 +102,9 @@
     <h3>받는 사람 정보</h3>
     <div class="info-box">
       <div class="input-group">
-        <label for="receiverName">이름</label>
+        <label for="receiverName"
+          ><span class="essential-star">* </span>이름</label
+        >
         <input
           type="text"
           id="receiverName"
@@ -92,8 +113,12 @@
         />
       </div>
       <div class="input-group">
-        <label for="address">배송주소</label>
+        <label for="address"
+          ><span class="essential-star">* </span>배송주소</label
+        >
+        <button on:click={openAddressApi}>주소 검색</button>
         <input
+          disabled
           type="text"
           id="address"
           placeholder="배송주소를 입력하세요"
@@ -110,7 +135,9 @@
         />
       </div>
       <div class="input-group">
-        <label for="receiverPhoneNumber">연락처</label>
+        <label for="receiverPhoneNumber"
+          ><span class="essential-star">* </span>연락처</label
+        >
         <input
           type="tel"
           id="receiverPhoneNumber"
@@ -264,6 +291,10 @@
     font-weight: bold;
     font-size: 1.2em;
     color: #f1c40f;
+  }
+
+  .essential-star {
+    color: red;
   }
 
   @media (max-width: 600px) {
