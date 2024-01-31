@@ -55,6 +55,21 @@
   </Item>
 </div>
 
+<div class="top-bar">
+  {#if $isLogin}
+    <IconButton class="material-icons" on:click={() => navigate('/mypage')}
+      >person</IconButton
+    >
+  {:else}
+    <IconButton class="material-icons" on:click={() => navigate('/login')}
+      >login</IconButton
+    >
+    <IconButton class="material-icons" on:click={() => navigate('/signup')}
+      >person_add</IconButton
+    >
+  {/if}
+</div>
+
 <style>
   .drawer-btn {
     position: absolute;
@@ -66,6 +81,13 @@
     position: absolute;
     top: 10px;
     left: 60px;
+    color: black;
+  }
+
+  .top-bar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     color: black;
   }
 </style>
