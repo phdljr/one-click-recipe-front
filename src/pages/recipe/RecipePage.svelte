@@ -124,8 +124,6 @@
     content: '',
     star: 0,
   };
-  let newComment = '';
-  let newRating = 0;
 
   function rate(rating) {
     reviewDto.star = rating;
@@ -146,9 +144,9 @@
         alert('리뷰가 등록되었습니다.');
         location.reload();
       })
-      .catch((error) => {
-        alert('리뷰 등록 실패');
-        console.log(error);
+      .catch(async (error) => {
+        let failData = await error.json();
+        alert(failData.message);
       });
   };
 
