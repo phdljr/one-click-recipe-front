@@ -31,7 +31,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         foods = data;
       });
   };
@@ -58,7 +57,6 @@
       })
       .catch((error) => {
         alert('재료 등록 실패');
-        console.log(error);
       });
   };
 </script>

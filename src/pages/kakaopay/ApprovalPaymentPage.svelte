@@ -27,14 +27,12 @@
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         responseDto = data;
         deleteCookie('tid');
         totalPrice = data.amount.total;
         isSuccess = true;
       })
       .catch((error) => {
-        console.log(error);
         isSuccess = false;
       });
   });
