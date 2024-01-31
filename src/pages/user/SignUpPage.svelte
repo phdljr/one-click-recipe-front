@@ -101,7 +101,7 @@
 
   h1 {
     display: flex;
-    color: #dce2f0;
+    color: #333;
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -130,6 +130,10 @@
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
     font-size: 1rem;
+  }
+
+  .custom-input::placeholder {
+    color: #fff;
   }
 
   .login-btn {
