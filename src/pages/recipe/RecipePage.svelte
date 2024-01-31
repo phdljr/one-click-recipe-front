@@ -157,8 +157,10 @@
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        alert('리뷰가 등록되었습니다.');
-        location.reload();
+        return response.json();
+      })
+      .then((data) => {
+        reviews = [...reviews, data];
       })
       .catch(async (error) => {
         let failData = await error.json();
