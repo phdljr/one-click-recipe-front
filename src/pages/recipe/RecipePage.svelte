@@ -176,7 +176,12 @@
 
 <div class="container-recipe">
   <h1 class="recipe-title">{recipe.title}</h1>
-  <h3 class="recipe-intro">{recipe.intro}</h3>
+  <h3 class="recipe-intro">
+    {recipe.intro}
+  </h3>
+  <span class="recipe-serving">
+    {recipe.serving}인분
+  </span>
   <hr class="hr-100" />
   <div class="container-flex">
     <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
@@ -301,6 +306,12 @@
     text-align: center;
     font-size: 1.2rem;
     margin-bottom: 2rem;
+  }
+
+  .recipe-serving {
+    margin: 0 auto;
+    color: #f1c40f;
+    font-size: x-large;
   }
 
   .hr-100 {

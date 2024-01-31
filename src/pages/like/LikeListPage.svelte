@@ -76,7 +76,7 @@
 
   h1 {
     display: flex;
-    color: #dce2f0;
+    color: #333;
     justify-content: center;
     align-items: center;
     margin: 0;

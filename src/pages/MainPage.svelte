@@ -30,7 +30,7 @@
 
   .header h1 {
     display: flex;
-    color: #dce2f0;
+    color: #333;
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -38,16 +38,9 @@
     font-family: 'East Sea Dokdo', sans-serif !important;
   }
 
-  :global(body) {
-    background-image: url('/레시피 배경.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
   button {
-    background-color: #dce2f0;
-    color: #331b3f;
+    background-color: #331b3f;
+    color: #dce2f0;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
