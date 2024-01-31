@@ -14,6 +14,7 @@
   import { auth, isLogin } from '../../store/user';
 
   export let recipeId;
+  export let isFollowed = false;
 
   let recipe = {};
   let reviews = [];
@@ -166,6 +167,36 @@
         alert(failData.message);
       });
   };
+  async function toggleFollowed() {
+    if (!$isLogin) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    const method = isFollowed ? 'DELETE' : 'POST';
+    isFollowed = !isFollowed;
+
+    try {
+      const response = await fetch(
+        `${HOST}/api/v1/follows/${recipe.writerId}`,
+        {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: $auth.Authorization,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to update like status');
+      }
+    } catch (error) {
+      console.error('Error updating like status:', error);
+      isFollowed = !isFollowed;
+      alert('본인은 구독할 수 없습니다!');
+    }
+  }
 
   const filledStarUrl =
     'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
@@ -174,6 +205,25 @@
 </script>
 
 <div class="container-recipe">
+  <button
+    on:click={toggleFollowed}
+    aria-label="Add to favorites"
+    title="Add to favorites"
+  >
+    {#if isFollowed}
+      <img
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/3d9f7600f50823d72baaf50d03574a80c82377d898f89bc9faa5a053366b95c0?"
+        class="like-img"
+        alt=""
+      />
+    {:else}
+      <img
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ff117ff108af49770015cb69ac2d18bf764d4ea8da4cbfd81705a20ed6664f1?"
+        class="like-img"
+        alt=""
+      />
+    {/if}
+  </button>
   <h1 class="recipe-title">{recipe.title}</h1>
   <h3 class="recipe-intro">
     {recipe.intro}
