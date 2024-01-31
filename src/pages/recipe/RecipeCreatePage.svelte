@@ -3,6 +3,7 @@
 
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
+  import Select from 'svelte-select';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
   import {
@@ -139,6 +140,8 @@
   };
 
   const createRecipeAll = async () => {
+    console.log(recipeProcessCreateRequestDto);
+
     try {
       await recipeValidate.validate(recipeCreateRequestDto, {
         abortEarly: false,
@@ -289,11 +292,14 @@
 <div class="ingredients-form">
   {#each recipeFoodCreateRequestDto as recipeFood, index (recipeFood)}
     <div class="ingredient-form-group">
-      <select id="food" bind:value={recipeFood.foodName} required>
-        {#each foods as food (food.id)}
-          <option value={food.name}>{food.name}</option>
-        {/each}
-      </select>
+      <Select
+        class="svelte-select"
+        placeholder="식재료 검색"
+        items={foods.map((f) => f.name)}
+        bind:justValue={recipeFood.foodName}
+      >
+        <div class="div-no-food" slot="empty">해당 식재료가 없습니다.</div>
+      </Select>
       <input
         required
         type="number"
@@ -487,9 +493,9 @@
     margin-bottom: 10px;
   }
 
+  .ingredient-form-group input,
   .ingredient-form-group input[type='text'],
-  .ingredient-form-group input[type='number'],
-  .ingredient-form-group select {
+  .ingredient-form-group input[type='number'] {
     margin-right: 10px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -498,6 +504,15 @@
     color: #fff;
     background-color: rgba(255, 255, 255, 0.1);
     font-size: large;
+  }
+
+  :global(.svelte-select) {
+    margin-right: 10px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    font-size: large !important;
   }
 
   .ingredient-form-group input[disabled] {
@@ -653,5 +668,10 @@
   .custom-button1:hover {
     background-color: #3c3c3c;
     color: #fff;
+  }
+
+  :global(.div-no-food) {
+    padding: 10px;
+    text-align: center;
   }
 </style>
