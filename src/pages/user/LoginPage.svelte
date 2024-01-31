@@ -60,11 +60,9 @@
       })
       .then((data) => {
         auth.login(data);
-        console.log($auth);
         navigate('/');
       })
       .catch((error) => {
-        console.log(error);
         open = true;
       });
   };
