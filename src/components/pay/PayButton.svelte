@@ -35,7 +35,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         orderId = data.id;
         readyPay();
       });
@@ -56,7 +55,6 @@
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setCookie('tid', data.tid, 1, false);
         location.href = data.next_redirect_pc_url;
       })

@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
   import Select from 'svelte-select';
@@ -45,7 +47,6 @@
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         foods = data;
         foods.map((food) => (food.unit = convert(food.unit)));
       });

@@ -39,7 +39,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         recipe = data;
       });
   };
@@ -58,7 +57,6 @@
           selectedRecipeFoods.push(recipeFood);
           recipeFood.unit = convert(recipeFood.unit);
         });
-        console.log(data);
       });
   };
 
@@ -71,7 +69,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         recipeProcesses = data;
       });
   };
@@ -85,7 +82,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         reviews = data;
       });
   };
