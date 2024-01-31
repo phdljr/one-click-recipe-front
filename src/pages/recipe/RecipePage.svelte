@@ -35,7 +35,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         recipe = data;
       });
   };
@@ -54,7 +53,6 @@
           selectedRecipeFoods.push(recipeFood);
           recipeFood.unit = convert(recipeFood.unit);
         });
-        console.log(data);
       });
   };
 
@@ -67,7 +65,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         recipeProcesses = data;
       });
   };
@@ -81,7 +78,6 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         reviews = data;
       });
   };
@@ -147,8 +143,7 @@
         location.reload();
       })
       .catch((error) => {
-        alert('리뷰 등록 실패');
-        console.log(error);
+        alert('로그인시 리뷰 등록 가능합니다.');
       });
   };
 

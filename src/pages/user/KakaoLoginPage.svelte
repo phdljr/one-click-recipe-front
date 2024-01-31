@@ -23,8 +23,6 @@
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        console.log('Access-Token: ' + response.headers.get(ACCESS_TOKEN));
-        console.log('Refresh-Token: ' + response.headers.get(REFRESH_TOKEN));
         let accessToken = response.headers.get(ACCESS_TOKEN);
         let refreshToken = response.headers.get(REFRESH_TOKEN);
 
@@ -37,7 +35,6 @@
         navigate('/');
       })
       .catch((error) => {
-        console.log(error);
         alert('카카오 로그인 실패');
         navigate('/');
       });

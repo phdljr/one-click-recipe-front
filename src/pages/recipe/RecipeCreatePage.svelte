@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
   import convert from '../../lib/conv-unit';
@@ -44,7 +46,6 @@
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         foods = data;
         foods.map((food) => (food.unit = convert(food.unit)));
       });

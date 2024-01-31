@@ -7,12 +7,13 @@
     Title,
   } from '@smui/drawer';
   import IconButton from '@smui/icon-button';
-  import { Separator } from '@smui/list';
+  import { Graphic, Item, Separator } from '@smui/list';
   import { ADMIN } from '../../lib/const/user-rols';
   import { auth, isLogin } from '../../store/user';
   import AdminNavDrawerItemList from './item-list/AdminNavDrawerItemList.svelte';
   import GuestNavDrawerItemList from './item-list/GuestNavDrawerItemList.svelte';
   import LoginNavDrawerItemList from './item-list/LoginNavDrawerItemList.svelte';
+  import { navigate } from 'svelte-routing';
 
   let open = false;
   const close = () => {
@@ -48,12 +49,23 @@
     >menu</IconButton
   >
 </div>
+<div class="home-btn">
+  <Item on:click on:click={() => navigate('/')}>
+    <IconButton class="material-icons" aria-hidden="true">home</IconButton>
+  </Item>
+</div>
 
 <style>
   .drawer-btn {
     position: absolute;
     top: 10px;
     left: 10px;
-    color: white;
+    color: black;
+  }
+  .home-btn {
+    position: absolute;
+    top: 10px;
+    left: 60px;
+    color: black;
   }
 </style>
