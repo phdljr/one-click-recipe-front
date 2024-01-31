@@ -15,7 +15,7 @@ export const recipeValidate = yup.object().shape({
 
 export const recipeFoodValidate = yup.array().of(yup.object().shape({
   foodName: yup.string().required("재료명을 선택해 주세요."),
-  amount: yup.number().min(1, "최소 수량은 1부터 입력할 수 있습니다.").max(32767, "최대 32767까지만 입력할 수 있습니다.").required("수량을 입력해 주세요."),
+  amount: yup.number().min(1, "최소 수량은 1부터 입력할 수 있습니다.").max(32767, "최대 수량은 32767까지만 입력할 수 있습니다.").required("수량을 입력해 주세요."),
 }));
 
 export const recipeProcessValidate = yup.array().of(yup.object().shape({

@@ -79,19 +79,19 @@
     class="custom-input"
     type="text"
     bind:value={requestDto.nickname}
-    placeholder="닉네임"
+    placeholder="닉네임 (4~20자 사이)"
   />
   <input
     class="custom-input"
     type="password"
     bind:value={requestDto.password}
-    placeholder="비밀번호"
+    placeholder="비밀번호 (최소 8자 이상)"
   />
   <input
     class="custom-input"
     type="password"
     bind:value={requestDto.confirmPassword}
-    placeholder="비밀번호 확인"
+    placeholder="비밀번호 확인 (최소 8자 이상)"
   />
   <button class="login-btn" on:click={handleSignUp}>회원가입</button>
 </div>
