@@ -240,6 +240,7 @@
         alt=""
       />
     {/if}
+
     <div class="option">
       {#if $isLogin}
         <Button
