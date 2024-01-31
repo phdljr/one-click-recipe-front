@@ -7,6 +7,10 @@
   import ReviewCard from '../../components/review/ReviewCard.svelte';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
+  import {
+    extractErrors,
+    reviewValidate,
+  } from '../../lib/validates/review-validate';
   import { auth, isLogin } from '../../store/user';
 
   export let recipeId;
@@ -128,7 +132,23 @@
   function rate(rating) {
     reviewDto.star = rating;
   }
-  const createReview = () => {
+  const createReview = async () => {
+    if (!$isLogin) {
+      alert('로그인을 진행해주세요.');
+      return;
+    }
+
+    try {
+      await reviewValidate.validate(reviewDto, {
+        abortEarly: false,
+      });
+    } catch (error) {
+      let errors = extractErrors(error);
+      let message = Object.values(errors).join('\n');
+      alert(message);
+      return;
+    }
+
     fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
       method: 'POST',
       headers: {
