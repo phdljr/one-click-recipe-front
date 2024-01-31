@@ -36,7 +36,7 @@
 <style>
   .recipe-food-name {
     width: 100px;
-    color: #ffffff;
+    color: #333;
     font-weight: bold;
   }
 
@@ -50,7 +50,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #fff;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
