@@ -12,6 +12,7 @@
     reviewValidate,
   } from '../../lib/validates/review-validate';
   import { auth, isLogin } from '../../store/user';
+  import { Content } from '@smui/drawer';
 
   export let recipeId;
   export let isFollowed = false;
@@ -197,6 +198,22 @@
       alert('본인은 구독할 수 없습니다!');
     }
   }
+  const deleteRecipe = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: $auth.Authorization,
+      },
+    })
+      .then((res) => {
+        alert('레시피가 성공적으로 삭제되었습니다.');
+        navigate('/recipes');
+      })
+      .catch((error) => {
+        alert('레시피 삭제에 실패했습니다.');
+      });
+  };
 
   const filledStarUrl =
     'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
@@ -223,6 +240,20 @@
         alt=""
       />
     {/if}
+    <div class="option">
+      {#if $isLogin}
+        <Button
+          class="buy-button"
+          variant="raised"
+          on:click={handleBuyingRecipeFoods}
+        >
+          수정</Button
+        >
+        <Button class="buy-button" variant="raised" on:click={deleteRecipe}>
+          삭제</Button
+        >
+      {:else}{/if}
+    </div>
   </button>
   <h1 class="recipe-title">{recipe.title}</h1>
   <h3 class="recipe-intro">

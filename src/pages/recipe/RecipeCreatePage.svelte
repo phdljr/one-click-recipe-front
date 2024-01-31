@@ -140,8 +140,6 @@
   };
 
   const createRecipeAll = async () => {
-    console.log(recipeProcessCreateRequestDto);
-
     try {
       await recipeValidate.validate(recipeCreateRequestDto, {
         abortEarly: false,
