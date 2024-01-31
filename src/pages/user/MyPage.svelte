@@ -17,7 +17,7 @@
 <style>
   h1 {
     display: flex;
-    color: #dce2f0;
+    color: #333;
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -38,8 +38,8 @@
   }
 
   .custom-button1 {
-    background-color: #dce2f0;
-    color: #331b3f;
+    background-color: #331b3f;
+    color: #dce2f0;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
