@@ -15,7 +15,6 @@
   import { Content } from '@smui/drawer';
 
   export let recipeId;
-  export let isFollowed = recipeId.isFollowed;
 
   let recipe = {};
   let reviews = [];
@@ -36,6 +35,7 @@
     fetch(HOST + `/api/v1/recipes/${recipeId}`, {
       method: 'GET',
       headers: {
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })
@@ -134,7 +134,6 @@
       alert('로그인을 진행해주세요.');
       return;
     }
-
     try {
       await reviewValidate.validate(reviewDto, {
         abortEarly: false,
@@ -173,28 +172,25 @@
       alert('로그인이 필요합니다.');
       return;
     }
-
-    const method = isFollowed ? 'DELETE' : 'POST';
-    isFollowed = !isFollowed;
-
+    const method = recipe.isFollowed ? 'DELETE' : 'POST';
+    recipe.isFollowed = !recipe.isFollowed;
     try {
       const response = await fetch(
         `${HOST}/api/v1/follows/${recipe.writerId}`,
         {
           method: method,
           headers: {
-            'Content-Type': 'application/json',
             Authorization: $auth.Authorization,
+            'Content-Type': 'application/json',
           },
         },
       );
-
       if (!response.ok) {
         throw new Error('Failed to update like status');
       }
     } catch (error) {
       console.error('Error updating like status:', error);
-      isFollowed = !isFollowed;
+      recipe.isFollowed = !recipe.isFollowed;
       alert('본인은 구독할 수 없습니다!');
     }
   }
@@ -227,7 +223,7 @@
     aria-label="Add to favorites"
     title="Add to favorites"
   >
-    {#if isFollowed}
+    {#if recipe.isFollowed}
       <img
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/3d9f7600f50823d72baaf50d03574a80c82377d898f89bc9faa5a053366b95c0?"
         class="like-img"
@@ -244,13 +240,6 @@
   <div class="option">
     {#if $isLogin}
       {#if $auth.nickname == recipe.writer}
-        <Button
-          class="buy-button"
-          variant="raised"
-          on:click={handleBuyingRecipeFoods}
-        >
-          수정</Button
-        >
         <Button class="buy-button" variant="raised" on:click={deleteRecipe}>
           삭제</Button
         >
