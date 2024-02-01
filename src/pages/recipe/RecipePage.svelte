@@ -228,6 +228,7 @@
       on:click={toggleFollowed}
       title="Add to follows"
       class="follow-button"
+      style="color: yellow;"
     >
       {#if recipe.isFollowed}
         <span class="material-icons">bookmark</span>
@@ -366,11 +367,15 @@
     padding: 10px 20px;
     width: fit-content;
     cursor: pointer;
-    transition: color 0.3s;
+    transition:
+      color 0.3s,
+      background-color 0.3s,
+      transform 0.3s;
   }
 
   .follow-button:hover {
     color: #f1c40f;
+    transform: scale(1.5);
   }
 
   .delete-button {
