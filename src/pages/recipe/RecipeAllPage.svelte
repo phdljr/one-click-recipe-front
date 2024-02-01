@@ -1,11 +1,17 @@
 <script>
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { onMount } from 'svelte';
+  import InfiniteScroll from 'svelte-infinite-scroll';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
 
+  let newRecipes = [];
   let recipes = [];
+  let page = 0;
+  let isLastPage = false;
+
+  $: recipes = [...recipes, ...newRecipes];
 
   onMount(() => {
     getAllRecipe();
@@ -13,7 +19,7 @@
 
   const getAllRecipe = async () => {
     try {
-      const response = await fetch(`${HOST}/api/v1/recipes`, {
+      const response = await fetch(`${HOST}/api/v1/recipes?page=${page}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -22,7 +28,10 @@
       });
 
       if (response.ok) {
-        recipes = await response.json();
+        newRecipes = await response.json();
+        if (newRecipes.length < 9) {
+          isLastPage = true;
+        }
       } else {
         console.error('Failed to fetch recipes:', response.status);
       }
@@ -42,6 +51,16 @@
       </Cell>
     {/each}
   </LayoutGrid>
+
+  <InfiniteScroll
+    threshold={200}
+    window={true}
+    hasMore={!isLastPage}
+    on:loadMore={() => {
+      page++;
+      getAllRecipe();
+    }}
+  />
 {:else}
   <h1>등록된 레시피가 없습니다.</h1>
 {/if}
