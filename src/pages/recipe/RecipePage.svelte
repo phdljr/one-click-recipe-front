@@ -217,26 +217,24 @@
     'https://cdn.builder.io/api/v1/image/assets/TEMP/d7a5988b714f259a29e90b1d5c2adcfea494cab28373dc9e38f2ec8ba4d216a7?';
 </script>
 
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+
 <div class="container-recipe">
   <button
     on:click={toggleFollowed}
-    aria-label="Add to favorites"
-    title="Add to favorites"
+    title="Add to follows"
+    class="follow-button"
   >
     {#if recipe.isFollowed}
-      <img
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/3d9f7600f50823d72baaf50d03574a80c82377d898f89bc9faa5a053366b95c0?"
-        class="like-img"
-        alt=""
-      />
+      <span class="material-icons">bookmark</span>
     {:else}
-      <img
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ff117ff108af49770015cb69ac2d18bf764d4ea8da4cbfd81705a20ed6664f1?"
-        class="like-img"
-        alt=""
-      />
+      <span class="material-icons">bookmark_border</span>
     {/if}
   </button>
+
   <div class="option">
     {#if $isLogin}
       {#if $auth.nickname == recipe.writer}
@@ -359,6 +357,24 @@
   :global(.buy-button2:hover) {
     background-color: #3c3c3c;
     color: #fff;
+  }
+
+  .follow-button {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    width: fit-content;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .follow-button:hover {
+    color: #f1c40f;
+  }
+
+  .material-icons {
+    font-size: 50px;
   }
 
   .recipe-title {
