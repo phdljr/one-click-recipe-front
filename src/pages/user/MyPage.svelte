@@ -7,6 +7,7 @@
   const showModal = writable(false);
 
   let nickname = '';
+  let nicknameError = '';
   let currentPassword = '';
   let newPassword = '';
   let confirmPassword = '';
@@ -15,11 +16,13 @@
 
   function toggleModal() {
     showModal.update((n) => !n);
+    nickname = '';
+    nicknameError = '';
   }
 
   async function updateNickname() {
     if (nickname === $auth.nickname) {
-      alert('닉네임이 같습니다.');
+      nicknameError = '같은 닉네임입니다.';
       return;
     }
 
@@ -33,13 +36,41 @@
     });
 
     if (response.ok) {
+      nicknameError = '';
       alert('닉네임이 변경되었습니다.');
       toggleModal();
       window.location.reload();
+    } else {
+      const errorResponse = await response.json();
+      if (errorResponse && errorResponse.message) {
+        nicknameError = '이미 사용중인 닉네임입니다.';
+      } else {
+        nicknameError = '닉네임 (4~20자 사이)로 입력해주세요.';
+      }
     }
   }
 
   async function updatePassword() {
+    if (!currentPassword) {
+      passwordError = '기존 비밀번호를 입력해주세요.';
+      return;
+    }
+
+    if (!newPassword || !confirmPassword) {
+      passwordError = '새 비밀번호와 확인 비밀번호를 모두 입력해주세요.';
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      passwordError = '비밀번호는 최소 8자 이상이어야 합니다.';
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      passwordError = '새 비밀번호는 현재 비밀번호와 다르게 설정해주세요.';
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
       confirmPasswordError = '새 비밀번호와 확인 비밀번호가 일치하지 않습니다.';
       return;
@@ -96,14 +127,18 @@
           <div>
             <label for="nickname">새 닉네임</label>
             <input id="nickname" type="text" bind:value={nickname} />
+            {#if nicknameError}
+              <p class="error">{nicknameError}</p>
+            {/if}
             <button on:click={updateNickname}>닉네임 변경</button>
           </div>
           <div>
-            <label for="currentPassword">현재 비밀번호</label>
+            <label for="currentPassword">기존 비밀번호</label>
             <input
               id="currentPassword"
               type="password"
               bind:value={currentPassword}
+              on:input={() => (passwordError = '')}
             />
             {#if passwordError}
               <p class="error">{passwordError}</p>
@@ -111,10 +146,12 @@
           </div>
           <div>
             <label for="newPassword">새 비밀번호</label>
-            <input id="newPassword" type="password" bind:value={newPassword} />
-            {#if confirmPasswordError}
-              <p class="error">{confirmPasswordError}</p>
-            {/if}
+            <input
+              id="newPassword"
+              type="password"
+              bind:value={newPassword}
+              on:input={() => (passwordError = '')}
+            />
           </div>
           <div>
             <label for="confirmPassword">새 비밀번호 확인</label>
@@ -122,6 +159,7 @@
               id="confirmPassword"
               type="password"
               bind:value={confirmPassword}
+              on:input={() => (confirmPasswordError = '')}
             />
             {#if confirmPasswordError}
               <p class="error">{confirmPasswordError}</p>
