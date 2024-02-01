@@ -210,11 +210,6 @@
         alert('레시피 삭제에 실패했습니다.');
       });
   };
-
-  const filledStarUrl =
-    'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
-  const emptyStarUrl =
-    'https://cdn.builder.io/api/v1/image/assets/TEMP/d7a5988b714f259a29e90b1d5c2adcfea494cab28373dc9e38f2ec8ba4d216a7?';
 </script>
 
 <link
@@ -295,12 +290,17 @@
     <div class="comment-actions-container">
       <div class="rating">
         {#each [1, 2, 3, 4, 5] as n}
-          <img
-            src={n <= reviewDto.star ? filledStarUrl : emptyStarUrl}
-            class="img"
-            alt="star"
+          <span
+            class="material-icons img"
+            style="color: yellow;"
             on:click={() => rate(n)}
-          />
+          >
+            {#if n <= reviewDto.star}
+              star
+            {:else}
+              star_outline
+            {/if}
+          </span>
         {/each}
       </div>
       <Button on:click={createReview} class="buy-button2" variant="raised"
@@ -485,13 +485,25 @@
     aspect-ratio: 1.05;
     object-fit: contain;
     object-position: center;
-    width: 24px;
+    width: 25px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    font-size: 35px;
+    margin-right: 5px;
+    animation: sparkle 1s infinite alternate;
   }
 
   .img:hover {
-    transform: scale(1.5);
+    transform: scale(1.3);
+  }
+
+  @keyframes sparkle {
+    0% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   .comment-section {
