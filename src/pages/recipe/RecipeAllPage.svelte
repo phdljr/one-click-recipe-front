@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import InfiniteScroll from 'svelte-infinite-scroll';
   import RecipeCard from '../../components/recipe/RecipeCard.svelte';
+  import { RECIPE_SIZE } from '../../lib/const/pagination-const';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
 
@@ -29,7 +30,7 @@
 
       if (response.ok) {
         newRecipes = await response.json();
-        if (newRecipes.length < 9) {
+        if (newRecipes.length < RECIPE_SIZE) {
           isLastPage = true;
         }
       } else {
@@ -53,7 +54,6 @@
   </LayoutGrid>
 
   <InfiniteScroll
-    threshold={200}
     window={true}
     hasMore={!isLastPage}
     on:loadMore={() => {
