@@ -223,24 +223,24 @@
 />
 
 <div class="container-recipe">
-  <button
-    on:click={toggleFollowed}
-    title="Add to follows"
-    class="follow-button"
-  >
-    {#if recipe.isFollowed}
-      <span class="material-icons">bookmark</span>
-    {:else}
-      <span class="material-icons">bookmark_border</span>
-    {/if}
-  </button>
+  <div class="follow-delete-buttons">
+    <button
+      on:click={toggleFollowed}
+      title="Add to follows"
+      class="follow-button"
+    >
+      {#if recipe.isFollowed}
+        <span class="material-icons">bookmark</span>
+      {:else}
+        <span class="material-icons">bookmark_border</span>
+      {/if}
+    </button>
 
-  <div class="option">
     {#if $isLogin}
       {#if $auth.nickname == recipe.writer}
-        <Button class="buy-button" variant="raised" on:click={deleteRecipe}>
-          삭제</Button
-        >
+        <button class="delete-button" on:click={deleteRecipe}>
+          <span class="material-icons">delete</span>
+        </button>
       {/if}
     {:else}{/if}
   </div>
@@ -373,8 +373,30 @@
     color: #f1c40f;
   }
 
+  .delete-button {
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    width: fit-content;
+    cursor: pointer;
+    transition:
+      color 0.3s,
+      background-color 0.3s;
+  }
+
+  .delete-button:hover {
+    color: #00bbff;
+  }
+
   .material-icons {
     font-size: 50px;
+  }
+
+  .follow-delete-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
   }
 
   .recipe-title {
