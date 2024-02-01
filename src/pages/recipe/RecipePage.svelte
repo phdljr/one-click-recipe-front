@@ -236,7 +236,7 @@
       {#if $auth.nickname == recipe.writer}
         <button
           class="delete-button"
-          style="color: blue;"
+          style="color: black;"
           on:click={deleteRecipe}
         >
           <span class="material-icons">delete</span>
