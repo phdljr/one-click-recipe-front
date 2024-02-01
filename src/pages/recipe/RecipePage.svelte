@@ -22,7 +22,6 @@
   let reviews = [];
   let newReviews = [];
   $: reviews = [...reviews, ...newReviews];
-  $: console.log(reviews);
 
   let recipeFoods = [];
   let recipeProcesses = [];
