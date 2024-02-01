@@ -49,6 +49,7 @@
       .then((response) => response.json())
       .then((data) => {
         recipe = data;
+        console.log(recipe);
         // @ts-ignore
         recipeUpdateRequestDto = { ...recipe };
       });
@@ -404,7 +405,12 @@
     <hr class="hr-100" />
   {/if}
   <div class="container-flex">
-    <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
+    <RecipeFoods
+      {recipe}
+      bind:recipeFoods
+      bind:totalPrice
+      bind:selectedRecipeFoods
+    />
     <br />
     {#if $isLogin}
       <Button

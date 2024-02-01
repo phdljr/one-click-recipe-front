@@ -1,9 +1,14 @@
 <script>
   import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
-
+  import { auth, isLogin } from '../../store/user';
+  import PrimaryAction from '@smui/card/src/PrimaryAction.svelte';
+  import Dialog from '@smui/dialog/src/Dialog.svelte';
+  export let recipe;
   export let recipeFoods;
   export let totalPrice;
   export let selectedRecipeFoods;
+  let open = false;
+  let recipeFoodUpdateRequestDto = {};
 
   $: {
     totalPrice = 0;
@@ -16,18 +21,69 @@
 <div class="wrapper-recipe-food">
   <span class="span-bold-center">레시피 재료</span>
   <hr class="hr-100" />
-  {#each recipeFoods as recipeFood (recipeFood.id)}
-    <div class="recipe-food">
-      <span class="recipe-food-name">
-        {recipeFood.name}
-        {recipeFood.amount}{recipeFood.unit}
-      </span>
-      <span class="recipe-food-price"
-        >{recipeFood.price.toLocaleString('ko-KR')}원</span
+  {#if $isLogin}
+    {#if $auth.nickname == recipe.writer}
+      <PrimaryAction on:click={() => (open = !open)}>
+        {#each recipeFoods as recipeFood (recipeFood.id)}
+          <div class="recipe-food">
+            <span class="recipe-food-name">
+              {recipeFood.name}
+              {recipeFood.amount}{recipeFood.unit}
+            </span>
+            <span class="recipe-food-price"
+              >{recipeFood.price.toLocaleString('ko-KR')}원</span
+            >
+            <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
+          </div>
+        {/each}
+      </PrimaryAction>
+      <Dialog
+        class="custom-dialog"
+        bind:open
+        aria-labelledby="simple-title"
+        aria-describedby="simple-content"
       >
-      <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
-    </div>
-  {/each}
+        {#each recipeFoods as recipeFood (recipeFood.id)}
+          <div class="recipe-food">
+            <span class="recipe-food-name">
+              {recipeFood.name}
+              {recipeFood.amount}{recipeFood.unit}
+            </span>
+            <span class="recipe-food-price"
+              >{recipeFood.price.toLocaleString('ko-KR')}원</span
+            >
+          </div>
+        {/each}
+      </Dialog>
+    {:else}
+      {#each recipeFoods as recipeFood (recipeFood.id)}
+        <div class="recipe-food">
+          <span class="recipe-food-name">
+            {recipeFood.name}
+            {recipeFood.amount}{recipeFood.unit}
+          </span>
+          <span class="recipe-food-price"
+            >{recipeFood.price.toLocaleString('ko-KR')}원</span
+          >
+          <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
+        </div>
+      {/each}
+    {/if}
+  {:else}
+    {#each recipeFoods as recipeFood (recipeFood.id)}
+      <div class="recipe-food">
+        <span class="recipe-food-name">
+          {recipeFood.name}
+          {recipeFood.amount}{recipeFood.unit}
+        </span>
+        <span class="recipe-food-price"
+          >{recipeFood.price.toLocaleString('ko-KR')}원</span
+        >
+        <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
+      </div>
+    {/each}
+  {/if}
+
   <hr class="hr-100" />
   <span class="span-bold-center">총 {totalPrice.toLocaleString('ko-KR')}원</span
   >
