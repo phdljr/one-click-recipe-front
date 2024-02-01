@@ -244,13 +244,6 @@
   <div class="option">
     {#if $isLogin}
       {#if $auth.nickname == recipe.writer}
-        <Button
-          class="buy-button"
-          variant="raised"
-          on:click={handleBuyingRecipeFoods}
-        >
-          수정</Button
-        >
         <Button class="buy-button" variant="raised" on:click={deleteRecipe}>
           삭제</Button
         >
