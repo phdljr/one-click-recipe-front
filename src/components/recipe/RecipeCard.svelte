@@ -106,14 +106,16 @@
   }
 
   button {
-    background: none;
+    background: transparent;
     border: none;
     cursor: pointer;
+    transition:
+      color 0.3s,
+      transform 0.3s;
   }
-  .like-img {
-    aspect-ratio: 1.11;
-    object-fit: contain;
-    object-position: center;
-    width: 20px;
+
+  button:hover {
+    color: #ff0000;
+    transform: scale(1.3);
   }
 </style>
