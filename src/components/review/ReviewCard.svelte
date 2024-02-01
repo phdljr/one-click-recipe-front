@@ -69,12 +69,12 @@
   function rate(rating) {
     reviewUpdateDto.star = rating;
   }
-
-  const filledStarUrl =
-    'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
-  const emptyStarUrl =
-    'https://cdn.builder.io/api/v1/image/assets/TEMP/d7a5988b714f259a29e90b1d5c2adcfea494cab28373dc9e38f2ec8ba4d216a7?';
 </script>
+
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
 
 <div class={open ? 'modal open' : 'modal'} on:click={handleCloseOverlay}>
   <div class="modal-content" on:click|stopPropagation>
@@ -82,12 +82,17 @@
     ></textarea>
     <div class="rating">
       {#each [1, 2, 3, 4, 5] as n}
-        <img
+        <span
+          class="material-icons"
+          style="font-size: 24px; color: yellow; cursor: pointer;"
           on:click={() => rate(n)}
-          src={n <= reviewUpdateDto.star ? filledStarUrl : emptyStarUrl}
-          class="img"
-          alt="star"
-        />
+        >
+          {#if n <= reviewUpdateDto.star}
+            star
+          {:else}
+            star_border
+          {/if}
+        </span>
       {/each}
     </div>
     <div class="modal-actions">
@@ -102,15 +107,21 @@
   <div on:click={() => (open = !open)}>
     <h2>{review.content}</h2>
     <h3>{review.writer}</h3>
-    <h4>
-      {#each [1, 2, 3, 4, 5] as n}
-        <img
-          src={n <= review.star ? filledStarUrl : emptyStarUrl}
-          class="review-star-img"
-          alt="star"
-        />
-      {/each}
-    </h4>
+
+    {#each [1, 2, 3, 4, 5] as n}
+      <span
+        class="material-icons"
+        style="font-size: 24px; color: yellow; cursor:
+          pointer;"
+        on:click={() => rate(n)}
+      >
+        {#if n <= reviewUpdateDto.star}
+          star
+        {:else}
+          star_border
+        {/if}
+      </span>
+    {/each}
   </div>
 </div>
 
@@ -133,7 +144,7 @@
   }
 
   .modal-content {
-    background: white;
+    background: #333;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
@@ -158,11 +169,5 @@
   .modal-actions button:hover {
     background-color: #3c3c3c;
     color: #fff;
-  }
-
-  .review-star-img {
-    width: 24px;
-    height: auto;
-    margin-right: 5px;
   }
 </style>

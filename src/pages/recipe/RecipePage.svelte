@@ -460,7 +460,7 @@
   }
 
   textarea {
-    color: #ffffff;
+    color: #333;
     width: 95%;
     height: 100px;
     border: 1px solid #e1e1e1;
