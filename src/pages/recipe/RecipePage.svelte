@@ -460,7 +460,6 @@
   }
 
   textarea {
-    background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     width: 95%;
     height: 100px;
@@ -468,10 +467,10 @@
     border-radius: 4px;
     margin-bottom: 10px;
     padding: 12px;
-    resize: none;
     font-size: 1rem;
     font-family: 'Open Sans', sans-serif;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: text;
   }
 
   .rating {
