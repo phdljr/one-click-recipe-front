@@ -14,6 +14,7 @@
     reviewValidate,
   } from '../../lib/validates/review-validate';
   import { auth, isLogin } from '../../store/user';
+  import { Content } from '@smui/drawer';
 
   export let recipeId;
 
@@ -43,6 +44,7 @@
     fetch(HOST + `/api/v1/recipes/${recipeId}`, {
       method: 'GET',
       headers: {
+        Authorization: $auth.Authorization,
         'Content-Type': 'application/json',
       },
     })
@@ -144,7 +146,6 @@
       alert('로그인을 진행해주세요.');
       return;
     }
-
     try {
       await reviewValidate.validate(reviewDto, {
         abortEarly: false,
@@ -178,14 +179,83 @@
         alert(failData.message);
       });
   };
-
-  const filledStarUrl =
-    'https://cdn.builder.io/api/v1/image/assets/TEMP/fa1cd4f9506301825c57a5ad38044c67daaf262266c0fa452d477825685c479b?';
-  const emptyStarUrl =
-    'https://cdn.builder.io/api/v1/image/assets/TEMP/d7a5988b714f259a29e90b1d5c2adcfea494cab28373dc9e38f2ec8ba4d216a7?';
+  async function toggleFollowed() {
+    if (!$isLogin) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+    const method = recipe.isFollowed ? 'DELETE' : 'POST';
+    recipe.isFollowed = !recipe.isFollowed;
+    try {
+      const response = await fetch(
+        `${HOST}/api/v1/follows/${recipe.writerId}`,
+        {
+          method: method,
+          headers: {
+            Authorization: $auth.Authorization,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to update like status');
+      }
+    } catch (error) {
+      console.error('Error updating like status:', error);
+      recipe.isFollowed = !recipe.isFollowed;
+      alert('본인은 구독할 수 없습니다!');
+    }
+  }
+  const deleteRecipe = () => {
+    fetch(HOST + `/api/v1/recipes/${recipeId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: $auth.Authorization,
+      },
+    })
+      .then((res) => {
+        alert('레시피가 성공적으로 삭제되었습니다.');
+        navigate('/recipes');
+      })
+      .catch((error) => {
+        alert('레시피 삭제에 실패했습니다.');
+      });
+  };
 </script>
 
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+
 <div class="container-recipe">
+  <div class="follow-delete-buttons">
+    <button
+      on:click={toggleFollowed}
+      title="Add to follows"
+      class="follow-button"
+      style="color: yellow;"
+    >
+      {#if recipe.isFollowed}
+        <span class="material-icons">bookmark</span>
+      {:else}
+        <span class="material-icons">bookmark_border</span>
+      {/if}
+    </button>
+
+    {#if $isLogin}
+      {#if $auth.nickname == recipe.writer}
+        <button
+          class="delete-button"
+          style="color: black;"
+          on:click={deleteRecipe}
+        >
+          <span class="material-icons">delete</span>
+        </button>
+      {/if}
+    {:else}{/if}
+  </div>
   <h1 class="recipe-title">{recipe.title}</h1>
   <h3 class="recipe-intro">
     {recipe.intro}
@@ -232,12 +302,17 @@
     <div class="comment-actions-container">
       <div class="rating">
         {#each [1, 2, 3, 4, 5] as n}
-          <img
-            src={n <= reviewDto.star ? filledStarUrl : emptyStarUrl}
-            class="img"
-            alt="star"
+          <span
+            class="material-icons img"
+            style="color: yellow;"
             on:click={() => rate(n)}
-          />
+          >
+            {#if n <= reviewDto.star}
+              star
+            {:else}
+              star_outline
+            {/if}
+          </span>
         {/each}
       </div>
       <Button on:click={createReview} class="buy-button2" variant="raised"
@@ -309,6 +384,51 @@
     color: #fff;
   }
 
+  .follow-button {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    width: fit-content;
+    cursor: pointer;
+    transition:
+      color 0.3s,
+      background-color 0.3s,
+      transform 0.3s;
+  }
+
+  .follow-button:hover {
+    color: #f1c40f;
+    transform: scale(1.5);
+  }
+
+  .delete-button {
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    width: fit-content;
+    cursor: pointer;
+    transition:
+      color 0.3s,
+      background-color 0.3s,
+      transform 0.3s;
+  }
+
+  .delete-button:hover {
+    transform: scale(1.5);
+  }
+
+  .material-icons {
+    font-size: 50px;
+  }
+
+  .follow-delete-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+
   .recipe-title {
     text-align: center;
   }
@@ -360,18 +480,17 @@
   }
 
   textarea {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    color: #333;
     width: 95%;
     height: 100px;
     border: 1px solid #e1e1e1;
     border-radius: 4px;
     margin-bottom: 10px;
     padding: 12px;
-    resize: none;
     font-size: 1rem;
     font-family: 'Open Sans', sans-serif;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: text;
   }
 
   .rating {
@@ -385,13 +504,25 @@
     aspect-ratio: 1.05;
     object-fit: contain;
     object-position: center;
-    width: 24px;
+    width: 25px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    font-size: 35px;
+    margin-right: 5px;
+    animation: sparkle 1s infinite alternate;
   }
 
   .img:hover {
-    transform: scale(1.5);
+    transform: scale(1.3);
+  }
+
+  @keyframes sparkle {
+    0% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   .comment-section {

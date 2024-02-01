@@ -48,6 +48,11 @@
   }
 </script>
 
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+
 <div class="container">
   <Card>
     <PrimaryAction on:click={() => navigate(`/recipes/${recipe.id}`)}>
@@ -74,26 +79,19 @@
         {recipe.writer}
       </span>
       <ActionIcons>
-        <span class="like_count">
+        <span class="like_count" style="font-weight: bold; font-size: 20px;">
           {recipe.likeCount}
         </span>
         <button
           on:click={toggleLike}
           aria-label="Add to favorites"
           title="Add to favorites"
+          style="color: red;"
         >
           {#if liked}
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/3d9f7600f50823d72baaf50d03574a80c82377d898f89bc9faa5a053366b95c0?"
-              class="like-img"
-              alt=""
-            />
+            <span class="material-icons"> favorite </span>
           {:else}
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/9ff117ff108af49770015cb69ac2d18bf764d4ea8da4cbfd81705a20ed6664f1?"
-              class="like-img"
-              alt=""
-            />
+            <span class="material-icons"> favorite_border </span>
           {/if}
         </button>
       </ActionIcons>
@@ -108,14 +106,16 @@
   }
 
   button {
-    background: none;
+    background: transparent;
     border: none;
     cursor: pointer;
+    transition:
+      color 0.3s,
+      transform 0.3s;
   }
-  .like-img {
-    aspect-ratio: 1.11;
-    object-fit: contain;
-    object-position: center;
-    width: 20px;
+
+  button:hover {
+    color: #ff0000;
+    transform: scale(1.3);
   }
 </style>

@@ -43,7 +43,7 @@
   .recipe-food-price {
     width: 100px;
     text-align: right;
-    color: #ffffff;
+    color: #333;
   }
 
   .recipe-food {
