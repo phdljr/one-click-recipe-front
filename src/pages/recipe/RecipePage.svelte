@@ -15,7 +15,7 @@
   import { Content } from '@smui/drawer';
 
   export let recipeId;
-  export let isFollowed = false;
+  export let isFollowed = recipeId.isFollowed;
 
   let recipe = {};
   let reviews = [];
@@ -240,9 +240,10 @@
         alt=""
       />
     {/if}
-
-    <div class="option">
-      {#if $isLogin}
+  </button>
+  <div class="option">
+    {#if $isLogin}
+      {#if $auth.nickname == recipe.writer}
         <Button
           class="buy-button"
           variant="raised"
@@ -253,9 +254,9 @@
         <Button class="buy-button" variant="raised" on:click={deleteRecipe}>
           삭제</Button
         >
-      {:else}{/if}
-    </div>
-  </button>
+      {/if}
+    {:else}{/if}
+  </div>
   <h1 class="recipe-title">{recipe.title}</h1>
   <h3 class="recipe-intro">
     {recipe.intro}
