@@ -18,16 +18,16 @@
   import { Content } from '@smui/drawer';
   import { PrimaryAction } from '@smui/card';
   import Dialog, { Actions } from '@smui/dialog';
+  import RecipeFoodAllPage from './RecipeFoodAllPage.svelte';
 
   export let recipeId;
   let open = false;
-
+  let totalPrice;
   let recipe = {};
   let reviews = [];
   let recipeFoods = [];
   let recipeProcesses = [];
 
-  let totalPrice = 0;
   let selectedRecipeFoods = [];
   let recipeUpdateRequestDto = {};
   let recipeUpdateImage = null;
@@ -405,12 +405,7 @@
     <hr class="hr-100" />
   {/if}
   <div class="container-flex">
-    <RecipeFoods
-      {recipe}
-      bind:recipeFoods
-      bind:totalPrice
-      bind:selectedRecipeFoods
-    />
+    <RecipeFoodAllPage {recipeId} {totalPrice} />
     <br />
     {#if $isLogin}
       <Button
