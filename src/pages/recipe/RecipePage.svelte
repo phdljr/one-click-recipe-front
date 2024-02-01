@@ -1,10 +1,12 @@
 <script>
   import Button from '@smui/button';
   import { onMount } from 'svelte';
+  import InfiniteScroll from 'svelte-infinite-scroll';
   import { navigate } from 'svelte-routing';
   import RecipeFoods from '../../components/recipe/RecipeFoods.svelte';
   import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
   import ReviewCard from '../../components/review/ReviewCard.svelte';
+  import { REVIEW_SIZE } from '../../lib/const/pagination-const';
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
   import {
@@ -16,12 +18,20 @@
   export let recipeId;
 
   let recipe = {};
+
   let reviews = [];
+  let newReviews = [];
+  $: reviews = [...reviews, ...newReviews];
+  $: console.log(reviews);
+
   let recipeFoods = [];
   let recipeProcesses = [];
 
   let totalPrice = 0;
   let selectedRecipeFoods = [];
+
+  let reviewPage = 0;
+  let isLastReviewPage = false;
 
   onMount(() => {
     getRecipe();
@@ -74,7 +84,7 @@
   };
 
   const getReviews = () => {
-    fetch(HOST + `/api/v1/recipes/${recipeId}/reviews`, {
+    fetch(HOST + `/api/v1/recipes/${recipeId}/reviews?page=${reviewPage}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -82,7 +92,10 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        reviews = data;
+        if (data.length < REVIEW_SIZE) {
+          isLastReviewPage = true;
+        }
+        newReviews = data;
       });
   };
 
@@ -238,6 +251,14 @@
     {#each reviews as review (review.id)}
       <div><ReviewCard {review} /></div>
     {/each}
+    <InfiniteScroll
+      window={true}
+      hasMore={!isLastReviewPage}
+      on:loadMore={() => {
+        reviewPage++;
+        getReviews();
+      }}
+    />
   {:else}
     <h1>등록된 댓글이 없습니다.</h1>
   {/if}
