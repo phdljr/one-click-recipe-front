@@ -1,5 +1,8 @@
 <script>
-  import Button from '@smui/button';
+  // @ts-nocheck
+
+  import Button, { Label } from '@smui/button';
+
   import { onMount } from 'svelte';
   import { navigate } from 'svelte-routing';
   import RecipeFoods from '../../components/recipe/RecipeFoods.svelte';
@@ -13,8 +16,11 @@
   } from '../../lib/validates/review-validate';
   import { auth, isLogin } from '../../store/user';
   import { Content } from '@smui/drawer';
+  import { PrimaryAction } from '@smui/card';
+  import Dialog, { Actions } from '@smui/dialog';
 
   export let recipeId;
+  let open = false;
 
   let recipe = {};
   let reviews = [];
@@ -23,7 +29,8 @@
 
   let totalPrice = 0;
   let selectedRecipeFoods = [];
-
+  let recipeUpdateRequestDto = {};
+  let recipeUpdateImage = null;
   onMount(() => {
     getRecipe();
     getRecipeFoods();
@@ -42,6 +49,8 @@
       .then((response) => response.json())
       .then((data) => {
         recipe = data;
+        // @ts-ignore
+        recipeUpdateRequestDto = { ...recipe };
       });
   };
 
@@ -210,6 +219,68 @@
         alert('레시피 삭제에 실패했습니다.');
       });
   };
+  const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
+  const handleSelectRecipeImage = (e) => {
+    const fileInput = e.target;
+    const file = e.target.files[0];
+
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      fileInput.value = '';
+      return;
+    }
+
+    recipeUpdateImage = file;
+  };
+
+  const updateRecipe = () => {
+    let formData = new FormData();
+    formData.append(
+      'recipeUpdateRequestDto',
+      new Blob([JSON.stringify(recipeUpdateRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+    if (recipeUpdateImage == null) {
+      formData.append('recipeUpdateImage', new Blob());
+    } else {
+      let recipeUpdateImageType;
+      if (recipeUpdateImage.type == 'image/png') {
+        recipeUpdateImageType = 'image/png';
+      } else {
+        recipeUpdateImageType = 'image/jpeg';
+      }
+      formData.append(
+        'recipeUpdateImage',
+        new Blob([recipeUpdateImage], { type: recipeUpdateImageType }),
+      );
+    }
+    fetch(HOST + `/api/v1/recipes/${recipeId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: $auth.Authorization,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
+        alert('레시피가 성공적으로 업데이트되었습니다.');
+        recipe = { ...recipeUpdateRequestDto };
+      })
+      .catch((error) => {
+        alert(recipeUpdateRequestDto.title);
+      });
+  };
+  const handleCloseDialog = (e) => {
+    switch (e.detail.action) {
+      case 'save':
+        updateRecipe();
+        break;
+    }
+  };
 </script>
 
 <link
@@ -244,14 +315,94 @@
       {/if}
     {:else}{/if}
   </div>
-  <h1 class="recipe-title">{recipe.title}</h1>
-  <h3 class="recipe-intro">
-    {recipe.intro}
-  </h3>
-  <span class="recipe-serving">
-    {recipe.serving}인분
-  </span>
-  <hr class="hr-100" />
+  {#if $isLogin}
+    {#if $auth.nickname == recipe.writer}
+      <PrimaryAction on:click={() => (open = !open)}>
+        <h1 class="recipe-title">{recipe.title}</h1>
+        <h3 class="recipe-intro">
+          {recipe.intro}
+        </h3>
+        <span class="recipe-serving">
+          {recipe.serving}인분
+        </span>
+        <hr class="hr-100" />
+      </PrimaryAction>
+      <Dialog
+        class="custom-dialog"
+        bind:open
+        aria-labelledby="simple-title"
+        aria-describedby="simple-content"
+        on:SMUIDialog:closed={handleCloseDialog}
+      >
+        <div class="recipe-form">
+          <div class="form-group">
+            <label for="recipe-title">레시피 제목</label>
+            <input
+              required
+              type="text"
+              id="recipe-title"
+              bind:value={recipeUpdateRequestDto.title}
+            />
+          </div>
+          <div class="form-group">
+            <label for="recipe-title">레시피 대표 사진</label>
+            <input
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              on:change={(e) => handleSelectRecipeImage(e)}
+            />
+          </div>
+          <div class="form-group">
+            <label for="intro">레시피 소개</label>
+            <textarea id="intro" bind:value={recipeUpdateRequestDto.intro}
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="serving">인원</label>
+            <select id="serving" bind:value={recipeUpdateRequestDto.serving}>
+              <option value="1">1인분</option>
+              <option value="2">2인분</option>
+              <option value="3">3인분</option>
+              <option value="4">4인분</option>
+              <option value="5">5인분</option>
+              <option value="6">6인분 이상</option>
+            </select>
+          </div>
+        </div>
+        <Actions>
+          <div class="btn-container">
+            <span>
+              <Button action="save">
+                <Label>저장</Label>
+              </Button>
+              <Button action="cancel">
+                <Label>취소</Label>
+              </Button>
+            </span>
+          </div>
+        </Actions>
+      </Dialog>
+    {:else}
+      <h1 class="recipe-title">{recipe.title}</h1>
+      <h3 class="recipe-intro">
+        {recipe.intro}
+      </h3>
+      <span class="recipe-serving">
+        {recipe.serving}인분
+      </span>
+      <hr class="hr-100" />
+    {/if}
+  {:else}
+    <h1 class="recipe-title">{recipe.title}</h1>
+    <h3 class="recipe-intro">
+      {recipe.intro}
+    </h3>
+    <span class="recipe-serving">
+      {recipe.serving}인분
+    </span>
+    <hr class="hr-100" />
+  {/if}
   <div class="container-flex">
     <RecipeFoods {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
     <br />
@@ -515,5 +666,21 @@
   .comment-input-container {
     flex-grow: 2;
     margin-right: 20px;
+  }
+  .recipe-form {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+  }
+  .custom-dialog {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
   }
 </style>
