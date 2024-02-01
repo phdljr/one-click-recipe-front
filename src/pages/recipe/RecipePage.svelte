@@ -239,7 +239,11 @@
 
     {#if $isLogin}
       {#if $auth.nickname == recipe.writer}
-        <button class="delete-button" on:click={deleteRecipe}>
+        <button
+          class="delete-button"
+          style="color: blue;"
+          on:click={deleteRecipe}
+        >
           <span class="material-icons">delete</span>
         </button>
       {/if}
@@ -386,11 +390,12 @@
     cursor: pointer;
     transition:
       color 0.3s,
-      background-color 0.3s;
+      background-color 0.3s,
+      transform 0.3s;
   }
 
   .delete-button:hover {
-    color: #00bbff;
+    transform: scale(1.5);
   }
 
   .material-icons {
