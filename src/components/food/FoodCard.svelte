@@ -120,7 +120,11 @@
   <Card>
     <PrimaryAction on:click={() => (open = !open)}>
       <Content class="mdc-typography--body2">
-        <h2 class="mdc-typography--headline6" style="margin: 0;">
+        <h2
+          class="mdc-typography--headline6"
+          style="margin: 0;
+        background-color:black;"
+        >
           {food.name}
         </h2>
         <h3
@@ -141,7 +145,9 @@
     width: 100%;
     justify-content: space-between;
   }
-
+  .mdc-typography--headline6 {
+    color: black;
+  }
   .text-red {
     color: red;
   }
