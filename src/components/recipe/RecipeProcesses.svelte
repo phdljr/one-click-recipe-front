@@ -6,8 +6,13 @@
   {#each recipeProcesses as recipeProcess, index (recipeProcess.id)}
     <div class="recipe-process-div">
       <span>{index + 1}. {recipeProcess.description}</span>
-      <a href={recipeProcess.imageUrl}
-        ><img src={recipeProcess.imageUrl} alt="" width="200" height="100%" />
+      <a href={recipeProcess.imageUrl} target="_blank"
+        ><img
+          src={encodeURI(recipeProcess.imageUrl)}
+          alt=""
+          width="200"
+          height="100%"
+        />
       </a>
     </div>
     <br />
