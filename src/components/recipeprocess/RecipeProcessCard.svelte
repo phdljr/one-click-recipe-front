@@ -199,7 +199,7 @@
     margin-bottom: 10px;
     border-radius: 10px;
     width: 600px;
-    height: 150px;
+    min-height: 150px;
     /* color: #ffffff; */
     padding: 30px;
     box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.7);
