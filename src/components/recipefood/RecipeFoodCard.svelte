@@ -9,10 +9,11 @@
 
   export let recipeFood;
   export let selectedRecipeFoods;
-  export let totalPrice;
 
-  let recipeFoodUpdateDto = { ...recipeFood };
-  let units = ['COUNT', 'G', 'ML'];
+  let recipeFoodUpdateDto = {
+    foodName: recipeFood.name,
+    amount: recipeFood.amount,
+  };
   let open = false;
 
   const updateRecipeFood = () => {
@@ -28,8 +29,8 @@
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        recipeFood = recipeFoodUpdateDto;
         alert('식재료가 성공적으로 업데이트되었습니다.');
+        location.reload();
       })
       .catch((error) => {
         alert('식재료 업데이트에 실패했습니다.');
@@ -76,11 +77,17 @@
   on:SMUIDialog:closed={handleCloseDialog}
 >
   <Content id="simple-content">
-    <Textfield type="text" bind:value={recipeFoodUpdateDto.name} label="이름"
+    <Textfield
+      type="text"
+      bind:value={recipeFoodUpdateDto.foodName}
+      label="이름"
     ></Textfield>
   </Content>
   <Content id="simple-content">
-    <Textfield type="text" bind:value={recipeFoodUpdateDto.amount} label="단위"
+    <Textfield
+      type="text"
+      bind:value={recipeFoodUpdateDto.amount}
+      label="수량({recipeFood.unit})"
     ></Textfield>
   </Content>
   <Actions>
@@ -99,26 +106,27 @@
     </div>
   </Actions>
 </Dialog>
-<div class="recipe-food">
-  <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
-    <span class="recipe-food-name">
-      {recipeFood.name}
-      {recipeFood.amount}{recipeFood.unit}
-    </span>
-  </PrimaryAction>
-  <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
+
+<div class="container-recipe-food">
+  <div class="recipe-food">
+    <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
+      <span class="recipe-food-name">
+        {recipeFood.name}
+        {recipeFood.amount}{recipeFood.unit}
+      </span>
+      <span class="recipe-food-price"
+        >{recipeFood.price.toLocaleString('ko-KR')}원</span
+      >
+    </PrimaryAction>
+    <Checkbox bind:group={selectedRecipeFoods} bind:value={recipeFood} />
+  </div>
 </div>
 
 <style>
   :global(.recipe-food-action) {
     display: flex;
     justify-content: center;
-  }
-
-  .recipe-food {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    width: 80%;
   }
 
   .btn-container {
@@ -130,10 +138,18 @@
   .text-red {
     color: red;
   }
+
   .recipe-food-name {
     color: #333;
     font-weight: bold;
     width: 100px;
+  }
+
+  .recipe-food-price {
+    color: #333;
+    font-weight: bold;
+    width: 100px;
+    font-size: medium;
   }
 
   :global(.svelte-select) {
@@ -143,5 +159,23 @@
     flex: 1;
     background-color: rgba(255, 255, 255, 0.1) !important;
     font-size: large !important;
+  }
+
+  .recipe-food {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .container-recipe-food {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    flex-direction: column;
   }
 </style>

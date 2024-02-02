@@ -413,13 +413,7 @@
     <hr class="hr-100" />
   {/if}
   <div class="container-flex">
-    <div class="wrapper-recipe-food">
-      <span class="recipe-food-sub">레시피 식재료</span>
-      <hr class="hr-100" />
-      <RecipeFoodAllCard {recipeId} bind:totalPrice bind:selectedRecipeFoods />
-      <hr class="hr-100" />
-      <span class="recipe-food-sub">총 {totalPrice}원</span>
-    </div>
+    <RecipeFoodAllCard {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
     <br />
     {#if $isLogin}
       <Button
@@ -493,25 +487,6 @@
 </div>
 
 <style>
-  .recipe-food-sub {
-    text-align: center;
-    font-weight: 700;
-
-    font-size: 1.2rem;
-  }
-
-  .wrapper-recipe-food {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    border-radius: 30px;
-    padding: 30px;
-    background-color: #000000b3;
-    box-shadow: 2px 5px 10px #000000b3;
-    color: #f1c40f;
-    align-items: center;
-  }
-
   * :global(.span-bold-center) {
     text-align: center;
     font-weight: bold;
