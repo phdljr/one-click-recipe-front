@@ -1,6 +1,7 @@
 <script>
   import Button, { Label } from '@smui/button';
   import { PrimaryAction } from '@smui/card';
+  import Checkbox from '@smui/checkbox';
   import Dialog, { Actions } from '@smui/dialog';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
@@ -10,7 +11,9 @@
 
   let open = false;
 
-  let recipeUpdateRequestDto = { ...recipe, imageChange: false };
+  let recipeUpdateRequestDto = { ...recipe };
+  let imageChange = false;
+
   let recipeUpdateImage = null;
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
@@ -18,11 +21,14 @@
   const updateRecipe = () => {
     let formData = new FormData();
 
-    if (recipeUpdateImage == null) {
-      recipeUpdateRequestDto = { ...recipe, imageChange: false };
+    if (!imageChange && recipeUpdateImage == null) {
+      recipeUpdateRequestDto = {
+        ...recipeUpdateRequestDto,
+        imageChange: false,
+      };
       formData.append('recipeUpdateImage', new Blob());
     } else {
-      recipeUpdateRequestDto = { ...recipe, imageChange: true };
+      recipeUpdateRequestDto = { ...recipeUpdateRequestDto, imageChange: true };
       let recipeUpdateImageType;
       if (recipeUpdateImage.type == 'image/png') {
         recipeUpdateImageType = 'image/png';
@@ -70,12 +76,10 @@
   };
 
   const handleSelectRecipeImage = (e) => {
-    const fileInput = e.target;
     const file = e.target.files[0];
 
     if (file && file.size > MAX_FILE_SIZE) {
       alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
-      fileInput.value = '';
       return;
     }
 
@@ -112,12 +116,14 @@
     <div class="form-group">
       <label for="recipe-title">레시피 대표 사진</label>
       <input
+        disabled={!imageChange}
         type="file"
         accept=".jpg, .jpeg, .png"
         on:change={(e) => handleSelectRecipeImage(e)}
       />
+      <Checkbox bind:checked={imageChange}></Checkbox>
     </div>
-    <div class="form-group">
+    <div>
       <label for="intro">레시피 소개</label>
       <textarea id="intro" bind:value={recipeUpdateRequestDto.intro}></textarea>
     </div>
@@ -149,6 +155,10 @@
 </Dialog>
 
 <style>
+  .form-group {
+    display: flex;
+    align-items: center;
+  }
   .recipe-title {
     text-align: center;
   }

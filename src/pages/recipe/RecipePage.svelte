@@ -54,7 +54,6 @@
       .then((response) => response.json())
       .then((data) => {
         recipe = data;
-        console.log(recipe);
         recipeUpdateRequestDto = { ...recipe };
       });
   };

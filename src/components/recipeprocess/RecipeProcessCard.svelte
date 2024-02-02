@@ -13,7 +13,7 @@
 
   let imageChange = false;
 
-  let controllerRequestDto = {
+  let recipeProcessUpdateRequestDto = {
     description: recipeProcess.description,
     sequence: recipeProcess.sequence,
     imageChange: imageChange,
@@ -23,9 +23,13 @@
 
   const updateRecipeProcess = () => {
     let formData = new FormData();
+    recipeProcessUpdateRequestDto = {
+      ...recipeProcessUpdateRequestDto,
+      imageChange: imageChange,
+    };
     formData.append(
-      'controllerRequestDto',
-      new Blob([JSON.stringify(controllerRequestDto)], {
+      'recipeProcessUpdateRequestDto',
+      new Blob([JSON.stringify(recipeProcessUpdateRequestDto)], {
         type: 'application/json',
       }),
     );
@@ -39,7 +43,7 @@
         recipeProcessUpdateImageType = 'image/jpeg';
       }
       formData.append(
-        'multipartFile',
+        'recipeProcessUpdateImage',
         new Blob([recipeProcessUpdateImage], {
           type: recipeProcessUpdateImageType,
         }),
@@ -91,11 +95,23 @@
         deleteRecipeProcess();
         break;
       default:
-        controllerRequestDto = {
+        recipeProcessUpdateRequestDto = {
           ...recipeProcess,
         };
         break;
     }
+  };
+
+  const MAX_FILE_SIZE = 2 * 1024 * 1024;
+  const handleSelectRecipeImage = (e) => {
+    const file = e.target.files[0];
+
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      return;
+    }
+
+    recipeProcessUpdateImage = file;
   };
 </script>
 
@@ -106,11 +122,23 @@
   on:SMUIDialog:closed={handleCloseDialog}
 >
   <Content id="simple-content">
-    <Textfield
-      type="text"
-      bind:value={controllerRequestDto.description}
-      label="설명"
-    ></Textfield>
+    <div>
+      <Textfield
+        style="width: 100%;"
+        textarea
+        bind:value={recipeProcessUpdateRequestDto.description}
+        label="설명"
+      ></Textfield>
+      <div class="div-flex">
+        <input
+          disabled={!imageChange}
+          type="file"
+          accept=".jpg, .jpeg, .png"
+          on:change={(e) => handleSelectRecipeImage(e)}
+        />
+        <Checkbox bind:checked={imageChange}></Checkbox>
+      </div>
+    </div>
   </Content>
   <Actions>
     <div class="btn-container">
@@ -138,7 +166,6 @@
         </a>
       </div>
     </PrimaryAction>
-    <Checkbox bind:checked={controllerRequestDto.imageChange} />
   {:else}
     <div class="recipe-process-div">
       <span>{index + 1}. {recipeProcess.description}</span>
@@ -150,6 +177,12 @@
 </div>
 
 <style>
+  .div-flex {
+    display: flex;
+    align-items: center;
+    color: black;
+  }
+
   .wrapper-recipe-process {
     display: flex;
     flex-direction: column;
@@ -167,7 +200,7 @@
     border-radius: 10px;
     width: 600px;
     height: 150px;
-    color: #ffffff;
+    /* color: #ffffff; */
     padding: 30px;
     box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.7);
   }
@@ -184,5 +217,15 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     width: 200px;
     height: auto;
+  }
+
+  .btn-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .text-red {
+    color: red;
   }
 </style>
