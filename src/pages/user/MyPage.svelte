@@ -5,6 +5,7 @@
   import HOST from '../../lib/host';
 
   const showModal = writable(false);
+  const showWithdrawalModal = writable(false);
 
   let nickname = '';
   let nicknameError = '';
@@ -14,11 +15,26 @@
   let passwordError = '';
   let confirmPasswordError = '';
 
+  let withdrawalPassword = '';
+  let withdrawalPasswordError = '';
+  let confirmWithdrawalPassword = '';
+  let confirmWithdrawalPasswordError = '';
+
   function toggleModal() {
     showModal.update((n) => !n);
     nickname = '';
     nicknameError = '';
   }
+
+  function toggleWithdrawalModal() {
+    showWithdrawalModal.update((n) => !n);
+    withdrawalPassword = '';
+    withdrawalPasswordError = '';
+  }
+
+  const logout = () => {
+    auth.logout();
+  };
 
   async function updateNickname() {
     if (nickname === $auth.nickname) {
@@ -104,6 +120,44 @@
       }
     }
   }
+
+  async function deleteUser() {
+    if (
+      withdrawalPassword.trim() === '' ||
+      confirmWithdrawalPassword.trim() === ''
+    ) {
+      withdrawalPasswordError = '비밀번호를 입력해주세요.';
+      confirmWithdrawalPasswordError = '비밀번호 확인을 입력해주세요.';
+      return;
+    }
+    if (withdrawalPassword !== confirmWithdrawalPassword) {
+      confirmWithdrawalPasswordError = '비밀번호가 일치하지 않습니다.';
+      return;
+    }
+    const response = await fetch(HOST + `/api/v1/users/withdrawal`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: $auth.Authorization,
+      },
+      body: JSON.stringify({
+        password: withdrawalPassword,
+        confirmPassword: confirmWithdrawalPassword,
+      }),
+    });
+
+    if (response.ok) {
+      alert('회원 탈퇴가 완료되었습니다.');
+      showWithdrawalModal.set(false);
+      logout();
+      window.location.href = '/';
+    } else {
+      const errorResponse = await response.json();
+      withdrawalPasswordError =
+        errorResponse.message ||
+        '회원 탈퇴 처리에 실패했습니다. 다시 시도해주세요.';
+    }
+  }
 </script>
 
 <div class="container">
@@ -116,6 +170,9 @@
       ><button class="custom-button1">좋아요 목록</button></Link
     >
     <button class="custom-button1" on:click={toggleModal}>프로필 수정</button>
+    <button class="custom-button1" on:click={toggleWithdrawalModal}
+      >회원 탈퇴</button
+    >
   </div>
 
   {#if $showModal}
@@ -166,6 +223,41 @@
             {/if}
           </div>
           <button on:click={updatePassword}>비밀번호 변경</button>
+        </div>
+      </div>
+    </div>
+  {/if}
+
+  {#if $showWithdrawalModal}
+    <div class="modal" on:click={toggleWithdrawalModal}>
+      <div class="modal-content" on:click={(e) => e.stopPropagation()}>
+        <span class="close" on:click={toggleWithdrawalModal}>&times;</span>
+        <h2>회원 탈퇴</h2>
+        <div class="input-container">
+          <div>
+            <label for="withdrawalPassword">비밀번호</label>
+            <input
+              id="withdrawalPassword"
+              type="password"
+              bind:value={withdrawalPassword}
+            />
+            {#if withdrawalPasswordError}
+              <p class="error">{withdrawalPasswordError}</p>
+            {/if}
+          </div>
+          <div>
+            <label for="confirmWithdrawalPassword">비밀번호 확인</label>
+            <input
+              id="confirmWithdrawalPassword"
+              type="password"
+              bind:value={confirmWithdrawalPassword}
+              on:input={() => (confirmWithdrawalPasswordError = '')}
+            />
+            {#if confirmWithdrawalPasswordError}
+              <p class="error">{confirmWithdrawalPasswordError}</p>
+            {/if}
+          </div>
+          <button on:click={deleteUser}>탈퇴하기</button>
         </div>
       </div>
     </div>
