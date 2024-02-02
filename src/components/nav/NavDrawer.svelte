@@ -7,15 +7,15 @@
     Title,
   } from '@smui/drawer';
   import IconButton from '@smui/icon-button';
-  import { Graphic, Item, Separator } from '@smui/list';
+  import { Separator } from '@smui/list';
+  import { deleteCookie } from 'svelte-cookie';
+  import { navigate } from 'svelte-routing';
+  import { REFRESH_TOKEN } from '../../lib/const/jwt';
   import { ADMIN } from '../../lib/const/user-rols';
   import { auth, isLogin } from '../../store/user';
-  import { deleteCookie } from 'svelte-cookie';
-  import { REFRESH_TOKEN } from '../../lib/const/jwt';
   import AdminNavDrawerItemList from './item-list/AdminNavDrawerItemList.svelte';
   import GuestNavDrawerItemList from './item-list/GuestNavDrawerItemList.svelte';
   import LoginNavDrawerItemList from './item-list/LoginNavDrawerItemList.svelte';
-  import { navigate } from 'svelte-routing';
 
   let open = false;
   const close = () => {
@@ -57,11 +57,9 @@
   <IconButton class="material-icons" on:click={() => (open = !open)}
     >menu</IconButton
   >
-</div>
-<div class="home-btn">
-  <Item on:click on:click={() => navigate('/')}>
-    <IconButton class="material-icons" aria-hidden="true">home</IconButton>
-  </Item>
+  <IconButton class="material-icons" on:click={() => navigate('/')}
+    >home</IconButton
+  >
 </div>
 
 <div class="top-bar">

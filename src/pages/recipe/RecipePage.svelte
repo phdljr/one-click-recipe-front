@@ -1,5 +1,6 @@
 <script>
   import Button from '@smui/button';
+  import Fab, { Icon } from '@smui/fab';
   import { onMount } from 'svelte';
   import InfiniteScroll from 'svelte-infinite-scroll';
   import { navigate } from 'svelte-routing';
@@ -272,6 +273,11 @@
   {/if}
   <hr class="hr-100" />
   <div class="container-flex">
+    <div class="float-btn">
+      <Fab class="recipe-food-add-btn" color="primary">
+        <Icon class="material-icons">add</Icon>
+      </Fab>
+    </div>
     <RecipeFoodAllCard
       writerId={recipe.writerId}
       {recipeFoods}
@@ -297,6 +303,11 @@
     <br />
     <hr class="hr-100" />
     <br />
+    <div class="float-btn">
+      <Fab class="recipe-food-add-btn" color="primary">
+        <Icon class="material-icons">add</Icon>
+      </Fab>
+    </div>
     <h1>조리 과정</h1>
     <RecipeProcesses {recipeProcesses} />
     <br />
@@ -351,6 +362,11 @@
 </div>
 
 <style>
+  /* :global(.recipe-food-add-btn) {
+    position: absolute;
+    right: 100px;
+  } */
+
   * :global(.span-bold-center) {
     text-align: center;
     font-weight: bold;
@@ -547,5 +563,11 @@
   .comment-input-container {
     flex-grow: 2;
     margin-right: 20px;
+  }
+
+  .float-btn {
+    display: flex;
+    width: 100%;
+    flex-direction: row-reverse;
   }
 </style>
