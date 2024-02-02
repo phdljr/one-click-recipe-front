@@ -7,13 +7,16 @@
   import Textfield from '@smui/textfield';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
+  import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
 
   export let recipeProcess;
   export let index;
+  let imageChange = false;
 
   let controllerRequestDto = {
     description: recipeProcess.description,
     sequence: recipeProcess.sequence,
+    imageChange: imageChange,
   };
   let open = false;
   let recipeProcessUpdateImage;
@@ -46,6 +49,7 @@
       headers: {
         Authorization: $auth.Authorization,
       },
+
       body: formData,
     })
       .then((response) => {
@@ -130,6 +134,7 @@
       </a>
     </div>
   </PrimaryAction>
+  <Checkbox bind:checked={controllerRequestDto.imageChange} />
 </div>
 
 <style>
