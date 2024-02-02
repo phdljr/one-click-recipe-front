@@ -115,14 +115,14 @@
     <Link to="/mypage/like-list"
       ><button class="custom-button1">좋아요 목록</button></Link
     >
-    <button class="custom-button1" on:click={toggleModal}>계정 설정</button>
+    <button class="custom-button1" on:click={toggleModal}>프로필 수정</button>
   </div>
 
   {#if $showModal}
     <div class="modal" on:click={toggleModal}>
       <div class="modal-content" on:click={(e) => e.stopPropagation()}>
         <span class="close" on:click={toggleModal}>&times;</span>
-        <h2>계정 설정</h2>
+        <h2>프로필 수정</h2>
         <div class="input-container">
           <div>
             <label for="nickname">새 닉네임</label>
