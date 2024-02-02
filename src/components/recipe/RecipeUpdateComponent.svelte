@@ -10,22 +10,19 @@
 
   let open = false;
 
-  let recipeUpdateRequestDto = { ...recipe };
+  let recipeUpdateRequestDto = { ...recipe, imageChange: false };
   let recipeUpdateImage = null;
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
 
   const updateRecipe = () => {
     let formData = new FormData();
-    formData.append(
-      'recipeUpdateRequestDto',
-      new Blob([JSON.stringify(recipeUpdateRequestDto)], {
-        type: 'application/json',
-      }),
-    );
+
     if (recipeUpdateImage == null) {
+      recipeUpdateRequestDto = { ...recipe, imageChange: false };
       formData.append('recipeUpdateImage', new Blob());
     } else {
+      recipeUpdateRequestDto = { ...recipe, imageChange: true };
       let recipeUpdateImageType;
       if (recipeUpdateImage.type == 'image/png') {
         recipeUpdateImageType = 'image/png';
@@ -37,6 +34,14 @@
         new Blob([recipeUpdateImage], { type: recipeUpdateImageType }),
       );
     }
+
+    formData.append(
+      'recipeUpdateRequestDto',
+      new Blob([JSON.stringify(recipeUpdateRequestDto)], {
+        type: 'application/json',
+      }),
+    );
+
     fetch(HOST + `/api/v1/recipes/${recipeId}`, {
       method: 'PUT',
       headers: {
@@ -118,7 +123,7 @@
     </div>
 
     <div class="form-group">
-      <label for="serving">인원</label>
+      <label for="serving">인분</label>
       <select id="serving" bind:value={recipeUpdateRequestDto.serving}>
         <option value="1">1인분</option>
         <option value="2">2인분</option>
@@ -181,21 +186,5 @@
     width: auto;
     height: auto;
     border-radius: 10px;
-  }
-
-  .custom-dialog {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    margin: 0 auto;
-    width: auto;
-    height: auto;
-    border-radius: 10px;
-  }
-
-  .hr-100 {
-    border-top: 1px solid #f1c40f;
-    width: 100%;
-    margin-bottom: 20px;
-    opacity: 0.75;
   }
 </style>

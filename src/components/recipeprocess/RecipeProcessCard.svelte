@@ -1,16 +1,16 @@
 <script>
-  // @ts-nocheck
-
   import Button, { Label } from '@smui/button';
-  import Card, { Content, PrimaryAction } from '@smui/card';
+  import { Content, PrimaryAction } from '@smui/card';
+  import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
   import Dialog, { Actions } from '@smui/dialog';
   import Textfield from '@smui/textfield';
   import HOST from '../../lib/host';
-  import { auth } from '../../store/user';
-  import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
+  import { auth, isLogin } from '../../store/user';
 
+  export let writerId;
   export let recipeProcess;
   export let index;
+
   let imageChange = false;
 
   let controllerRequestDto = {
@@ -20,6 +20,7 @@
   };
   let open = false;
   let recipeProcessUpdateImage;
+
   const updateRecipeProcess = () => {
     let formData = new FormData();
     formData.append(
@@ -90,7 +91,9 @@
         deleteRecipeProcess();
         break;
       default:
-        controllerRequestDto = { descrption: recipeProcess.description };
+        controllerRequestDto = {
+          ...recipeProcess,
+        };
         break;
     }
   };
@@ -126,15 +129,24 @@
   </Actions>
 </Dialog>
 <div class="wrapper-recipe-process">
-  <PrimaryAction on:click={() => (open = !open)}>
+  {#if $isLogin && $auth.id === writerId}
+    <PrimaryAction on:click={() => (open = !open)}>
+      <div class="recipe-process-div">
+        <span>{index + 1}. {recipeProcess.description}</span>
+        <a href={recipeProcess.imageUrl} target="_blank"
+          ><img src={recipeProcess.imageUrl} alt="" width="200" height="100%" />
+        </a>
+      </div>
+    </PrimaryAction>
+    <Checkbox bind:checked={controllerRequestDto.imageChange} />
+  {:else}
     <div class="recipe-process-div">
       <span>{index + 1}. {recipeProcess.description}</span>
       <a href={recipeProcess.imageUrl} target="_blank"
         ><img src={recipeProcess.imageUrl} alt="" width="200" height="100%" />
       </a>
     </div>
-  </PrimaryAction>
-  <Checkbox bind:checked={controllerRequestDto.imageChange} />
+  {/if}
 </div>
 
 <style>

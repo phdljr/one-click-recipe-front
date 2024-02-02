@@ -98,11 +98,6 @@
 </div>
 
 <style>
-  .ingredients-title {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
   .ingredients-form {
     display: flex;
     flex-direction: column;

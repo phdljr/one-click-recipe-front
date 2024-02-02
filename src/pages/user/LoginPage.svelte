@@ -121,10 +121,6 @@
     color: white;
   }
 
-  body {
-    background-color: #333;
-  }
-
   .container-signup {
     text-align: center;
   }

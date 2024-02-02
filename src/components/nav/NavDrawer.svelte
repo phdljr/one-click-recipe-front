@@ -87,12 +87,6 @@
     left: 10px;
     color: black;
   }
-  .home-btn {
-    position: absolute;
-    top: 10px;
-    left: 60px;
-    color: black;
-  }
 
   .top-bar {
     position: absolute;
