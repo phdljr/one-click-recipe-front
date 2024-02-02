@@ -269,11 +269,15 @@
     <span class="recipe-serving">
       {recipe.serving}인분
     </span>
-    <hr class="hr-100" />
   {/if}
   <hr class="hr-100" />
   <div class="container-flex">
-    <RecipeFoodAllCard {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
+    <RecipeFoodAllCard
+      writerId={recipe.writerId}
+      {recipeFoods}
+      bind:totalPrice
+      bind:selectedRecipeFoods
+    />
     <br />
     {#if $isLogin}
       <Button

@@ -5,8 +5,9 @@
   import Dialog, { Actions } from '@smui/dialog';
   import Textfield from '@smui/textfield';
   import HOST from '../../lib/host';
-  import { auth } from '../../store/user';
+  import { auth, isLogin } from '../../store/user';
 
+  export let writerId;
   export let recipeFood;
   export let selectedRecipeFoods;
 
@@ -111,7 +112,17 @@
 
 <div class="container-recipe-food">
   <div class="recipe-food">
-    <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
+    {#if $isLogin && $auth.id === writerId}
+      <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
+        <span class="recipe-food-name">
+          {recipeFood.name}
+          {recipeFood.amount}{recipeFood.unit}
+        </span>
+        <span class="recipe-food-price"
+          >{recipeFood.price.toLocaleString('ko-KR')}원</span
+        >
+      </PrimaryAction>
+    {:else}
       <span class="recipe-food-name">
         {recipeFood.name}
         {recipeFood.amount}{recipeFood.unit}
@@ -119,7 +130,7 @@
       <span class="recipe-food-price"
         >{recipeFood.price.toLocaleString('ko-KR')}원</span
       >
-    </PrimaryAction>
+    {/if}
     <Checkbox bind:group={selectedRecipeFoods} bind:value={recipeFood} />
   </div>
 </div>
@@ -127,8 +138,10 @@
 <style>
   :global(.recipe-food-action) {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    width: 80%;
+    height: 100%;
+    align-items: center;
   }
 
   .btn-container {
@@ -152,6 +165,7 @@
     font-weight: bold;
     width: 100px;
     font-size: medium;
+    text-align: right;
   }
 
   :global(.svelte-select) {
@@ -165,7 +179,7 @@
 
   .recipe-food {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     align-items: center;
   }

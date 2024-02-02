@@ -1,6 +1,7 @@
 <script>
   import RecipeFoodCard from './RecipeFoodCard.svelte';
 
+  export let writerId;
   export let recipeFoods;
   export let totalPrice;
   export let selectedRecipeFoods;
@@ -18,7 +19,7 @@
     <span class="recipe-food-sub">레시피 식재료</span>
     <hr class="hr-100" />
     {#each recipeFoods as recipeFood (recipeFood.id)}
-      <RecipeFoodCard {recipeFood} bind:selectedRecipeFoods />
+      <RecipeFoodCard {writerId} {recipeFood} bind:selectedRecipeFoods />
     {/each}
     <hr class="hr-100" />
     <span class="recipe-food-sub"
