@@ -59,7 +59,7 @@
       <Media
         class="card-media-16x9"
         aspectRatio="16x9"
-        style="background-image: url({encodeURI(recipe.imageUrl)})"
+        style="background-image: url({recipe.imageUrl})"
       />
       <Content class="mdc-typography--body2">
         <h2 class="mdc-typography--headline6" style="margin: 0;">
