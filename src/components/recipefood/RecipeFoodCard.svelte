@@ -60,11 +60,13 @@
         updateRecipeFood();
         break;
       case 'delete':
-        console.log(recipeFood.id);
         deleteRecipefood();
         break;
       default:
-        recipeFoodUpdateDto = { ...recipeFood };
+        recipeFoodUpdateDto = {
+          foodName: recipeFood.name,
+          amount: recipeFood.amount,
+        };
         break;
     }
   };
