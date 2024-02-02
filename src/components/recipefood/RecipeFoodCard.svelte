@@ -8,27 +8,30 @@
   import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
+  import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
 
-  export let food;
+  export let recipeFood;
+  export let selectedRecipeFoods;
+  export let totalPrice;
 
-  let foodUpdateDto = { ...food };
+  let recipeFoodUpdateDto = { ...recipeFood };
   let units = ['COUNT', 'G', 'ML'];
   let open = false;
 
-  const updateFood = () => {
-    fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
+  const updateRecipeFood = () => {
+    fetch(HOST + `/api/v1/recipe-foods/${recipeFood.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: $auth.Authorization,
       },
-      body: JSON.stringify(foodUpdateDto),
+      body: JSON.stringify(recipeFoodUpdateDto),
     })
       .then((response) => {
         if (response.status >= 400 && response.status < 600) {
           throw response;
         }
-        food = foodUpdateDto;
+        recipeFood = recipeFoodUpdateDto;
         alert('식재료가 성공적으로 업데이트되었습니다.');
       })
       .catch((error) => {
@@ -36,8 +39,8 @@
       });
   };
 
-  const deleteFood = () => {
-    fetch(HOST + `/api/v1/admin/foods/${food.id}`, {
+  const deleteRecipefood = () => {
+    fetch(HOST + `/api/v1/recipe-foods/${recipeFood.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -56,13 +59,14 @@
   const handleCloseDialog = (e) => {
     switch (e.detail.action) {
       case 'save':
-        updateFood();
+        updateRecipeFood();
         break;
       case 'delete':
-        deleteFood();
+        console.log(recipeFood.id);
+        deleteRecipefood();
         break;
       default:
-        foodUpdateDto = { ...food };
+        recipeFoodUpdateDto = { ...recipeFood };
         break;
     }
   };
@@ -75,29 +79,15 @@
   on:SMUIDialog:closed={handleCloseDialog}
 >
   <Content id="simple-content">
-    <Textfield type="text" bind:value={foodUpdateDto.name} label="이름"
-    ></Textfield>
-  </Content>
-  <Content id="simple-content">
     <Textfield
-      type="number"
-      suffix="원"
-      bind:value={foodUpdateDto.price}
-      label="가격"
+      type="text"
+      bind:value={recipeFoodUpdateDto.foodName}
+      label="이름"
     ></Textfield>
   </Content>
   <Content id="simple-content">
-    단위
-    <List radioList>
-      {#each units as unit}
-        <Item>
-          <Graphic>
-            <Radio bind:group={foodUpdateDto.unit} value={unit} />
-          </Graphic>
-          <Label>{convert(unit)}</Label>
-        </Item>
-      {/each}
-    </List>
+    <Textfield type="text" bind:value={recipeFoodUpdateDto.amount} label="단위"
+    ></Textfield>
   </Content>
   <Actions>
     <div class="btn-container">
@@ -115,28 +105,16 @@
     </div>
   </Actions>
 </Dialog>
-
-<div class="container">
-  <Card>
-    <PrimaryAction on:click={() => (open = !open)}>
-      <Content class="mdc-typography--body2">
-        <h2
-          class="mdc-typography--headline6"
-          style="margin: 0;
-        background-color:black;"
-        >
-          {food.name}
-        </h2>
-        <h3
-          class="mdc-typography--subtitle2"
-          style="margin: 0 0 10px; color: #888;"
-        >
-          {food.price}원
-        </h3>
-        {food.unit}
-      </Content>
-    </PrimaryAction>
-  </Card>
+<hr class="hr-100" />
+<div class="recipe-food">
+  <PrimaryAction on:click={() => (open = !open)}>
+    <span class="recipe-food-name">
+      {recipeFood.foodName}
+      {recipeFood.amount}
+      {recipeFood.unit}
+    </span>
+  </PrimaryAction>
+  <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
 </div>
 
 <style>
@@ -145,10 +123,39 @@
     width: 100%;
     justify-content: space-between;
   }
-  .mdc-typography--headline6 {
-    color: black;
-  }
+
   .text-red {
     color: red;
+  }
+  .recipe-food-name {
+    width: 100%;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .recipe-food {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  .hr-100 {
+    border-top: 1px solid #f1c40f;
+    width: 100%;
+    margin-bottom: 20px;
+    opacity: 0.75;
+  }
+
+  :global(.svelte-select) {
+    margin-right: 10px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    font-size: large !important;
   }
 </style>
