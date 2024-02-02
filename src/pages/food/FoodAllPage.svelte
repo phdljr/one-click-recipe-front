@@ -70,10 +70,9 @@
     {/each}
   </LayoutGrid>
 {:else}
-  <h1>등록된 레시피가 없습니다.</h1>
+  <h1>등록된 식재료가 없습니다.</h1>
 {/if}
 
-<h3 class="ingredients-title">식재료 등록</h3>
 <div class="ingredients-form">
   {#each ingredients as ingredient, index (ingredient)}
     <div class="ingredient-form-group">
