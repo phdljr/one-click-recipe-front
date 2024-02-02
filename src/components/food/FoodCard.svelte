@@ -141,7 +141,9 @@
     width: 100%;
     justify-content: space-between;
   }
-
+  .mdc-typography--headline6 {
+    color: black;
+  }
   .text-red {
     color: red;
   }
