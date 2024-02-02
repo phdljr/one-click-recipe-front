@@ -1,14 +1,12 @@
 <script>
-  // @ts-nocheck
-
   import Button, { Label } from '@smui/button';
-
   import { PrimaryAction } from '@smui/card';
   import Dialog, { Actions } from '@smui/dialog';
   import { onMount } from 'svelte';
   import InfiniteScroll from 'svelte-infinite-scroll';
   import { navigate } from 'svelte-routing';
   import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
+  import RecipeFoodAllCard from '../../components/recipefood/RecipeFoodAllCard.svelte';
   import ReviewCard from '../../components/review/ReviewCard.svelte';
   import { REVIEW_SIZE } from '../../lib/const/pagination-const';
   import convert from '../../lib/conv-unit';
@@ -18,7 +16,6 @@
     reviewValidate,
   } from '../../lib/validates/review-validate';
   import { auth, isLogin } from '../../store/user';
-  import RecipeFoodAllPage from './RecipeFoodAllPage.svelte';
 
   export let recipeId;
   let open = false;
@@ -59,7 +56,6 @@
       .then((data) => {
         recipe = data;
         console.log(recipe);
-        // @ts-ignore
         recipeUpdateRequestDto = { ...recipe };
       });
   };
@@ -417,7 +413,13 @@
     <hr class="hr-100" />
   {/if}
   <div class="container-flex">
-    <RecipeFoodAllPage {recipeId} bind:totalPrice bind:selectedRecipeFoods />
+    <div class="wrapper-recipe-food">
+      <span class="recipe-food-sub">레시피 식재료</span>
+      <hr class="hr-100" />
+      <RecipeFoodAllCard {recipeId} bind:totalPrice bind:selectedRecipeFoods />
+      <hr class="hr-100" />
+      <span class="recipe-food-sub">총 {totalPrice}원</span>
+    </div>
     <br />
     {#if $isLogin}
       <Button
@@ -491,6 +493,25 @@
 </div>
 
 <style>
+  .recipe-food-sub {
+    text-align: center;
+    font-weight: 700;
+
+    font-size: 1.2rem;
+  }
+
+  .wrapper-recipe-food {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    border-radius: 30px;
+    padding: 30px;
+    background-color: #000000b3;
+    box-shadow: 2px 5px 10px #000000b3;
+    color: #f1c40f;
+    align-items: center;
+  }
+
   * :global(.span-bold-center) {
     text-align: center;
     font-weight: bold;

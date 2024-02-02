@@ -1,14 +1,11 @@
 <script>
   import Button, { Label } from '@smui/button';
-  import Card, { Content, PrimaryAction } from '@smui/card';
+  import { Content, PrimaryAction } from '@smui/card';
+  import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
   import Dialog, { Actions } from '@smui/dialog';
-  import List, { Graphic, Item } from '@smui/list';
-  import Radio from '@smui/radio';
   import Textfield from '@smui/textfield';
-  import convert from '../../lib/conv-unit';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
-  import Checkbox from '@smui/checkbox/src/Checkbox.svelte';
 
   export let recipeFood;
   export let selectedRecipeFoods;
@@ -79,10 +76,7 @@
   on:SMUIDialog:closed={handleCloseDialog}
 >
   <Content id="simple-content">
-    <Textfield
-      type="text"
-      bind:value={recipeFoodUpdateDto.foodName}
-      label="이름"
+    <Textfield type="text" bind:value={recipeFoodUpdateDto.name} label="이름"
     ></Textfield>
   </Content>
   <Content id="simple-content">
@@ -105,19 +99,28 @@
     </div>
   </Actions>
 </Dialog>
-<hr class="hr-100" />
 <div class="recipe-food">
-  <PrimaryAction on:click={() => (open = !open)}>
+  <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
     <span class="recipe-food-name">
-      {recipeFood.foodName}
-      {recipeFood.amount}
-      {recipeFood.unit}
+      {recipeFood.name}
+      {recipeFood.amount}{recipeFood.unit}
     </span>
   </PrimaryAction>
   <Checkbox bind:group={selectedRecipeFoods} value={recipeFood} />
 </div>
 
 <style>
+  :global(.recipe-food-action) {
+    display: flex;
+    justify-content: center;
+  }
+
+  .recipe-food {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
   .btn-container {
     display: flex;
     width: 100%;
@@ -128,26 +131,9 @@
     color: red;
   }
   .recipe-food-name {
-    width: 100%;
     color: #333;
     font-weight: bold;
-  }
-
-  .recipe-food {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-  }
-
-  .hr-100 {
-    border-top: 1px solid #f1c40f;
-    width: 100%;
-    margin-bottom: 20px;
-    opacity: 0.75;
+    width: 100px;
   }
 
   :global(.svelte-select) {
