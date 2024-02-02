@@ -162,7 +162,7 @@
       <div class="recipe-process-div">
         <span>{index + 1}. {recipeProcess.description}</span>
         <a href={recipeProcess.imageUrl} target="_blank"
-          ><img src={recipeProcess.imageUrl} alt="" width="200" height="100%" />
+          ><img src={recipeProcess.imageUrl} alt="" width="200" />
         </a>
       </div>
     </PrimaryAction>
@@ -170,7 +170,7 @@
     <div class="recipe-process-div">
       <span>{index + 1}. {recipeProcess.description}</span>
       <a href={recipeProcess.imageUrl} target="_blank"
-        ><img src={recipeProcess.imageUrl} alt="" width="200" height="100%" />
+        ><img src={recipeProcess.imageUrl} alt="" width="200" />
       </a>
     </div>
   {/if}
