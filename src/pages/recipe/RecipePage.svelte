@@ -1,4 +1,5 @@
 <script>
+  import RecipeProcessAllCard from './../../components/recipeprocess/RecipeProcessAllCard.svelte';
   import Button, { Label } from '@smui/button';
   import { PrimaryAction } from '@smui/card';
   import Dialog, { Actions } from '@smui/dialog';
@@ -434,7 +435,7 @@
     <hr class="hr-100" />
     <br />
     <h1>조리 과정</h1>
-    <RecipeProcesses {recipeProcesses} />
+    <RecipeProcessAllCard {recipeProcesses} />
     <br />
     <hr class="hr-100" />
     <br />
