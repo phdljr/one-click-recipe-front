@@ -405,7 +405,7 @@
     <hr class="hr-100" />
   {/if}
   <div class="container-flex">
-    <RecipeFoodAllPage {recipeId} {totalPrice} />
+    <RecipeFoodAllPage {recipeId} bind:totalPrice bind:selectedRecipeFoods />
     <br />
     {#if $isLogin}
       <Button

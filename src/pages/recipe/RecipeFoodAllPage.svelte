@@ -12,8 +12,9 @@
 
   export let recipeId;
   export let totalPrice;
+  export let selectedRecipeFoods;
+
   let recipeFoods = [];
-  let selectedRecipeFoods = [];
 
   onMount(() => {
     getRecipeFoods();
@@ -35,19 +36,13 @@
         });
       });
   };
-  $: {
-    totalPrice = 0;
-    selectedRecipeFoods.forEach(
-      (recipeFood) => (totalPrice += recipeFood.price),
-    );
-  }
 </script>
 
 {#if recipeFoods.length !== 0}
   <LayoutGrid fixedColumnWidth>
     {#each recipeFoods as recipeFood (recipeFood.id)}
       <Cell>
-        <RecipeFoodCard {recipeFood} {selectedRecipeFoods} />
+        <RecipeFoodCard {recipeFood} bind:selectedRecipeFoods />
       </Cell>
     {/each}
   </LayoutGrid>
