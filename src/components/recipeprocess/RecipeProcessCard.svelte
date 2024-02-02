@@ -10,57 +10,9 @@
   export let index;
 
   let recipeProcessUpdateDto = { ...recipeProcess };
-  let units = ['COUNT', 'G', 'ML'];
   let open = false;
 
-  const updateRecipeFood = () => {
-    fetch(HOST + `/api/v1/recipe-foods/${recipeProcess.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: $auth.Authorization,
-      },
-      body: JSON.stringify(recipeProcessUpdateDto),
-    })
-      .then((response) => {
-        if (response.status >= 400 && response.status < 600) {
-          throw response;
-        }
-        recipeProcess = recipeProcessUpdateDto;
-        alert('식재료가 성공적으로 업데이트되었습니다.');
-      })
-      .catch((error) => {
-        alert('식재료 업데이트에 실패했습니다.');
-      });
-  };
-
-  const deleteRecipefood = () => {
-    fetch(HOST + `/api/v1/recipe-foods/${recipeProcess.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: $auth.Authorization,
-      },
-    })
-      .then((res) => {
-        alert('식재료가 성공적으로 삭제되었습니다.');
-        location.reload();
-      })
-      .catch((error) => {
-        alert('식재료 삭제에 실패했습니다.');
-      });
-  };
-
-  const handleCloseDialog = (e) => {
-    switch (e.detail.action) {
-      case 'save':
-        updateRecipeFood();
-        break;
-      case 'delete':
-        deleteRecipefood();
-        break;
-    }
-  };
+  const handleCloseDialog = (e) => {};
 </script>
 
 <Dialog
@@ -70,17 +22,11 @@
   on:SMUIDialog:closed={handleCloseDialog}
 >
   <Content id="simple-content">
-    <Textfield
-      type="text"
-      bind:value={recipeProcessUpdateDto.foodName}
-      label="이름"
+    <Textfield type="text" bind:value={recipeProcess.imageUrl} label="이름"
     ></Textfield>
   </Content>
   <Content id="simple-content">
-    <Textfield
-      type="text"
-      bind:value={recipeProcessUpdateDto.amount}
-      label="단위"
+    <Textfield type="text" bind:value={recipeProcess.imageUrl} label="단위"
     ></Textfield>
   </Content>
   <Actions>
