@@ -4,7 +4,6 @@
   import { onMount } from 'svelte';
   import InfiniteScroll from 'svelte-infinite-scroll';
   import { navigate } from 'svelte-routing';
-  import RecipeProcesses from '../../components/recipe/RecipeProcesses.svelte';
   import RecipeUpdateComponent from '../../components/recipe/RecipeUpdateComponent.svelte';
   import RecipeFoodAllCard from '../../components/recipefood/RecipeFoodAllCard.svelte';
   import ReviewCard from '../../components/review/ReviewCard.svelte';
@@ -16,6 +15,7 @@
     reviewValidate,
   } from '../../lib/validates/review-validate';
   import { auth, isLogin } from '../../store/user';
+  import RecipeProcessAllCard from './../../components/recipeprocess/RecipeProcessAllCard.svelte';
 
   export let recipeId;
 
@@ -309,7 +309,7 @@
       </Fab>
     </div>
     <h1>조리 과정</h1>
-    <RecipeProcesses {recipeProcesses} />
+    <RecipeProcessAllCard {recipeProcesses} />
     <br />
     <hr class="hr-100" />
     <br />
