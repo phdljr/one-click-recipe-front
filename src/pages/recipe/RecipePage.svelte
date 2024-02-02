@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import Button, { Label } from '@smui/button';
   import { PrimaryAction } from '@smui/card';
   import Dialog, { Actions } from '@smui/dialog';
@@ -413,7 +415,12 @@
     <hr class="hr-100" />
   {/if}
   <div class="container-flex">
-    <RecipeFoodAllCard {recipeFoods} bind:totalPrice bind:selectedRecipeFoods />
+    <RecipeFoodAllCard
+      {recipeFoods}
+      bind:totalPrice
+      bind:selectedRecipeFoods
+      {recipe}
+    />
     <br />
     {#if $isLogin}
       <Button
@@ -423,11 +430,12 @@
       >
     {:else}
       <Button
+        disabled
         class="buy-button"
         variant="raised"
         on:click={() =>
           alert('재료 구매는 로그인한 사용자만 이용할 수 있습니다.')}
-        >재료 구매</Button
+        >재료 구매는 로그인한 사용자만 가능합니다.</Button
       >
     {/if}
     <br />

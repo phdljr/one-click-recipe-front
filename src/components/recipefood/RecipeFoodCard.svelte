@@ -5,10 +5,11 @@
   import Dialog, { Actions } from '@smui/dialog';
   import Textfield from '@smui/textfield';
   import HOST from '../../lib/host';
-  import { auth } from '../../store/user';
+  import { auth, isLogin } from '../../store/user';
 
   export let recipeFood;
   export let selectedRecipeFoods;
+  export let recipe;
 
   let recipeFoodUpdateDto = {
     foodName: recipeFood.name,
@@ -108,8 +109,37 @@
 </Dialog>
 
 <div class="container-recipe-food">
-  <div class="recipe-food">
-    <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
+  {#if $isLogin}
+    {#if $auth.nickname == recipe.writer}
+      <div class="recipe-food">
+        <PrimaryAction
+          class="recipe-food-action"
+          on:click={() => (open = !open)}
+        >
+          <span class="recipe-food-name">
+            {recipeFood.name}
+            {recipeFood.amount}{recipeFood.unit}
+          </span>
+          <span class="recipe-food-price"
+            >{recipeFood.price.toLocaleString('ko-KR')}원</span
+          >
+        </PrimaryAction>
+        <Checkbox bind:group={selectedRecipeFoods} bind:value={recipeFood} />
+      </div>
+    {:else}
+      <div class="recipe-food">
+        <span class="recipe-food-name">
+          {recipeFood.name}
+          {recipeFood.amount}{recipeFood.unit}
+        </span>
+        <span class="recipe-food-price"
+          >{recipeFood.price.toLocaleString('ko-KR')}원</span
+        >
+        <Checkbox bind:group={selectedRecipeFoods} bind:value={recipeFood} />
+      </div>
+    {/if}
+  {:else}
+    <div class="recipe-food">
       <span class="recipe-food-name">
         {recipeFood.name}
         {recipeFood.amount}{recipeFood.unit}
@@ -117,9 +147,9 @@
       <span class="recipe-food-price"
         >{recipeFood.price.toLocaleString('ko-KR')}원</span
       >
-    </PrimaryAction>
-    <Checkbox bind:group={selectedRecipeFoods} bind:value={recipeFood} />
-  </div>
+      <Checkbox bind:group={selectedRecipeFoods} bind:value={recipeFood} />
+    </div>
+  {/if}
 </div>
 
 <style>

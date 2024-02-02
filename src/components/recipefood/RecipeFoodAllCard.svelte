@@ -4,7 +4,7 @@
   export let recipeFoods;
   export let totalPrice;
   export let selectedRecipeFoods;
-
+  export let recipe;
   $: {
     totalPrice = 0;
     selectedRecipeFoods.forEach(
@@ -18,7 +18,7 @@
     <span class="recipe-food-sub">레시피 식재료</span>
     <hr class="hr-100" />
     {#each recipeFoods as recipeFood (recipeFood.id)}
-      <RecipeFoodCard {recipeFood} bind:selectedRecipeFoods />
+      <RecipeFoodCard {recipeFood} bind:selectedRecipeFoods {recipe} />
     {/each}
     <hr class="hr-100" />
     <span class="recipe-food-sub"
