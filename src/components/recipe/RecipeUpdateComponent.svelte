@@ -15,29 +15,24 @@
   let imageChange = false;
 
   let recipeUpdateImage = null;
+  $: console.log(recipeUpdateImage);
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
 
   const updateRecipe = () => {
     let formData = new FormData();
 
-    if (!imageChange && recipeUpdateImage == null) {
-      recipeUpdateRequestDto = {
-        ...recipeUpdateRequestDto,
-        imageChange: false,
-      };
+    recipeUpdateRequestDto = {
+      ...recipeUpdateRequestDto,
+      imageChange: imageChange,
+    };
+
+    if (recipeUpdateImage == null) {
       formData.append('recipeUpdateImage', new Blob());
     } else {
-      recipeUpdateRequestDto = { ...recipeUpdateRequestDto, imageChange: true };
-      let recipeUpdateImageType;
-      if (recipeUpdateImage.type == 'image/png') {
-        recipeUpdateImageType = 'image/png';
-      } else {
-        recipeUpdateImageType = 'image/jpeg';
-      }
       formData.append(
         'recipeUpdateImage',
-        new Blob([recipeUpdateImage], { type: recipeUpdateImageType }),
+        new Blob([recipeUpdateImage], { type: recipeUpdateImage.type }),
       );
     }
 
@@ -76,10 +71,12 @@
   };
 
   const handleSelectRecipeImage = (e) => {
+    const fileInput = e.target;
     const file = e.target.files[0];
 
     if (file && file.size > MAX_FILE_SIZE) {
       alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      fileInput.value = '';
       recipeUpdateImage = null;
       return;
     }

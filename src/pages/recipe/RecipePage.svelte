@@ -34,7 +34,6 @@
   let isLastReviewPage = false;
 
   let recipeUpdateRequestDto = {};
-  let recipeUpdateImage = null;
 
   onMount(() => {
     getRecipe();
