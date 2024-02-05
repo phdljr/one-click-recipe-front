@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte';
+  import { setCookie } from 'svelte-cookie';
   import { Link } from 'svelte-routing';
+  import { WAITING } from '../../lib/const/order-status';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
 
@@ -19,6 +21,55 @@
         orders = data;
       });
   });
+
+  const readyPay = (orderId) => {
+    fetch(HOST + `/api/v1/orders/${orderId}/payments/kakaopay/ready`, {
+      method: 'POST',
+      headers: {
+        Authorization: $auth.Authorization,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (res.status >= 400 && res.status < 600) {
+          throw res;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setCookie('tid', data.tid, 1, false);
+        location.href = data.next_redirect_pc_url;
+      })
+      .catch((err) => {
+        alert('결제 요청 실패');
+      });
+  };
+
+  const handleDeleteOrder = (orderId) => {
+    if (!confirm('해당 주문을 취소하시겠습니까?')) {
+      return;
+    }
+
+    fetch(HOST + `/api/v1/orders/${orderId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: $auth.Authorization,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (res.status >= 400 && res.status < 600) {
+          throw res;
+        }
+
+        alert('주문을 정상적으로 취소하였습니다.');
+        location.reload();
+      })
+      .catch(async (error) => {
+        let data = await error.json();
+        alert(data.message);
+      });
+  };
 </script>
 
 <div class="content-wrapper">
@@ -33,9 +84,20 @@
           <div class="address">
             주소: {order.address}, {order.addressDetail}
           </div>
-          <div class="total-price">총 금액: {order.totalPrice}원</div>
+          <div class="total-price">
+            총 금액: {order.totalPrice.toLocaleString('ko-KR')}원
+          </div>
           <div class="order-status">주문 상태: {order.orderStatus}</div>
-          <Link to="/order-detail/{order.id}"><button>주문 상세</button></Link>
+          <div>
+            <Link to="/order-detail/{order.id}"><button>주문 상세</button></Link
+            >
+            {#if order.orderStatus === WAITING}
+              <button on:click={() => readyPay(order.id)}>재결제</button>
+              <button on:click={() => handleDeleteOrder(order.id)}
+                >주문 취소</button
+              >
+            {/if}
+          </div>
         </div>
       {/each}
     {:else}

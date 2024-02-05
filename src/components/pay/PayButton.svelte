@@ -33,10 +33,20 @@
       },
       body: JSON.stringify(requestDto),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status >= 400 && response.status < 600) {
+          throw response;
+        }
+
+        return response.json();
+      })
       .then((data) => {
         orderId = data.id;
         readyPay();
+      })
+      .catch(async (error) => {
+        let data = await error.json();
+        alert(data.message);
       });
   };
 

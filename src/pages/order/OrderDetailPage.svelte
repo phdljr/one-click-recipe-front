@@ -8,6 +8,7 @@
 
   let order = {
     orderDetails: [],
+    totalPrice: 0,
   };
 
   onMount(() => {
@@ -32,7 +33,7 @@
     <p>받는 분: {order.receiverName}</p>
     <p>연락처: {order.receiverPhoneNumber}</p>
     <p>주소: {order.address}, {order.addressDetail}</p>
-    <p>총 금액: {order.totalPrice}원</p>
+    <p>총 금액: {order.totalPrice.toLocaleString('ko-KR')}원</p>
     <p>주문 상태: {order.orderStatus}</p>
   </div>
   <div class="order-items">
@@ -43,7 +44,7 @@
           {orderDetail.name} - 수량: {orderDetail.amount}{convert(
             orderDetail.unit,
           )} - 가격:
-          {orderDetail.price}원
+          {orderDetail.price.toLocaleString('ko-KR')}원
         </li>
       {/each}
     </ul>
