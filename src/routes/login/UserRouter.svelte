@@ -22,5 +22,8 @@
   path="/orders/:orderId/payment/kakao/approve"
   component={ApprovalPaymentPage}
 />
-<Route path="/payment/kakao/cancel" component={CancelPaymentPage} />
+<Route
+  path="/orders/:orderId/payment/kakao/cancel"
+  component={CancelPaymentPage}
+/>
 <Route path="/payment/kakao/fail" component={FailPaymentPage} />

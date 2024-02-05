@@ -122,9 +122,7 @@
     ) {
       let error = await chekcWaitingOrderResponse.json();
       if ((error.name = 'ALREADY_EXIST_WAITING_ORDER')) {
-        if (
-          confirm(error.message + '\n주문 목록 조회 화면으로 이동하시겠습니까?')
-        ) {
+        if (confirm(error.message + '\n주문 목록 화면으로 이동하시겠습니까?')) {
           navigate('/mypage/order-list');
         }
       }
