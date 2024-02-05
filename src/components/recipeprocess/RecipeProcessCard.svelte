@@ -23,32 +23,30 @@
 
   const updateRecipeProcess = () => {
     let formData = new FormData();
+
     recipeProcessUpdateRequestDto = {
       ...recipeProcessUpdateRequestDto,
       imageChange: imageChange,
     };
+
+    if (recipeProcessUpdateImage == null) {
+      formData.append('recipeProcessUpdateImage', new Blob());
+    } else {
+      formData.append(
+        'recipeProcessUpdateImage',
+        new Blob([recipeProcessUpdateImage], {
+          type: recipeProcessUpdateImage.type,
+        }),
+      );
+    }
+
     formData.append(
       'recipeProcessUpdateRequestDto',
       new Blob([JSON.stringify(recipeProcessUpdateRequestDto)], {
         type: 'application/json',
       }),
     );
-    if (recipeProcessUpdateImage == null) {
-      formData.append('recipeProcessUpdateImage', new Blob());
-    } else {
-      let recipeProcessUpdateImageType;
-      if (recipeProcessUpdateImage.type == 'image/png') {
-        recipeProcessUpdateImageType = 'image/png';
-      } else {
-        recipeProcessUpdateImageType = 'image/jpeg';
-      }
-      formData.append(
-        'recipeProcessUpdateImage',
-        new Blob([recipeProcessUpdateImage], {
-          type: recipeProcessUpdateImageType,
-        }),
-      );
-    }
+
     fetch(HOST + `/api/v1/recipe-processes/${recipeProcess.id}`, {
       method: 'PUT',
       headers: {
@@ -104,10 +102,13 @@
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
   const handleSelectRecipeImage = (e) => {
+    const fileInput = e.target;
     const file = e.target.files[0];
 
     if (file && file.size > MAX_FILE_SIZE) {
       alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      fileInput.value = '';
+      recipeProcessUpdateImage = null;
       return;
     }
 
