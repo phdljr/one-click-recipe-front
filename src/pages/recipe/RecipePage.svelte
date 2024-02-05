@@ -105,6 +105,32 @@
   };
 
   const handleBuyingRecipeFoods = async () => {
+    const chekcWaitingOrderResponse = await fetch(
+      HOST + `/api/v1/orders/waiting`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: $auth.Authorization,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (
+      chekcWaitingOrderResponse.status >= 400 &&
+      chekcWaitingOrderResponse.status < 600
+    ) {
+      let error = await chekcWaitingOrderResponse.json();
+      if ((error.name = 'ALREADY_EXIST_WAITING_ORDER')) {
+        if (
+          confirm(error.message + '\n주문 목록 조회 화면으로 이동하시겠습니까?')
+        ) {
+          navigate('/mypage/order-list');
+        }
+      }
+      return;
+    }
+
     const deleteResponse = await fetch(HOST + `/api/v1/carts`, {
       method: 'DELETE',
       headers: {
