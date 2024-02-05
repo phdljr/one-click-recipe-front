@@ -80,6 +80,7 @@
 
     if (file && file.size > MAX_FILE_SIZE) {
       alert('파일 크기가 너무 큽니다. 2MB 이하의 파일을 선택해 주세요.');
+      recipeUpdateImage = null;
       return;
     }
 
