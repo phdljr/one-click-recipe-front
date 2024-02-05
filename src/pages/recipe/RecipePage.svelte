@@ -105,6 +105,15 @@
   };
 
   const handleBuyingRecipeFoods = async () => {
+    if (!$isLogin) {
+      if (
+        confirm('로그인을 진행해주세요. \n로그인 화면으로 이동하시겠습니까?')
+      ) {
+        navigate('/login');
+      }
+      return;
+    }
+
     const chekcWaitingOrderResponse = await fetch(
       HOST + `/api/v1/orders/waiting`,
       {
@@ -171,7 +180,11 @@
   }
   const createReview = async () => {
     if (!$isLogin) {
-      alert('로그인을 진행해주세요.');
+      if (
+        confirm('로그인을 진행해주세요. \n로그인 화면으로 이동하시겠습니까?')
+      ) {
+        navigate('/login');
+      }
       return;
     }
     try {
@@ -307,21 +320,11 @@
       bind:selectedRecipeFoods
     />
     <br />
-    {#if $isLogin}
-      <Button
-        class="buy-button"
-        variant="raised"
-        on:click={handleBuyingRecipeFoods}>재료 구매</Button
-      >
-    {:else}
-      <Button
-        class="buy-button"
-        variant="raised"
-        on:click={() =>
-          alert('재료 구매는 로그인한 사용자만 이용할 수 있습니다.')}
-        >재료 구매</Button
-      >
-    {/if}
+    <Button
+      class="buy-button"
+      variant="raised"
+      on:click={handleBuyingRecipeFoods}>재료 구매</Button
+    >
     <br />
     <hr class="hr-100" />
     <br />
