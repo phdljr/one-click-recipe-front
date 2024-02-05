@@ -1,15 +1,23 @@
 <script>
   import { onMount } from 'svelte';
   import { setCookie } from 'svelte-cookie';
+  import InfiniteScroll from 'svelte-infinite-scroll';
   import { Link } from 'svelte-routing';
   import { WAITING } from '../../lib/const/order-status';
+  import { ORDER_SIZE } from '../../lib/const/pagination-const';
   import HOST from '../../lib/host';
   import { auth } from '../../store/user';
 
   let orders = [];
+  let page = 0;
+  let isLastPage = false;
 
   onMount(() => {
-    fetch(HOST + '/api/v1/orders', {
+    getOrders();
+  });
+
+  const getOrders = () => {
+    fetch(HOST + `/api/v1/orders?page=${page}`, {
       method: 'GET',
       headers: {
         Authorization: $auth.Authorization,
@@ -18,9 +26,12 @@
     })
       .then((response) => response.json())
       .then((data) => {
-        orders = data;
+        if (data.length < ORDER_SIZE) {
+          isLastPage = true;
+        }
+        orders = [...orders, ...data];
       });
-  });
+  };
 
   const readyPay = (orderId) => {
     fetch(HOST + `/api/v1/orders/${orderId}/payments/kakaopay/ready`, {
@@ -85,7 +96,7 @@
             주소: {order.address}, {order.addressDetail}
           </div>
           <div class="total-price">
-            총 금액: {order.totalPrice.toLocaleString('ko-KR')}원
+            <!-- 총 금액: {order.totalPrice.toLocaleString('ko-KR')}원 -->
           </div>
           <div class="order-status">주문 상태: {order.orderStatus}</div>
           <div>
@@ -100,6 +111,14 @@
           </div>
         </div>
       {/each}
+      <InfiniteScroll
+        window={true}
+        hasMore={!isLastPage}
+        on:loadMore={() => {
+          page++;
+          getOrders();
+        }}
+      />
     {:else}
       <h1>주문 내역이 없습니다.</h1>
     {/if}

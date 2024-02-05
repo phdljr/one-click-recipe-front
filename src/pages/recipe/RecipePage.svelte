@@ -247,6 +247,10 @@
     }
   }
   const deleteRecipe = () => {
+    if (!confirm('레시피를 삭제하시겠습니까?')) {
+      return;
+    }
+
     fetch(HOST + `/api/v1/recipes/${recipeId}`, {
       method: 'DELETE',
       headers: {
