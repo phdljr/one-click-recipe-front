@@ -15,7 +15,6 @@
   let imageChange = false;
 
   let recipeUpdateImage = null;
-  $: console.log(recipeUpdateImage);
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
 
