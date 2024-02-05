@@ -1,2 +1,2 @@
-const HOST = 'https://api.springeel.com';
+const HOST = import.meta.env.VITE_HOST;
 export default HOST;
