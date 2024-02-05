@@ -43,12 +43,16 @@
     <h1>결제 승인 요청중...</h1>
   {:else if isSuccess === true}
     <h1>결제 완료</h1>
-    <h3>결제 금액: {totalPrice}원</h3>
-    <Link to="/"><Button variant="raised">메인 화면으로 돌아가기</Button></Link>
+    <h3>결제 금액: {totalPrice.toLocaleString('ko-KR')}원</h3>
+    <Link to="/mypage/order-list"
+      ><Button variant="raised">주문 목록 화면으로 돌아가기</Button></Link
+    >
   {:else}
     <h1>결제 실패</h1>
     <h3>{responseDto.message}</h3>
-    <Link to="/"><Button variant="raised">메인 화면으로 돌아가기</Button></Link>
+    <Link to="/mypage/order-list"
+      ><Button variant="raised">주문 목록 화면으로 돌아가기</Button></Link
+    >
   {/if}
 </div>
 
@@ -65,13 +69,11 @@
 
   h1 {
     font-size: 150px;
-    color: #dce2f0;
     margin: 0;
   }
 
   h3 {
     font-size: 80px;
-    color: #dce2f0;
     margin: 0;
   }
 </style>
