@@ -1,6 +1,6 @@
 import { get, writable } from 'svelte/store';
+import HOST from '../lib/host';
 import { auth } from './user';
-const HOST = 'http://localhost:8080';
 
 function createUserStore() {
   const { subscribe, set, update } = writable([]);
