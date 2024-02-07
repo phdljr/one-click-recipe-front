@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import Button from '@smui/button';
   import { onMount } from 'svelte';
   import InfiniteScroll from 'svelte-infinite-scroll';
@@ -321,6 +323,7 @@
       {recipeFoods}
       bind:totalPrice
       bind:selectedRecipeFoods
+      recipeId={recipe.id}
     />
     <br />
     <Button
