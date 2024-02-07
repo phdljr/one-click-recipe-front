@@ -46,6 +46,9 @@
       alert('좋아요 상태를 변경하는 데 실패했습니다.');
     }
   }
+
+  const shortString = (str, len) =>
+    str.length > len ? str.substring(0, len) + '...' : str;
 </script>
 
 <link
@@ -63,7 +66,7 @@
       />
       <Content class="mdc-typography--body2">
         <h2 class="mdc-typography--headline6" style="margin: 0;">
-          {recipe.title}
+          {shortString(recipe.title, 25)}
         </h2>
         <h3
           class="mdc-typography--subtitle2"
@@ -71,7 +74,7 @@
         >
           {recipe.serving}인분
         </h3>
-        {recipe.intro}
+        {shortString(recipe.intro, 50)}
       </Content>
     </PrimaryAction>
     <Actions>
@@ -100,6 +103,10 @@
 </div>
 
 <style>
+  * :global(.mdc-typography--body2) {
+    height: 180px;
+  }
+
   .writer {
     color: rgb(0, 0, 0);
     font-weight: bold;
