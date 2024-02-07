@@ -1,16 +1,16 @@
 <script>
   // @ts-nocheck
 
-  import RecipeFoodCard from './RecipeFoodCard.svelte';
-  import { auth, isLogin } from '../../store/user';
-  import HOST from '../../lib/host';
-  import { onMount } from 'svelte';
-  import convert from '../../lib/conv-unit';
-  import Dialog, { Actions } from '@smui/dialog';
-  import { Content, PrimaryAction } from '@smui/card';
-  import Select from 'svelte-select';
   import Button, { Label } from '@smui/button';
+  import { Content, PrimaryAction } from '@smui/card';
+  import Dialog, { Actions } from '@smui/dialog';
   import Textfield from '@smui/textfield';
+  import { onMount } from 'svelte';
+  import Select from 'svelte-select';
+  import convert from '../../lib/conv-unit';
+  import HOST from '../../lib/host';
+  import { auth, isLogin } from '../../store/user';
+  import RecipeFoodCard from './RecipeFoodCard.svelte';
 
   export let writerId;
   export let recipeFoods;
@@ -90,19 +90,20 @@
 
 <Dialog
   bind:open
-  class="svelet-Dialog"
   aria-labelledby="simple-title"
   aria-describedby="simple-content"
   on:SMUIDialog:closed={handleCloseDialog}
 >
-  <Select
-    class="svelte-select"
-    placeholder="식재료 검색"
-    items={foods.map((f) => f.name)}
-    bind:justValue={recipeFoodCreateRequestDto.foodName}
-  >
-    <div class="div-no-food" slot="empty">해당 식재료가 없습니다.</div>
-  </Select>
+  <div class="wrapper-select">
+    <Select
+      class="svelte-select"
+      placeholder="식재료 검색"
+      items={foods.map((f) => f.name)}
+      bind:justValue={recipeFoodCreateRequestDto.foodName}
+    >
+      <div class="div-no-food" slot="empty">해당 식재료가 없습니다.</div>
+    </Select>
+  </div>
   <Content id="simple-content">
     <Textfield
       type="text"
@@ -119,9 +120,6 @@
   </Content>
   <Actions>
     <div class="btn-container">
-      <Button action="delete">
-        <Label><span class="text-red">삭제</span></Label>
-      </Button>
       <span>
         <Button action="save">
           <Label>저장</Label>
@@ -185,15 +183,7 @@
     margin-right: 10px !important;
     border: 1px solid #ddd !important;
     border-radius: 4px !important;
-    flex: 1;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    font-size: large !important;
-  }
-  :global(.svelte-Dialog) {
-    margin-right: 10px !important;
-    border: 1px solid #ddd !important;
-    border-radius: 4px !important;
-    flex: 1;
+    color: black !important;
     background-color: rgba(255, 255, 255, 0.1) !important;
     font-size: large !important;
   }
@@ -219,5 +209,10 @@
   :global(.div-no-food) {
     padding: 10px;
     text-align: center;
+  }
+
+  .wrapper-select {
+    width: 80%;
+    margin: 10px;
   }
 </style>
