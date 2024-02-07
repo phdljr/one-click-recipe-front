@@ -137,9 +137,11 @@
 {#if recipeFoods.length !== 0}
   <div class="wrapper-recipe-food">
     <span class="recipe-food-sub">레시피 식재료</span>
-    <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
-      <button class="custom-button">재료 추가</button>
-    </PrimaryAction>
+    {#if $isLogin && $auth.id === writerId}
+      <PrimaryAction class="recipe-food-action" on:click={() => (open = !open)}>
+        <button class="custom-button">재료 추가</button>
+      </PrimaryAction>
+    {/if}
     <hr class="hr-100" />
     {#each recipeFoods as recipeFood (recipeFood.id)}
       <RecipeFoodCard {writerId} {recipeFood} bind:selectedRecipeFoods />
